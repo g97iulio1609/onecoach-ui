@@ -40,7 +40,6 @@ export * from './tab-button.uniwind';
 export * from './tabs';
 
 // Overlay Components
-export * from './modal';
 export * from './dialog';
 export * from './drawer';
 

@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@onecoach/lib-design-system';
 import { Sparkles, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
-import { GradientButton } from '../gradient-button';
+import { Button } from '../button';
 
 // ----------------------------------------------------------------------------
 // Types & Props
@@ -125,12 +125,12 @@ export function AIGenerationView({
                 <h2 className="mb-2 text-3xl font-bold text-white">{successTitle}</h2>
                 <p className="mb-8 text-neutral-400">{successMessage}</p>
                 {onSuccessAction && (
-                  <GradientButton onClick={onSuccessAction} className="min-w-[200px]">
+                  <Button variant="gradient-primary" onClick={onSuccessAction} className="min-w-[200px]">
                     <div className="flex items-center gap-2">
                       <span>{successActionLabel}</span>
                       <ArrowRight className="h-4 w-4" />
                     </div>
-                  </GradientButton>
+                  </Button>
                 )}
               </div>
             </motion.div>

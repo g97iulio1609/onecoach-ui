@@ -7,9 +7,9 @@
 
 import React, { useEffect } from 'react';
 import type { TextInput as RNTextInput } from 'react-native';
-import { View, Text, Modal, TextInput, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Modal as RNModal, TextInput, StyleSheet, Pressable } from 'react-native';
 import { AlertCircle, CheckCircle, Info, AlertTriangle } from 'lucide-react-native';
-import { Button } from './button';
+import { Button } from './button.native';
 import {
   type DialogProps,
   getDialogTypeConfig,
@@ -76,7 +76,7 @@ export const Dialog = ({
   }[type];
 
   return (
-    <Modal
+    <RNModal
       visible={isOpen}
       transparent
       animationType="fade"
@@ -132,9 +132,75 @@ export const Dialog = ({
           </Pressable>
         </View>
       </Pressable>
-    </Modal>
+    </RNModal>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Modal Implementation (Custom Content)
+// -----------------------------------------------------------------------------
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  closeOnBackdropClick?: boolean;
+  showCloseButton?: boolean;
+  mobileFullScreen?: boolean;
+}
+
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size: _size = 'md', // unused in native simple modal but kept for API compat
+  closeOnBackdropClick = true,
+  showCloseButton = true,
+  mobileFullScreen = false,
+}: ModalProps) => {
+  return (
+    <RNModal
+      visible={isOpen}
+      transparent
+      animationType="slide" // Use slide for "Modal" feel vs fade for "Dialog"
+      onRequestClose={onClose}
+      statusBarTranslucent
+    >
+      <Pressable
+        style={styles.backdrop}
+        onPress={() => closeOnBackdropClick && onClose()}
+      >
+        <View style={[styles.container, mobileFullScreen && styles.fullScreen]}>
+          <Pressable
+            style={[styles.modal, mobileFullScreen && styles.modalFullScreen]}
+            onPress={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            {(title || showCloseButton) && (
+              <View style={styles.modalHeader}>
+                {title && <Text style={styles.title}>{title}</Text>}
+                {showCloseButton && (
+                  <Button variant="ghost" onPress={onClose} className="p-1 min-w-[32px] min-h-[32px]">
+                    <Text style={{ color: '#737373' }}>✕</Text>
+                  </Button>
+                )}
+              </View>
+            )}
+
+            {/* Body */}
+            <View style={styles.body}>
+              {children}
+            </View>
+          </Pressable>
+        </View>
+      </Pressable>
+    </RNModal>
+  );
+};
+
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -159,11 +225,45 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 8,
   },
+  // Modal specific styles
+  fullScreen: {
+    padding: 0,
+    justifyContent: 'center',
+  },
+  modal: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderRadius: 16,
+    maxHeight: '90%',
+    width: '100%',
+    maxWidth: 500,
+    overflow: 'hidden',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+  },
+  modalFullScreen: {
+    borderRadius: 0,
+    maxHeight: '100%',
+    height: '100%',
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 16,
     padding: 24,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
   iconContainer: {
     width: 48,
@@ -209,11 +309,18 @@ const styles = StyleSheet.create({
     borderTopColor: '#e5e5e5',
     padding: 16,
   },
+  body: {
+    flex: 1,
+  },
 });
 
 // Export input value getter for compatibility
 export const getDialogInputValue = (): string => {
   return '';
+};
+
+export const ModalFooter = ({ children }: { children: React.ReactNode }) => {
+  return <View style={styles.footer}>{children}</View>;
 };
 
 // Alias non-legacy per API cross-platform

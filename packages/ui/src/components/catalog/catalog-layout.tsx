@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Search, LayoutGrid, List as ListIcon, Plus } from 'lucide-react';
-import { GradientButton } from '../../gradient-button';
+import { Button } from '../../button';
 import { cn } from '@onecoach/lib-design-system';
 
 export interface CatalogHeaderProps {
@@ -47,12 +47,12 @@ export const CatalogHeader = ({
       </div>
 
       {onAdd && (
-        <GradientButton onClick={onAdd} className="shrink-0">
+        <Button variant="gradient-primary" onClick={onAdd} className="shrink-0">
           <div className="flex items-center gap-2">
             <Plus size={20} />
             <span>{addLabel}</span>
           </div>
-        </GradientButton>
+        </Button>
       )}
     </div>
   );

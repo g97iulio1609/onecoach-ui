@@ -5,6 +5,7 @@
  * Mobile-optimized, accessible, touch-friendly
  */
 
+import React from 'react';
 // @ts-ignore
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -36,6 +37,7 @@ export interface ButtonProps extends ButtonSharedProps {
   testID?: string;
   accessibilityLabel?: string;
   accessibilityHint?: string;
+  className?: string;
 }
 
 // Re-export types for convenience
@@ -91,7 +93,7 @@ export const Button = React.forwardRef<View, ButtonProps>(
               <Icon size={iconSize} color={textColor} style={styles.icon} />
             )}
             {children && (
-              <Text style={[styles.text, sizeStyles.text, { color: textColor }, textStyle]}>
+              <Text style={[styles.text, sizeStyles.text, { color: textColor }, textStyle] as any}>
                 {children}
               </Text>
             )}
@@ -149,7 +151,7 @@ export const Button = React.forwardRef<View, ButtonProps>(
             style={[
               sizeStyles.container, // Apply padding here for gradient
               { flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }
-            ]}
+            ] as any}
           >
             {renderContent('#ffffff')}
           </LinearGradient>

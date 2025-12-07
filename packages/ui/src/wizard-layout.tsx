@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
 import { Card } from './card';
-import { GradientButton } from './gradient-button';
+import { Button } from './button';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react-native';
 
 export interface WizardStep {
@@ -134,7 +134,8 @@ export function WizardLayout({
           <Text className="font-semibold text-neutral-600 dark:text-neutral-300">Indietro</Text>
         </TouchableOpacity>
 
-        <GradientButton
+        <Button
+          variant="gradient-primary"
           onPress={handleNext}
           disabled={!currentStep.isValid || isCompleting}
           loading={isCompleting}
@@ -145,7 +146,7 @@ export function WizardLayout({
             {!isLastStep && <ChevronRight size={20} color="white" />}
             {isLastStep && <Check size={20} color="white" />}
           </View>
-        </GradientButton>
+        </Button>
       </Card>
     </View>
   );

@@ -35,7 +35,6 @@ export * from './tabs';
 export * from './tabs/hash-tabs';
 
 // Overlay Components
-export * from './modal';
 export * from './dialog';
 export * from './drawer';
 export * from './dropdown-menu';

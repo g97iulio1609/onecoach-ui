@@ -37,7 +37,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in fixed inset-0 z-50 bg-black/50 backdrop-blur-sm',
+      'data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in fixed inset-0 z-[1050] bg-black/50 backdrop-blur-sm',
       className
     )}
     {...props}
@@ -47,27 +47,95 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-1/2 left-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border bg-white p-6 shadow-xl duration-200 dark:border-neutral-800 dark:bg-neutral-900',
-        className
-      )}
-      {...props}
-    >
-      {children}
-      <DialogPrimitive.Close className="focus:ring-primary-500 focus:ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none data-[state=open]:bg-neutral-100 dark:data-[state=open]:bg-neutral-800">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Chiudi</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-));
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+    mobileFullScreen?: boolean;
+    showCloseButton?: boolean;
+  }
+>(({ className, children, size = 'md', mobileFullScreen = true, showCloseButton = true, ...props }, ref) => {
+  const sizeStyles = {
+    sm: 'w-full max-w-sm',
+    md: 'w-full max-w-md sm:max-w-lg',
+    lg: 'w-full max-w-lg sm:max-w-2xl',
+    xl: 'w-full max-w-2xl sm:max-w-4xl',
+    full: 'w-full h-full max-w-full max-h-full m-0 rounded-none transform-none top-0 left-0 translate-x-0 translate-y-0',
+  };
+
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed z-[1050] gap-4 border bg-white shadow-xl duration-200 dark:border-neutral-800 dark:bg-neutral-900',
+          size !== 'full' && 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl p-6',
+          size === 'full' && 'p-4 sm:p-6',
+          mobileFullScreen && size !== 'full' && 'w-full max-w-none sm:w-auto sm:max-w-lg m-4 sm:m-0 h-auto rounded-2xl', // Mobile adaptations
+          sizeStyles[size],
+          className
+        )}
+        {...props}
+      >
+        {children}
+        {showCloseButton && (
+          <DialogPrimitive.Close className="focus:ring-primary-500 focus:ring-offset-background absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none data-[state=open]:bg-neutral-100 dark:data-[state=open]:bg-neutral-800">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Chiudi</span>
+          </DialogPrimitive.Close>
+        )}
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  )
+});
 DialogContent.displayName = DialogPrimitive.Content.displayName;
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  closeOnBackdropClick?: boolean; // Radix handles this via onInteractOutside
+  showCloseButton?: boolean;
+  mobileFullScreen?: boolean;
+  className?: string; // Content class
+}
+
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size = 'md',
+  closeOnBackdropClick = true,
+  showCloseButton = true,
+  mobileFullScreen = true,
+  className
+}: ModalProps) => {
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent
+        size={size}
+        mobileFullScreen={mobileFullScreen}
+        showCloseButton={showCloseButton}
+        className={className}
+        onInteractOutside={(e) => {
+          if (!closeOnBackdropClick) e.preventDefault();
+        }}
+      >
+        {title && (
+          <DialogHeader className="mb-4">
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+        )}
+        <div className="flex-1 overflow-y-auto">
+          {children}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
@@ -388,6 +456,8 @@ const SimpleDialog = ({
 
 export const getDialogInputValue = (): string => '';
 
+export const ModalFooter = DialogFooter;
+
 export {
   Dialog,
   DialogTrigger,
@@ -403,3 +473,5 @@ export {
   // Deprecated alias for backward compatibility
   SimpleDialog as LegacyDialog,
 };
+
+export type { ModalProps };
