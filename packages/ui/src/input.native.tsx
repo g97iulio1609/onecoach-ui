@@ -10,6 +10,7 @@ export interface InputProps extends TextInputProps {
     icon?: React.ReactNode;
     helperText?: string;
     containerClassName?: string;
+    contentContainerClassName?: string;
     className?: string;
     fullWidth?: boolean; // Added for parity with Web, though RN is usually flex
 }
@@ -21,6 +22,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         helperText,
         icon,
         containerClassName,
+        contentContainerClassName,
         className,
         fullWidth,
         ...props
@@ -37,7 +39,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                         'flex-row items-center rounded-2xl border bg-neutral-50 px-4 py-3 transition-colors dark:bg-neutral-800/50',
                         error
                             ? 'border-red-300 bg-red-50 dark:border-red-800 dark:bg-red-900/10'
-                            : 'border-neutral-200 focus:border-blue-500 dark:border-neutral-700 dark:focus:border-blue-400'
+                            : 'border-neutral-200 focus:border-blue-500 dark:border-neutral-700 dark:focus:border-blue-400',
+                        contentContainerClassName
                     )}
                 >
                     {icon && <View className="mr-3 text-neutral-400">{icon}</View>}
