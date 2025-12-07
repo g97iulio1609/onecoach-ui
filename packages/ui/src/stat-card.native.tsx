@@ -4,7 +4,12 @@ import { Card } from './card';
 // @ts-ignore
 import { LinearGradient } from 'expo-linear-gradient';
 import { cn } from '@onecoach/lib-design-system';
+import { cssInterop } from 'nativewind';
 import type { LucideIcon } from 'lucide-react-native';
+
+cssInterop(LinearGradient, {
+  className: 'style',
+});
 
 interface StatCardProps {
   label: string;
@@ -43,7 +48,7 @@ export function StatCard({
   ];
 
   return (
-    <Card variant="glass" className={cn('p-4', className)} intensity="medium">
+    <Card variant="elevated" className={cn('p-4', className)} padding="md">
       <View className="flex-row items-start justify-between">
         <View>
           <Text className="text-sm font-medium text-neutral-500 dark:text-neutral-400">

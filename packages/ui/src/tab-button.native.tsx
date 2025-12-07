@@ -5,7 +5,9 @@
  * Mobile-optimized, accessible
  */
 
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from './typography.native';
+import { Button } from './button.native';
 import type { LucideIcon } from 'lucide-react-native';
 import type { TabButtonSharedProps } from './tab-button.shared';
 
@@ -15,92 +17,35 @@ export interface TabButtonProps extends TabButtonSharedProps {
 
 export const TabButton = ({ active, onClick, icon: Icon, label, count }: TabButtonProps) => {
   return (
-    <Pressable
+    <Button
+      variant={active ? 'primary' : 'ghost'}
+      size="md"
       onPress={onClick}
-      style={({ pressed }) => [
-        styles.base,
-        active ? styles.active : styles.inactive,
-        pressed && styles.pressed,
-      ]}
+      className={`flex-row items-center justify-start rounded-2xl px-4 py-3 min-h-[44px] ${active ? 'shadow-sm elevation-3 bg-primary-600' : 'bg-white dark:bg-neutral-800 elevation-2 shadow-xs'
+        }`}
     >
       <Icon size={20} color={active ? '#ffffff' : '#374151'} />
-      <Text style={[styles.label, active ? styles.activeLabel : styles.inactiveLabel]}>
+      <Text
+        variant={active ? 'inverse' : 'secondary'}
+        weight="semibold"
+        className="ml-2 text-base"
+      >
         {label}
       </Text>
       {count !== undefined && (
-        <View style={[styles.badge, active ? styles.activeBadge : styles.inactiveBadge]}>
+        <View
+          className={`ml-1 rounded-full px-2 py-0.5 min-w-[24px] items-center justify-center ${active ? 'bg-white/20' : 'bg-emerald-100 dark:bg-emerald-900/30'
+            }`}
+        >
           <Text
-            style={[styles.badgeText, active ? styles.activeBadgeText : styles.inactiveBadgeText]}
+            size="xs"
+            weight="bold"
+            className={active ? 'text-white' : 'text-emerald-700 dark:text-emerald-300'}
           >
             {count}
           </Text>
         </View>
       )}
-    </Pressable>
+    </Button>
   );
 };
-
-const styles = StyleSheet.create({
-  base: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 16,
-    minHeight: 44,
-  },
-  active: {
-    backgroundColor: '#10b981',
-    shadowColor: '#10b981',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  inactive: {
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  pressed: {
-    opacity: 0.8,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  activeLabel: {
-    color: '#ffffff',
-  },
-  inactiveLabel: {
-    color: '#374151',
-  },
-  badge: {
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    minWidth: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  activeBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  inactiveBadge: {
-    backgroundColor: '#d1fae5',
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  activeBadgeText: {
-    color: '#ffffff',
-  },
-  inactiveBadgeText: {
-    color: '#065f46',
-  },
-});

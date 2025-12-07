@@ -54,12 +54,12 @@ export function SelectionCard({
       )}
       {...props}
     >
-      <Card variant="glass"
-        intensity={selected ? 'heavy' : 'light'}
-        variant={selected ? 'active' : 'default'}
+      <Card
+        variant={selected ? 'glass-strong' : 'glass'}
+        glassIntensity={selected ? 'heavy' : 'light'}
         className={cn(
           'relative overflow-hidden transition-all duration-300',
-          selected ? 'shadow-md' : 'hover:bg-white/50 dark:hover:bg-neutral-800/50'
+          selected ? 'shadow-md ring-2 ring-blue-500/20' : 'hover:bg-white/50 dark:hover:bg-neutral-800/50'
         )}
       >
         {image && (

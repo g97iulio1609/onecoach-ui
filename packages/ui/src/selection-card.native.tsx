@@ -25,12 +25,12 @@ export function SelectionCard({
 }: SelectionCardProps) {
   return (
     <TouchableOpacity activeOpacity={0.7} {...props}>
-      <Card variant="glass"
-        intensity={selected ? 'heavy' : 'light'}
-        variant={selected ? 'active' : 'default'}
+      <Card
+        variant={selected ? 'glass-strong' : 'glass'}
+        glassIntensity={selected ? 'heavy' : 'light'}
         className={cn(
           'relative overflow-hidden transition-all duration-300',
-          selected ? 'scale-[1.02] shadow-md' : 'hover:bg-white/50 dark:hover:bg-neutral-800/50',
+          selected ? 'scale-[1.02] shadow-md border-primary-500/50' : 'hover:bg-white/50 dark:hover:bg-neutral-800/50',
           className
         )}
       >

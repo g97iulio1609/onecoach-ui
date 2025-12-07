@@ -56,7 +56,12 @@ export * from './typography';
 export * from './layout';
 
 // Design System - Form Controls
-export * from './form-controls';
+// Design System - Form Controls
+export * from './checkbox';
+export * from './checkbox-group';
+export * from './radio';
+export * from './radio-group';
+export * from './switch';
 
 // Design System - Dark Mode Optimized Components
 export * from './icon-badge';

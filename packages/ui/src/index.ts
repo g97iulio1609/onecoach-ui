@@ -53,7 +53,12 @@ export * from './typography';
 export * from './layout';
 
 // Design System - Form Controls
-export * from './form-controls';
+// Design System - Form Controls
+export * from './checkbox';
+export * from './checkbox-group';
+export * from './radio';
+export * from './radio-group';
+export * from './switch';
 export * from './select';
 export * from './input';
 export * from './input-group';
