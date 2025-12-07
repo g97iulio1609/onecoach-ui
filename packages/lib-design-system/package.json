@@ -1,0 +1,45 @@
+{
+  "name": "@OneCoach/lib-design-system",
+  "version": "0.0.0",
+  "description": "Design system (tokens, theme, animations)",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./animations": {
+      "types": "./src/animations.ts",
+      "default": "./src/animations.ts"
+    },
+    "./dark-mode-classes": {
+      "types": "./src/dark-mode-classes.ts",
+      "default": "./src/dark-mode-classes.ts"
+    },
+    "./tokens": {
+      "types": "./src/tokens.ts",
+      "default": "./src/tokens.ts"
+    },
+    "./tokens-complete": {
+      "types": "./src/tokens-complete.ts",
+      "default": "./src/tokens-complete.ts"
+    }
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "tailwind-merge": "^2.0.0",
+    "clsx": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^18.3.0",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  },
+  "sideEffects": false
+}

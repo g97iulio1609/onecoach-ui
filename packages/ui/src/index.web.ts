@@ -1,0 +1,131 @@
+/**
+ * UI Components - Web Barrel Export
+ * Web-specific exports that exclude native-only components
+ */
+
+// Core Components
+export * from './button';
+export * from './button-link';
+export * from './input';
+export * from './label';
+export * from './select';
+export * from './textarea';
+export * from './card';
+export * from './avatar';
+export * from './streaming-result';
+
+// Feedback Components
+export * from './badge';
+export * from './alert';
+export * from './tooltip';
+export * from './spinner';
+export * from './loading-indicator';
+export * from './error-state';
+export * from './empty-state';
+
+// Navigation Components
+export * from './tab-button';
+export * from './tab-button.uniwind';
+export * from './tabs';
+
+// Overlay Components
+export * from './modal';
+export * from './dialog';
+export * from './drawer';
+
+// Feature Components
+export * from './components/model-selector';
+export { ModelSelector as LegacyModelSelector } from './legacy-model-selector';
+export * from './theme-toggle';
+export * from './date-picker-with-presets';
+
+// Design System - Typography
+export * from './typography';
+
+// Design System - Layout
+export * from './layout';
+
+// Design System - Form Controls
+export * from './form-controls';
+
+// Design System - Dark Mode Optimized Components
+export * from './icon-badge';
+export * from './amount-display';
+export * from './transaction-item';
+
+// Cross-platform Image
+export * from './image';
+
+// Animation Components (web versions only)
+export * from './components/Animated/index.web';
+
+// Skeleton Loaders
+export * from './components/SkeletonLoader';
+export * from './skeleton';
+
+// Animation Hooks (web versions)
+export * from './hooks/useAnimations.web';
+
+// App Shell
+export * from './app-shell';
+
+// Admin primitives
+export * from './admin';
+
+// Dashboard primitives
+export * from './dashboard';
+
+// Checkout kit
+export * from './checkout';
+
+// Visual Builder Components
+export * from './modern-sidebar';
+export * from './sidebar-item';
+export * from './visual-builder';
+
+// New Generation Components
+export * from './glass-card';
+export * from './stat-card';
+export * from './gradient-button';
+export * from './selection-card';
+export * from './stepper';
+export * from './form-input';
+export * from './wizard-layout';
+export * from './welcome-header';
+export * from './quick-actions-grid';
+
+// Program Viewer Components
+export * from './program-viewer';
+
+// Project Management Components
+export * from './components/progress-bar';
+export * from './components/project-card';
+export * from './components/project-gantt';
+export * from './components/task-list';
+export * from './components/milestone-list';
+export * from './components/habit-card';
+export * from './components/habit-list';
+export * from './components/unified-list-item';
+
+// Chat Components
+export * from './components/chat/conversation-list';
+
+// AI Elements Components (AI SDK v6 native)
+export * from './components/ai-elements';
+
+// AI Generation Components
+export * from './components/ai-generation-view';
+
+// Catalog Components
+export * from './components/catalog/resource-card';
+export * from './components/catalog/catalog-grid';
+export * from './components/catalog/catalog-layout';
+export * from './tabs/hash-tabs';
+
+// Slider Component
+export * from './slider';
+
+// Premium Glass Components
+export * from './combobox';
+export * from './glass-table';
+export * from './glass-toolbar';

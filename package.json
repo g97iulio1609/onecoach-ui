@@ -1,0 +1,10 @@
+{
+  "name": "coachone-ui",
+  "private": true,
+  "packageManager": "pnpm@10.20.0",
+  "scripts": {
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "test": "pnpm -r test"
+  }
+}
