@@ -1,5 +1,5 @@
 import { cn } from '@onecoach/lib-design-system';
-import { GlassCard } from '../glass-card';
+import { Card } from '../card';
 
 export interface KpiCardProps {
   label: string;
@@ -27,7 +27,7 @@ export function KpiCard({
   color = 'neutral',
 }: KpiCardProps) {
   return (
-    <GlassCard className="flex h-full flex-col justify-between p-5">
+    <Card variant="glass" className="flex h-full flex-col justify-between p-5">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-medium tracking-wide text-neutral-500 uppercase dark:text-neutral-400">
@@ -55,6 +55,6 @@ export function KpiCard({
           {change}
         </div>
       )}
-    </GlassCard>
+    </Card>
   );
 }

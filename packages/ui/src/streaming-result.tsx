@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
-import { GlassCard } from './glass-card';
-import { ActivityIndicator } from 'react-native';
+import { Card } from './card';
+
 
 export interface StreamEvent {
   type: string;
@@ -30,7 +30,7 @@ export function StreamingResult({
   return (
     <View className={cn('space-y-4', className)}>
       {/* Progress Card */}
-      <GlassCard className="p-4">
+      <Card variant="glass" className="p-4">
         <View className="mb-2 flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
             {isStreaming && <ActivityIndicator size="small" color="#10B981" />}
@@ -48,10 +48,10 @@ export function StreamingResult({
             style={{ width: `${progress}%` }}
           />
         </View>
-      </GlassCard>
+      </Card>
 
       {/* Events Log */}
-      <GlassCard className="max-h-60 overflow-hidden p-0">
+      <Card variant="glass" className="max-h-60 overflow-hidden p-0">
         <View className="border-b border-neutral-100 bg-neutral-50/50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-800/30">
           <Text className="font-semibold text-neutral-900 dark:text-neutral-100">
             Log Generazione
@@ -88,7 +88,7 @@ export function StreamingResult({
             </View>
           )}
         </ScrollView>
-      </GlassCard>
+      </Card>
     </View>
   );
 }

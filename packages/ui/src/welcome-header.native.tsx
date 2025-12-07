@@ -2,7 +2,7 @@
 
 import { View, Text } from 'react-native';
 import { Avatar } from './avatar';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 import { cn } from '@onecoach/lib-design-system';
 
 interface WelcomeHeaderProps {
@@ -19,7 +19,7 @@ export function WelcomeHeader({ userName, className }: WelcomeHeaderProps) {
   };
 
   return (
-    <GlassCard
+    <Card variant="glass"
       intensity="light"
       className={cn(
         'flex flex-row items-center gap-4 p-6',
@@ -42,6 +42,6 @@ export function WelcomeHeader({ userName, className }: WelcomeHeaderProps) {
           {userName || 'Atleta'}
         </Text>
       </View>
-    </GlassCard>
+    </Card>
   );
 }

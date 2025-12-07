@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 import { GradientButton } from './gradient-button';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react-native';
 
@@ -116,7 +116,7 @@ export function WizardLayout({
       </ScrollView>
 
       {/* Footer Actions */}
-      <GlassCard
+      <Card variant="glass"
         intensity="heavy"
         className="absolute right-0 bottom-0 left-0 flex-row items-center justify-between rounded-t-3xl rounded-b-none border-t border-neutral-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:border-neutral-800"
       >
@@ -146,7 +146,7 @@ export function WizardLayout({
             {isLastStep && <Check size={20} color="white" />}
           </View>
         </GradientButton>
-      </GlassCard>
+      </Card>
     </View>
   );
 }

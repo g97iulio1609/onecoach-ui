@@ -1,6 +1,6 @@
 'use client';
 
-import { GlassCard } from '../glass-card';
+import { Card } from '../card';
 import { ProgressBar } from './progress-bar';
 import { cn } from '@onecoach/lib-design-system';
 import { Calendar, MoreVertical, ArrowRight } from 'lucide-react';
@@ -39,7 +39,7 @@ export function ProjectCard({
   };
 
   return (
-    <GlassCard className={cn('group relative flex flex-col p-5 transition-all', className)}>
+    <Card variant="glass" className={cn('group relative flex flex-col p-5 transition-all', className)}>
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div
@@ -98,6 +98,6 @@ export function ProjectCard({
           </Link>
         </div>
       </div>
-    </GlassCard>
+    </Card>
   );
 }

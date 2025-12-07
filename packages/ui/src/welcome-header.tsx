@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar } from './avatar';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 import { cn } from '@onecoach/lib-design-system';
 
 interface WelcomeHeaderProps {
@@ -20,7 +20,7 @@ export function WelcomeHeader({ userName, className, title, subtitle }: WelcomeH
   };
 
   return (
-    <GlassCard
+    <Card variant="glass"
       intensity="light"
       className={cn(
         'flex items-center gap-6 p-8',
@@ -43,6 +43,6 @@ export function WelcomeHeader({ userName, className, title, subtitle }: WelcomeH
           {title || userName || 'Atleta'}
         </h1>
       </div>
-    </GlassCard>
+    </Card>
   );
 }

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { GlassCard } from '../../glass-card';
+import { Card } from '../../card';
 import { Badge } from '../../badge';
 import { Button } from '../../button';
 import { MoreHorizontal } from 'lucide-react';
@@ -62,7 +62,7 @@ export const ResourceCard = ({
   };
 
   const CardContent = (
-    <GlassCard
+    <Card variant="glass"
       className={cn(
         'group hover:shadow-primary/5 relative h-full cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-xl',
         isSelected && 'ring-2 ring-blue-500 dark:ring-blue-400',
@@ -182,7 +182,7 @@ export const ResourceCard = ({
         )}
         {children}
       </div>
-    </GlassCard>
+    </Card>
   );
 
   return (

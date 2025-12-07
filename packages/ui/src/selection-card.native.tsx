@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import type { TouchableOpacityProps, ImageSourcePropType } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 
 export interface SelectionCardProps extends TouchableOpacityProps {
   title: string;
@@ -25,7 +25,7 @@ export function SelectionCard({
 }: SelectionCardProps) {
   return (
     <TouchableOpacity activeOpacity={0.7} {...props}>
-      <GlassCard
+      <Card variant="glass"
         intensity={selected ? 'heavy' : 'light'}
         variant={selected ? 'active' : 'default'}
         className={cn(
@@ -103,7 +103,7 @@ export function SelectionCard({
             </View>
           </View>
         </View>
-      </GlassCard>
+      </Card>
     </TouchableOpacity>
   );
 }

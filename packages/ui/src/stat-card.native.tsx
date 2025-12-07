@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 // @ts-ignore
 import { LinearGradient } from 'expo-linear-gradient';
 import { cn } from '@onecoach/lib-design-system';
@@ -43,7 +43,7 @@ export function StatCard({
   ];
 
   return (
-    <GlassCard className={cn('p-4', className)} intensity="medium">
+    <Card variant="glass" className={cn('p-4', className)} intensity="medium">
       <View className="flex-row items-start justify-between">
         <View>
           <Text className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
@@ -97,6 +97,6 @@ export function StatCard({
           )}
         </View>
       )}
-    </GlassCard>
+    </Card>
   );
 }

@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { cn } from '@onecoach/lib-design-system';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 
 export interface SelectionCardProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
@@ -54,7 +54,7 @@ export function SelectionCard({
       )}
       {...props}
     >
-      <GlassCard
+      <Card variant="glass"
         intensity={selected ? 'heavy' : 'light'}
         variant={selected ? 'active' : 'default'}
         className={cn(
@@ -129,7 +129,7 @@ export function SelectionCard({
             </div>
           </div>
         </div>
-      </GlassCard>
+      </Card>
     </button>
   );
 }

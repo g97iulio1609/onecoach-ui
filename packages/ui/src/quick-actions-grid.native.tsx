@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Link } from 'solito/link';
-import { GlassCard } from './glass-card';
+import { Card } from './card';
 import { cn } from '@onecoach/lib-design-system';
 import { ChevronRight } from 'lucide-react-native';
 
@@ -29,7 +29,7 @@ export function QuickActionsGrid({ actions, className }: QuickActionsGridProps) 
 
         return (
           <Link key={action.id} href={action.href} viewProps={{ style: { flex: 1 } }}>
-            <GlassCard
+            <Card variant="glass"
               intensity="light"
               className={cn(
                 'group relative flex h-full flex-row items-center gap-4 p-4 transition-all duration-300',
@@ -68,7 +68,7 @@ export function QuickActionsGrid({ actions, className }: QuickActionsGridProps) 
                 size={20}
                 className="text-neutral-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-indigo-500 dark:text-neutral-600"
               />
-            </GlassCard>
+            </Card>
           </Link>
         );
       })}
