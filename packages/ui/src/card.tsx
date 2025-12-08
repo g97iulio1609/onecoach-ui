@@ -10,6 +10,10 @@ import { darkModeClasses, cn } from '@onecoach/lib-design-system';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?:
+  | 'default'
+  | 'elevated'
+  | 'bordered'
+  | 'interactive'
   | 'glass'
   | 'glass-strong'
   | 'hover';
