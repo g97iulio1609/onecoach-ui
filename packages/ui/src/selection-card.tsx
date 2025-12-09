@@ -18,6 +18,7 @@ export interface SelectionCardProps extends React.ButtonHTMLAttributes<HTMLButto
   image?: string;
   className?: string;
   badge?: string;
+  contentClassName?: string;
   // Support onPress for compatibility with React Native API
   onPress?: () => void;
 }
@@ -30,6 +31,7 @@ export function SelectionCard({
   image,
   className,
   badge,
+  contentClassName,
   onClick,
   onPress,
   ...props
@@ -69,8 +71,13 @@ export function SelectionCard({
           </div>
         )}
 
-        <div className="p-5">
-          <div className="flex flex-row items-start justify-between gap-3">
+        <div className={cn('p-5', contentClassName)}>
+          <div
+            className={cn(
+              'flex flex-row justify-between gap-3',
+              description ? 'items-start' : 'items-center'
+            )}
+          >
             <div className="flex-1">
               {icon && (
                 <div
