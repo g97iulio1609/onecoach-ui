@@ -36,7 +36,6 @@ export { Separator } from './separator';
 
 // Navigation Components
 export * from './tab-button';
-export * from './tab-button.uniwind';
 export * from './tabs';
 export * from './tabs/hash-tabs';
 

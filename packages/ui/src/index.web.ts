@@ -36,7 +36,6 @@ export * from './input-group';
 
 // Navigation Components
 export * from './tab-button';
-export * from './tab-button.uniwind';
 export * from './tabs';
 
 // Overlay Components

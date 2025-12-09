@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@onecoach/lib-theme": "workspace:*",
-    "tailwindcss": "^4.1.17",
-    "uniwind": "^1.2.1"
+    "tailwindcss": "^4.1.17"
   },
   "peerDependencies": {
     "react": ">=19.1.0 <20",
