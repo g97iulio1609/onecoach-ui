@@ -12,6 +12,8 @@ export interface Task {
   createdAt?: string | Date;
   dueDate?: string | Date;
   milestoneId?: string | null;
+  depth?: number;
+  progress?: number;
 }
 
 export interface Milestone {
@@ -22,4 +24,5 @@ export interface Milestone {
   dueDate?: string | Date;
   order: number;
   tasks?: Task[];
+  progress?: number;
 }

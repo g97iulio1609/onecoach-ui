@@ -3,6 +3,7 @@
 import { format, differenceInDays, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { cn } from '@onecoach/lib-design-system';
+import { Card } from '../card';
 
 export interface ProjectTask {
   id: string;
@@ -22,73 +23,116 @@ export interface Project {
 }
 
 export function ProjectGantt({ project, className }: { project: Project; className?: string }) {
-  const startDate = startOfWeek(project.startDate, { weekStartsOn: 1 });
-  const endDate = endOfWeek(project.endDate, { weekStartsOn: 1 });
+  const startDate = startOfWeek(new Date(project.startDate), { weekStartsOn: 1 });
+  const endDate = endOfWeek(new Date(project.endDate), { weekStartsOn: 1 });
   const days = eachDayOfInterval({ start: startDate, end: endDate });
 
   const totalDays = days.length;
+  const dayWidth = 40; // Fixed width for each day in pixels
 
   return (
-    <div
+    <Card
+      variant="glass"
       className={cn(
-        'w-full overflow-x-auto rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900',
+        'w-full flex flex-col overflow-hidden p-0',
         className
       )}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
-          {project.title} - Gantt
+      <div className="border-b border-neutral-200 bg-white/50 px-6 py-4 dark:border-neutral-800 dark:bg-white/5">
+        <h3 className="font-bold text-neutral-900 dark:text-white">
+          {project.title}
         </h3>
       </div>
 
-      <div className="relative min-w-[800px]">
-        {/* Header Days */}
-        <div className="grid auto-cols-fr grid-flow-col border-b border-neutral-200 pb-2 dark:border-neutral-800">
-          {days.map((day: any) => (
-            <div
-              key={day.toString()}
-              className="flex flex-col items-center justify-center text-xs text-neutral-500"
-            >
-              <span className="font-bold">{format(day, 'd', { locale: it })}</span>
-              <span>{format(day, 'EE', { locale: it })}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Tasks */}
-        <div className="mt-4 space-y-3">
-          {project.tasks.map((task: any) => {
-            const startOffset = differenceInDays(task.startDate, startDate);
-            const duration = differenceInDays(task.endDate, task.startDate) + 1;
-
-            const leftPercent = (startOffset / totalDays) * 100;
-            const widthPercent = (duration / totalDays) * 100;
-
-            return (
-              <div key={task.id} className="relative h-8 w-full">
-                <div
-                  className="absolute top-0 h-8 rounded-md bg-sky-500/20 dark:bg-sky-500/30"
-                  style={{
-                    left: `${leftPercent}%`,
-                    width: `${widthPercent}%`,
-                  }}
-                >
-                  <div
-                    className="h-full rounded-md bg-sky-500"
-                    style={{ width: `${task.progress}%` }}
-                  />
-                  <span
-                    className="absolute top-1/2 left-2 -translate-y-1/2 truncate text-xs font-medium whitespace-nowrap text-sky-900 dark:text-sky-100"
-                    style={{ maxWidth: '100%' }}
-                  >
-                    {task.title}
-                  </span>
-                </div>
+      <div className="relative flex-1 overflow-x-auto p-6 no-scrollbar">
+        <div style={{ width: totalDays * dayWidth }}>
+          {/* Header Days */}
+          <div className="mb-6 flex border-b border-neutral-100 pb-3 dark:border-neutral-800">
+            {days.map((day) => (
+              <div
+                key={day.toISOString()}
+                style={{ width: dayWidth }}
+                className="flex shrink-0 flex-col items-center justify-center text-center"
+              >
+                <span className="text-[10px] font-black text-neutral-500 dark:text-neutral-400">
+                  {format(day, 'd')}
+                </span>
+                <span className="text-[8px] font-bold uppercase text-neutral-400">
+                  {format(day, 'EEE', { locale: it })}
+                </span>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Grid Background */}
+          <div className="relative">
+            <div className="absolute inset-0 flex">
+              {days.map((day) => (
+                <div 
+                  key={`grid-${day.toISOString()}`} 
+                  style={{ width: dayWidth }} 
+                  className="h-full border-r border-neutral-50 dark:border-neutral-800/30" 
+                />
+              ))}
+            </div>
+
+            {/* Bars */}
+            <div className="relative space-y-4 py-2">
+              {/* Show project bar if no tasks, or always show project duration as a background bar */}
+              {project.tasks.length === 0 ? (
+                <div className="group flex items-center h-8">
+                  <div
+                    className="absolute h-6 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center px-3"
+                    style={{
+                      left: 0,
+                      width: '100%',
+                    }}
+                  >
+                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 truncate uppercase tracking-widest">
+                      Intero Progetto
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                project.tasks.map((task) => {
+                  const taskStart = new Date(task.startDate);
+                  const taskEnd = new Date(task.endDate);
+                  
+                  const startOffset = differenceInDays(taskStart, startDate);
+                  const duration = differenceInDays(taskEnd, taskStart) + 1;
+
+                  const left = startOffset * dayWidth;
+                  const width = duration * dayWidth;
+
+                  return (
+                    <div key={task.id} className="relative h-8 group">
+                      <div
+                        className="absolute top-1 bottom-1 rounded-full bg-blue-500 shadow-lg shadow-blue-500/20 transition-all group-hover:scale-[1.02] flex items-center px-3 overflow-hidden"
+                        style={{
+                          left,
+                          width,
+                        }}
+                      >
+                        {task.progress > 0 && (
+                          <div 
+                            className="absolute inset-0 bg-white/20"
+                            style={{ width: `${task.progress}%` }}
+                          />
+                        )}
+                        <span
+                          className="relative z-10 truncate text-[10px] font-black uppercase text-white whitespace-nowrap"
+                        >
+                          {task.title}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

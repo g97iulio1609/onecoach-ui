@@ -23,7 +23,7 @@ export interface AppShellHeaderProps {
 export function AppShellHeader({ brandHref, brandLabel }: AppShellHeaderProps) {
   const { toggleMobileMenu } = useUIStore();
   const { user, updateUser } = useAuthStore();
-  const { actions: headerActions } = useHeaderActions();
+  const { actions: headerActions, leftContent } = useHeaderActions();
   const pathname = usePathname();
 
   const toggleCopilotEnabled = async () => {
@@ -58,13 +58,14 @@ export function AppShellHeader({ brandHref, brandLabel }: AppShellHeaderProps) {
   };
 
   const isOneAgenda = pathname?.startsWith('/oneagenda');
-  const safeBrandHref = brandHref ?? (isOneAgenda ? '/oneagenda' : '/dashboard');
-  const safeBrandLabel = brandLabel ?? (isOneAgenda ? 'OneAgenda' : 'OneCoach');
+  const isProject = pathname?.startsWith('/projects/');
+  const safeBrandHref = brandHref ?? (isOneAgenda ? '/oneagenda' : isProject ? '/projects' : '/dashboard');
+  const safeBrandLabel = brandLabel ?? (isOneAgenda ? 'OneAgenda' : isProject ? 'Progetto' : 'OneCoach');
 
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 w-full border-b',
+        'sticky top-0 z-40 w-full overflow-hidden border-b',
         'border-slate-200 bg-white/90 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/90',
         'shadow-sm shadow-neutral-900/5 dark:shadow-neutral-900/20',
         'transition-all duration-200'
@@ -72,7 +73,7 @@ export function AppShellHeader({ brandHref, brandLabel }: AppShellHeaderProps) {
     >
       <div className="flex flex-wrap items-center gap-3 px-3 py-2 sm:px-6 sm:py-3 lg:h-16 lg:flex-nowrap lg:gap-4 lg:px-8 lg:py-0">
         {/* Sezione sinistra: menu mobile e brand */}
-        <div className="flex min-w-0 flex-1 items-center gap-3 lg:gap-4">
+        <div className="flex min-w-0 flex-1 items-center gap-2 lg:gap-4">
           <button
             onClick={toggleMobileMenu}
             className="rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 lg:hidden dark:text-neutral-400 dark:hover:bg-neutral-800"
@@ -82,14 +83,20 @@ export function AppShellHeader({ brandHref, brandLabel }: AppShellHeaderProps) {
           </button>
 
           <div className="flex min-w-0 items-center gap-3">
-            <Link href={safeBrandHref} className="group flex min-w-0 items-center gap-2 lg:hidden">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20">
-                {isOneAgenda ? <Calendar className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
+            {leftContent ? (
+              <div className="flex min-w-0 items-center gap-2">
+                {leftContent}
               </div>
-              <span className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
-                {safeBrandLabel}
-              </span>
-            </Link>
+            ) : (
+              <Link href={safeBrandHref} className="group flex min-w-0 items-center gap-2 lg:hidden">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/20">
+                  {isOneAgenda ? <Calendar className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
+                </div>
+                <span className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
+                  {safeBrandLabel}
+                </span>
+              </Link>
+            )}
           </div>
         </div>
 

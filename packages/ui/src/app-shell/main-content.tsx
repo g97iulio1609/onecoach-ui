@@ -44,7 +44,7 @@ export function AppShellMainContent({ children, className }: AppShellMainContent
   return (
     <main
       className={cn(
-        'overflow-x-hidden',
+        'overflow-x-auto',
         // Smooth transition only when NOT resizing
         !isResizing && 'transition-all duration-300',
         'min-h-screen',
