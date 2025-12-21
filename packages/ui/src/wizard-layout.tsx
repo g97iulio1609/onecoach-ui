@@ -1,5 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { cn } from '@onecoach/lib-design-system';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card } from './card';
 import { Button } from './button';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react-native';
@@ -20,7 +19,7 @@ interface WizardLayoutProps {
   isCompleting?: boolean;
   title?: string;
   subtitle?: string;
-  className?: string;
+  style?: any;
 }
 
 export function WizardLayout({
@@ -31,7 +30,7 @@ export function WizardLayout({
   isCompleting = false,
   title,
   subtitle,
-  className,
+  style,
 }: WizardLayoutProps) {
   const currentStep = steps[currentStepIndex];
   const isFirstStep = currentStepIndex === 0;
@@ -54,37 +53,37 @@ export function WizardLayout({
   };
 
   return (
-    <View className={cn('flex-1', className)}>
+    <View style={[styles.container, style]}>
       {/* Header */}
-      <View className="mb-6">
+      <View style={styles.header}>
         {title && (
-          <Text className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{title}</Text>
+          <Text style={styles.headerTitle}>{title}</Text>
         )}
         {subtitle && (
-          <Text className="mt-1 text-base text-neutral-500 dark:text-neutral-400">{subtitle}</Text>
+          <Text style={styles.headerSubtitle}>{subtitle}</Text>
         )}
 
         {/* Progress Bar */}
-        <View className="mt-6">
-          <View className="flex-row justify-between px-1">
+        <View style={styles.progressArea}>
+          <View style={styles.progressContainer}>
             {steps.map((step, index) => {
               const isActive = index === currentStepIndex;
               const isCompleted = index < currentStepIndex;
 
               return (
-                <View key={step.id} className="flex-1 items-center">
+                <View key={step.id} style={styles.progressStep}>
                   <View
-                    className={cn(
-                      'h-1 w-full rounded-full transition-all duration-300',
+                    style={[
+                      styles.progressBar,
                       isCompleted
-                        ? 'bg-blue-600 dark:bg-blue-500'
+                        ? styles.progressBarCompleted
                         : isActive
-                          ? 'bg-blue-200 dark:bg-blue-900'
-                          : 'bg-neutral-200 dark:bg-neutral-800'
-                    )}
+                          ? styles.progressBarActive
+                          : styles.progressBarInactive
+                    ]}
                   />
                   {isActive && (
-                    <Text className="absolute top-3 text-xs font-bold text-blue-600 dark:text-blue-400">
+                    <Text style={styles.stepLabel}>
                       Step {index + 1}
                     </Text>
                   )}
@@ -97,41 +96,39 @@ export function WizardLayout({
 
       {/* Content */}
       <ScrollView
-        className="flex-1"
+        style={styles.content}
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="mb-6">
-          <Text className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+        <View style={styles.contentHeader}>
+          <Text style={styles.currentStepTitle}>
             {currentStep.title}
           </Text>
           {currentStep.description && (
-            <Text className="mt-1 text-base text-neutral-500 dark:text-neutral-400">
+            <Text style={styles.currentStepDescription}>
               {currentStep.description}
             </Text>
           )}
         </View>
 
-        <View className="min-h-[300px]">{currentStep.component}</View>
+        <View style={styles.componentContainer}>{currentStep.component}</View>
       </ScrollView>
 
       {/* Footer Actions */}
-      <Card variant="glass"
-        intensity="heavy"
-        className="absolute right-0 bottom-0 left-0 flex-row items-center justify-between rounded-t-3xl rounded-b-none border-t border-neutral-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:border-neutral-800"
+      <Card
+        variant="glass"
+        style={styles.footer}
       >
         <TouchableOpacity
           onPress={handleBack}
           disabled={isFirstStep}
-          className={cn(
-            'flex-row items-center gap-2 rounded-xl px-4 py-3 transition-all',
-            isFirstStep
-              ? 'opacity-0'
-              : 'bg-neutral-100 active:bg-neutral-200 dark:bg-neutral-800 dark:active:bg-neutral-700'
-          )}
+          style={[
+            styles.backButton,
+            isFirstStep && { opacity: 0 }
+          ]}
         >
           <ChevronLeft size={20} color={isFirstStep ? '#cbd5e1' : '#475569'} />
-          <Text className="font-semibold text-neutral-600 dark:text-neutral-300">Indietro</Text>
+          <Text style={styles.backButtonText}>Indietro</Text>
         </TouchableOpacity>
 
         <Button
@@ -139,10 +136,10 @@ export function WizardLayout({
           onPress={handleNext}
           disabled={!currentStep.isValid || isCompleting}
           loading={isCompleting}
-          className="min-w-[140px]"
+          style={styles.nextButton}
         >
-          <View className="flex-row items-center gap-2">
-            <Text className="font-bold text-white">{isLastStep ? 'Genera' : 'Avanti'}</Text>
+          <View style={styles.nextButtonContent}>
+            <Text style={styles.nextButtonText}>{isLastStep ? 'Genera' : 'Avanti'}</Text>
             {!isLastStep && <ChevronRight size={20} color="white" />}
             {isLastStep && <Check size={20} color="white" />}
           </View>
@@ -151,3 +148,122 @@ export function WizardLayout({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    marginBottom: 24,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#0f172a', // text-neutral-900
+  },
+  headerSubtitle: {
+    marginTop: 4,
+    fontSize: 16,
+    color: '#64748b', // text-neutral-500
+  },
+  progressArea: {
+    marginTop: 24,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 4,
+  },
+  progressStep: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  progressBar: {
+    height: 4,
+    width: '100%',
+    borderRadius: 2,
+  },
+  progressBarCompleted: {
+    backgroundColor: '#2563eb', // bg-blue-600
+  },
+  progressBarActive: {
+    backgroundColor: '#bfdbfe', // bg-blue-200
+  },
+  progressBarInactive: {
+    backgroundColor: '#e2e8f0', // bg-neutral-200
+  },
+  stepLabel: {
+    position: 'absolute',
+    top: 12,
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#2563eb', // text-blue-600
+  },
+  content: {
+    flex: 1,
+  },
+  contentHeader: {
+    marginBottom: 24,
+  },
+  currentStepTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0f172a', // text-neutral-900
+  },
+  currentStepDescription: {
+    marginTop: 4,
+    fontSize: 16,
+    color: '#64748b', // text-neutral-500
+  },
+  componentContainer: {
+    minHeight: 300,
+  },
+  footer: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopWidth: 1,
+    borderColor: '#e2e8f0', // border-neutral-200
+    padding: 16,
+    // Shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 20,
+    // Elevation for Android
+    elevation: 5,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#f1f5f9', // bg-neutral-100
+  },
+  backButtonText: {
+    fontWeight: '600',
+    color: '#475569', // text-neutral-600
+  },
+  nextButton: {
+    minWidth: 140,
+  },
+  nextButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  nextButtonText: {
+    fontWeight: '700',
+    color: 'white',
+  },
+});

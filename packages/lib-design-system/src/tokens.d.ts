@@ -372,3 +372,4 @@ export type ColorScale = keyof typeof designTokens.colors.primary;
 export type SemanticColor = keyof typeof designTokens.colors.semantic;
 export type GlassBlur = keyof typeof designTokens.glass.blur;
 export type ChatMessageType = keyof typeof designTokens.chat.message;
+//# sourceMappingURL=tokens.d.ts.map

@@ -389,21 +389,37 @@ export function createGenerationHook<TInput, TOutput>(
               const event = parseEventLine<TOutput>(line);
               if (!event) continue;
 
-              setState((prev) => ({
-                ...prev,
-                streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
-              }));
+
 
               switch (event.type) {
-                case 'agent_start':
-                  setState((prev) => ({
-                    ...prev,
-                    currentMessage: `Starting ${event.data.description || event.data.role}...`,
-                  }));
+
+                case 'agent_start': {
+                  const role = event.data.role;
+                  setState((prev) => {
+                    const exists = prev.streamEvents.some(
+                      (e) => e.type === 'agent_start' && (e.data as any)?.role === role
+                    );
+                    
+                    // If exists, just update the message, don't add to log
+                    if (exists) {
+                      return {
+                        ...prev,
+                        currentMessage: `Starting ${event.data.description || role}...`,
+                      };
+                    }
+
+                    return {
+                      ...prev,
+                      currentMessage: `Starting ${event.data.description || role}...`,
+                      streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
+                    };
+                  });
                   break;
+                }
                 case 'agent_progress':
                   setState((prev) => ({
                     ...prev,
+                    streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
                     progress: event.data.progress ?? prev.progress,
                     currentMessage: event.data.message ?? prev.currentMessage,
                   }));
@@ -414,16 +430,23 @@ export function createGenerationHook<TInput, TOutput>(
                 case 'agent_complete':
                   setState((prev) => ({
                     ...prev,
+                    streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
                     currentMessage: `${event.data.role} completed (${event.data.duration ?? 0}ms)`,
                   }));
                   break;
                 case 'delegation':
                   setState((prev) => ({
                     ...prev,
+                    streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
                     currentMessage: `Delegating to ${event.data.to}: ${event.data.task}`,
                   }));
                   break;
                 case 'agent_error':
+                  setState((prev) => ({
+                      ...prev,
+                      streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
+                  }));
+
                   if (!event.data.retrying) {
                     const agentErrorMessage =
                       (event.data.error &&
@@ -441,6 +464,10 @@ export function createGenerationHook<TInput, TOutput>(
                   }));
                   break;
                 case 'validation':
+                  setState((prev) => ({
+                      ...prev,
+                      streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
+                  }));
                   if (!event.data.isValid) {
                     console.warn('Validation issues:', event.data.issues);
                   }
@@ -448,6 +475,7 @@ export function createGenerationHook<TInput, TOutput>(
                 case 'agent_log':
                   setState((prev) => ({
                     ...prev,
+                    streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
                     logs: [
                       ...prev.logs,
                       {
@@ -463,6 +491,7 @@ export function createGenerationHook<TInput, TOutput>(
                   finalResult = event.data.output;
                   setState((prev) => ({
                     ...prev,
+                    streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
                     isGenerating: false,
                     isStreaming: false,
                     result: event.data.output,
@@ -474,6 +503,10 @@ export function createGenerationHook<TInput, TOutput>(
                   }
                   break;
                 default:
+                  setState((prev) => ({
+                      ...prev,
+                      streamEvents: [...prev.streamEvents, createStreamEvent(event, getMessage)],
+                  }));
                   break;
               }
             }

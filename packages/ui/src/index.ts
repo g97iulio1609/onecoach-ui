@@ -54,3 +54,4 @@ export * from './welcome-header';
 export * from './wizard';
 export * from './wizard-layout';
 export * from './wizard-slider';
+export * from './components';
