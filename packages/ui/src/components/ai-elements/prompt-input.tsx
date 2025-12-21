@@ -409,7 +409,7 @@ PromptInputAIMode.displayName = 'PromptInputAIMode';
 // PromptInput Attachments + Actions (context-based)
 // ============================================================================
 
-type PromptAttachment = {
+export type PromptAttachment = {
   id: string;
   filename: string;
   url: string;

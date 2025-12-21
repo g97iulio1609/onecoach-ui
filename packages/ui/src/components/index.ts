@@ -22,3 +22,9 @@ export * from './unified-list-item';
 export * from './model-selector-modal';
 export * from './model-selector';
 export * from './project-gantt';
+
+// AI Elements components
+export * from './ai-elements';
+
+// Chat components
+export * from './chat/chat-history-modal';
