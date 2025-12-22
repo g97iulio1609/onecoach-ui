@@ -86,29 +86,17 @@ export interface WizardContainerProps {
 
 export const WizardContainer = ({ children, header, footer, className }: WizardContainerProps) => {
   return (
-    <div className={cn(
-      "flex-1 flex flex-col relative transition-all duration-700 min-h-0 overflow-hidden",
-      "rounded-[3rem] border border-white/60 bg-white/40 backdrop-blur-3xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.15)]",
-      "dark:border-white/10 dark:bg-white/5 dark:shadow-[0_60px_150px_rgba(0,0,0,0.4)]",
-      "ring-1 ring-inset ring-white/30 dark:ring-white/5",
-      className
-    )}>
-      {/* Ambient background glows - Refined & Minimalist */}
-      <div className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-blue-500/5 dark:bg-blue-600/5 rounded-full blur-[120px] -z-10 animate-blob" />
-      
-      {/* Mesh Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none -z-10" />
-
+    <div className={cn("flex-1 flex flex-col min-h-0 overflow-hidden", className)}>
       {header && (
-        <div className="border-b border-white/20 dark:border-white/5 px-4 sm:px-6 py-4 sm:py-6 bg-white/20 dark:bg-white/5">
+        <div className="flex-shrink-0 px-2 sm:px-4 py-3 sm:py-4">
           {header}
         </div>
       )}
-      <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-8 lg:px-10 py-5 sm:py-6">
+      <div className="flex-1 overflow-y-auto overscroll-contain px-2 sm:px-4">
         {children}
       </div>
       {footer && (
-        <div className="flex items-center justify-between border-t border-white/20 dark:border-white/5 bg-white/30 dark:bg-black/20 backdrop-blur-xl p-4 sm:px-8 lg:px-10">
+        <div className="flex-shrink-0 flex items-center justify-between p-3 sm:p-4">
           {footer}
         </div>
       )}

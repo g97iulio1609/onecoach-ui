@@ -90,55 +90,55 @@ export function SelectionCard({
               description ? 'items-start' : 'items-center'
             )}
           >
-            <div className="flex-1 overflow-hidden">
+            <div className={cn("flex-1 overflow-hidden", compact && "flex items-center gap-3")}>
               {icon && (
                 <div
                   className={cn(
-                    'transition-all self-start inline-flex items-center justify-center',
-                    compact ? 'mb-1 p-1 rounded-md' : 'mb-2.5 p-2 rounded-xl',
+                    'transition-all shrink-0 inline-flex items-center justify-center',
+                    compact ? 'p-1 rounded-md' : 'self-start mb-2.5 p-2 rounded-xl',
                     selected
                       ? 'bg-blue-500 text-white shadow-md shadow-blue-500/25'
                       : 'bg-neutral-100/80 text-neutral-500 dark:bg-neutral-800/80 dark:text-neutral-400'
                   )}
                 >
                   {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement<any>, { 
-                    className: cn((icon as React.ReactElement<any>).props.className, compact ? 'h-3.5 w-3.5' : 'h-4 w-4') 
+                    className: cn((icon as React.ReactElement<any>).props.className, compact ? 'h-4 w-4' : 'h-4 w-4') 
                   }) : icon}
                 </div>
               )}
 
-              <div className="flex flex-row items-center gap-1.5">
-                <span
-                  className={cn(
-                    'font-semibold transition-colors truncate leading-tight',
-                    compact ? 'text-[11px] sm:text-xs' : 'text-sm sm:text-base',
-                    selected
-                      ? 'text-blue-700 dark:text-blue-100'
-                      : 'text-neutral-800 dark:text-neutral-100'
-                  )}
-                >
-                  {title}
-                </span>
-                {badge && (
-                  <span className="shrink-0 rounded-full bg-blue-100/80 px-1.5 py-0.5 text-[7px] font-bold text-blue-700 uppercase dark:bg-blue-900/50 dark:text-blue-200">
-                    {badge}
+              <div className={cn("flex flex-col min-w-0", compact && "flex-1")}>
+                <div className="flex flex-row items-center gap-1.5">
+                  <span
+                    className={cn(
+                      'font-semibold transition-colors truncate leading-tight',
+                      compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-base',
+                      selected
+                        ? 'text-blue-700 dark:text-blue-100'
+                        : 'text-neutral-800 dark:text-neutral-100'
+                    )}
+                  >
+                    {title}
                   </span>
+                  {badge && (
+                    <span className="shrink-0 rounded-full bg-blue-100/80 px-1.5 py-0.5 text-[7px] font-bold text-blue-700 uppercase dark:bg-blue-900/50 dark:text-blue-200">
+                      {badge}
+                    </span>
+                  )}
+                </div>
+
+                {description && (
+                  <p
+                    className={cn(
+                      'leading-snug line-clamp-2',
+                      compact ? 'text-[10px] sm:text-[11px] text-neutral-500 dark:text-neutral-400' : 'mt-1 text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400',
+                      selected && 'text-blue-600/80 dark:text-blue-200/70'
+                    )}
+                  >
+                    {description}
+                  </p>
                 )}
               </div>
-
-              {description && (
-                <p
-                  className={cn(
-                    'leading-snug line-clamp-2',
-                    compact ? 'mt-0.5 text-[10px] sm:text-[10px]' : 'mt-1 text-[11px] sm:text-xs',
-                    selected
-                      ? 'text-blue-600/80 dark:text-blue-200/70'
-                      : 'text-neutral-500 dark:text-neutral-400'
-                  )}
-                >
-                  {description}
-                </p>
-              )}
             </div>
 
             <div
