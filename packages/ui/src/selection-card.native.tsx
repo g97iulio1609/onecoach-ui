@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Platform } from 'react-native';
 import type { TouchableOpacityProps, ImageSourcePropType } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
 import { Card } from './card';
@@ -11,6 +11,7 @@ export interface SelectionCardProps extends TouchableOpacityProps {
   image?: ImageSourcePropType;
   className?: string;
   badge?: string;
+  compact?: boolean;
 }
 
 export function SelectionCard({
@@ -21,8 +22,13 @@ export function SelectionCard({
   image,
   className,
   badge,
+  compact,
   ...props
 }: SelectionCardProps) {
+  // Fix for "shadow* style props are deprecated" warning on Web
+  const isWeb = Platform.OS === 'web';
+  const webShadowStyle = isWeb && selected ? { boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' } : undefined;
+
   return (
     <TouchableOpacity activeOpacity={0.7} {...props}>
       <Card
@@ -30,76 +36,95 @@ export function SelectionCard({
         glassIntensity={selected ? 'heavy' : 'light'}
         className={cn(
           'relative overflow-hidden transition-all duration-300',
-          selected ? 'scale-[1.02] shadow-md border-primary-500/50' : 'hover:bg-white/50 dark:hover:bg-neutral-800/50',
+          compact && 'rounded-xl',
+          selected 
+            ? cn(
+                'scale-[1.02] border-primary-500/50',
+                !isWeb && 'shadow-md', // Only use Native shadow classes on Native
+                compact && 'shadow-none' // Disable large shadow if compact (web handles it via style or lighter class)
+              ) 
+            : 'hover:bg-white/50 dark:hover:bg-neutral-800/50',
           className
         )}
+        style={webShadowStyle}
       >
         {image && (
-          <View className="h-32 w-full overflow-hidden">
+          <View className={cn("w-full overflow-hidden", compact ? "h-16" : "h-32")}>
             <Image source={image} className="h-full w-full object-cover opacity-90" />
             <View className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent dark:from-neutral-900/90" />
           </View>
         )}
 
-        <View className="p-5">
-          <View className="flex-row items-start justify-between gap-3">
+        <View className={cn(compact ? "p-3" : "p-5")}>
+          <View className={cn("flex-row justify-between gap-3", compact ? "items-center" : "items-start")}>
             <View className="flex-1">
-              {icon && (
-                <View
-                  className={cn(
-                    'mb-3 self-start rounded-xl p-2.5 transition-colors',
-                    selected
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
-                  )}
-                >
-                  {icon}
-                </View>
-              )}
-
-              <View className="flex-row items-center gap-2">
-                <Text
-                  className={cn(
-                    'text-lg font-bold',
-                    selected
-                      ? 'text-blue-700 dark:text-blue-200'
-                      : 'text-neutral-900 dark:text-white'
-                  )}
-                >
-                  {title}
-                </Text>
-                {badge && (
-                  <View className="rounded-full bg-blue-100 px-2 py-0.5 dark:bg-blue-900/40">
-                    <Text className="text-[10px] font-bold text-blue-700 uppercase dark:text-blue-200">
-                      {badge}
-                    </Text>
+              <View className={cn("flex-row items-center gap-2", compact && "flex-1")}>
+                 {icon && (
+                  <View
+                    className={cn(
+                      'transition-colors justify-center items-center',
+                      compact ? 'mr-2 rounded-lg p-1.5' : 'mb-3 self-start rounded-xl p-2.5',
+                      selected
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
+                    )}
+                  >
+                    {/* Render icon children if possible, adjusting size if needed for compact */}
+                    {icon}
                   </View>
                 )}
-              </View>
+                
+                <View className="flex-1">
+                  <View className="flex-row items-center gap-2">
+                    <Text
+                      numberOfLines={1}
+                      className={cn(
+                        'font-bold',
+                        compact ? 'text-sm' : 'text-lg',
+                        selected
+                          ? 'text-blue-700 dark:text-blue-200'
+                          : 'text-neutral-900 dark:text-white'
+                      )}
+                    >
+                      {title}
+                    </Text>
+                    {badge && (
+                      <View className="rounded-full bg-blue-100 px-2 py-0.5 dark:bg-blue-900/40">
+                        <Text className="text-[10px] font-bold text-blue-700 uppercase dark:text-blue-200">
+                          {badge}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
 
-              {description && (
-                <Text
-                  className={cn(
-                    'mt-1.5 text-sm leading-relaxed',
-                    selected
-                      ? 'text-blue-600/90 dark:text-blue-200/90'
-                      : 'text-neutral-500 dark:text-neutral-300'
+                  {description && (
+                    <Text
+                      numberOfLines={compact ? 1 : undefined}
+                      className={cn(
+                        'leading-relaxed',
+                        compact ? 'text-xs mt-0.5' : 'text-sm mt-1.5',
+                        selected
+                          ? 'text-blue-600/90 dark:text-blue-200/90'
+                          : 'text-neutral-500 dark:text-neutral-300'
+                      )}
+                    >
+                      {description}
+                    </Text>
                   )}
-                >
-                  {description}
-                </Text>
-              )}
+                </View>
+              </View>
             </View>
 
             <View
               className={cn(
-                'h-6 w-6 items-center justify-center rounded-full border transition-all',
+                'items-center justify-center rounded-full border transition-all',
+                compact ? 'h-4 w-4' : 'h-6 w-6',
                 selected
                   ? 'border-blue-500 bg-blue-500'
                   : 'border-neutral-300 bg-transparent dark:border-neutral-600'
               )}
             >
-              {selected && <View className="h-2.5 w-2.5 rounded-full bg-white" />}
+              {selected && <View className={cn("rounded-full bg-white", compact ? "h-1.5 w-1.5" : "h-2.5 w-2.5")} />}
             </View>
           </View>
         </View>

@@ -44,10 +44,10 @@ export function AppShellMainContent({ children, className }: AppShellMainContent
   return (
     <main
       className={cn(
-        'overflow-x-auto',
+        'flex flex-col overflow-x-hidden', // Changed overflow-x-auto to hidden to prevent scrollbars
         // Smooth transition only when NOT resizing
         !isResizing && 'transition-all duration-300',
-        'min-h-screen',
+        'min-h-[100dvh]', // Use dvh for mobile
         className
       )}
       style={{

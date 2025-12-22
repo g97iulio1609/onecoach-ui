@@ -1,7 +1,9 @@
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
-import { cn } from '@onecoach/lib-design-system';
-import { Card } from './card';
+'use client';
 
+import { useState } from 'react';
+import { cn } from '@onecoach/lib-design-system';
+import { CheckCircle2, Loader2, ChevronDown, ChevronRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Card } from './card';
 
 export interface StreamEvent {
   type: string;
@@ -15,7 +17,75 @@ export interface StreamingResultProps {
   progress: number;
   currentMessage: string;
   events: StreamEvent[];
-  className?: string;
+  title?: string;
+  className?: string; // Standard string for web
+}
+
+function getEventIcon(type: string, message: string) {
+  const lowerMessage = message.toLowerCase();
+  const lowerType = type.toLowerCase();
+
+  if (lowerMessage.includes('completato') || lowerType === 'complete' || lowerType === 'success') {
+    return <CheckCircle2 className="h-4 w-4 text-emerald-500" />;
+  }
+  if (lowerMessage.includes('starting') || lowerType === 'start' || lowerType === 'progress') {
+    return <Loader2 className="h-4 w-4 animate-spin text-blue-500" />;
+  }
+  if (lowerType === 'error' || lowerType === 'warning') {
+    return <AlertCircle className="h-4 w-4 text-amber-500" />;
+  }
+  return <Sparkles className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />;
+}
+
+function EventCard({ event }: { event: StreamEvent }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const hasData = event.data && Object.keys(event.data).length > 0;
+
+  return (
+    <button
+      onClick={() => hasData && setIsExpanded((prev) => !prev)}
+      className={cn(
+        'w-full text-left rounded-xl border border-neutral-200/60 bg-white/50 dark:border-neutral-700/60 dark:bg-neutral-800/50',
+        'px-3 py-2.5 transition-colors',
+        hasData && 'hover:bg-neutral-50 active:bg-neutral-100 dark:hover:bg-neutral-700/30 dark:active:bg-neutral-700/50',
+        !hasData && 'cursor-default'
+      )}
+      type="button"
+    >
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 flex-shrink-0">{getEventIcon(event.type, event.message)}</div>
+        <div className="flex-1 min-w-0">
+          <div
+            className={cn(
+              "text-sm font-medium text-neutral-800 dark:text-neutral-100 line-clamp-2",
+              isExpanded && "line-clamp-none"
+            )}
+          >
+            {event.message}
+          </div>
+          <div className="mt-0.5 text-xs text-neutral-400 dark:text-neutral-500">
+            {event.timestamp.toLocaleTimeString()}
+          </div>
+        </div>
+        {hasData && (
+          <div className="mt-0.5 flex-shrink-0">
+            {isExpanded ? (
+              <ChevronDown className="h-4 w-4 text-neutral-400" />
+            ) : (
+              <ChevronRight className="h-4 w-4 text-neutral-400" />
+            )}
+          </div>
+        )}
+      </div>
+      {isExpanded && hasData && (
+        <div className="mt-3 rounded-lg bg-neutral-950 p-3 overflow-x-auto">
+          <pre className="font-mono text-xs text-emerald-300">
+            {JSON.stringify(event.data, null, 2)}
+          </pre>
+        </div>
+      )}
+    </button>
+  );
 }
 
 export function StreamingResult({
@@ -23,72 +93,64 @@ export function StreamingResult({
   progress,
   currentMessage,
   events,
+  title,
   className,
 }: StreamingResultProps) {
   if (!isStreaming && events.length === 0) return null;
 
   return (
-    <View className={cn('space-y-4', className)}>
+    <div className={cn('space-y-4 px-4 md:px-0', className)}>
       {/* Progress Card */}
-      <Card variant="glass" className="p-4">
-        <View className="mb-2 flex-row items-center justify-between">
-          <View className="flex-row items-center gap-2">
-            {isStreaming && <ActivityIndicator size="small" color="#10B981" />}
-            <Text className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+      <Card variant="glass" className="overflow-hidden p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            {isStreaming && <Loader2 className="h-4 w-4 animate-spin text-emerald-500" />}
+            <span
+              className="text-sm font-medium text-neutral-700 dark:text-neutral-300 flex-1 truncate"
+            >
               {currentMessage || 'Inizializzazione...'}
-            </Text>
-          </View>
-          <Text className="text-sm font-bold text-green-600 dark:text-green-400">
+            </span>
+          </div>
+          <span className="ml-3 text-sm font-bold text-emerald-600 dark:text-emerald-400">
             {Math.round(progress)}%
-          </Text>
-        </View>
-        <View className="h-2 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
-          <View
-            className="h-full rounded-full bg-green-500 transition-all duration-300"
+          </span>
+        </div>
+        {/* Gradient Progress Bar */}
+        <div className="h-2.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-blue-500 via-emerald-500 to-emerald-400 transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           />
-        </View>
+        </div>
       </Card>
 
       {/* Events Log */}
-      <Card variant="glass" className="max-h-60 overflow-hidden p-0">
-        <View className="border-b border-neutral-100 bg-neutral-50/50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-800/30">
-          <Text className="font-semibold text-neutral-900 dark:text-neutral-100">
-            Log Generazione
-          </Text>
-        </View>
-        <ScrollView className="p-4" nestedScrollEnabled>
+      <Card variant="glass" className="max-h-80 overflow-hidden p-0 flex flex-col">
+        <div className="border-b border-neutral-100 bg-neutral-50/80 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-800/50 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-blue-500" />
+            <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+              {title || 'AI Agent Orchestrator'}
+            </span>
+          </div>
+        </div>
+        <div
+          className="p-3 overflow-y-auto space-y-2 custom-scrollbar"
+        >
           {events.length === 0 ? (
-            <Text className="text-sm text-neutral-500 dark:text-neutral-400">
-              In attesa di aggiornamenti...
-            </Text>
+            <div className="flex flex-col items-center justify-center py-6">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+              <span className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+                In attesa di aggiornamenti...
+              </span>
+            </div>
           ) : (
-            <View className="space-y-3">
-              {events.map((event, index) => (
-                <View key={index} className="flex-row gap-3">
-                  <View
-                    className={cn(
-                      'mt-1.5 h-2 w-2 rounded-full',
-                      event.type === 'info' && 'bg-blue-400',
-                      event.type === 'success' && 'bg-green-400',
-                      event.type === 'warning' && 'bg-yellow-400',
-                      event.type === 'error' && 'bg-red-400'
-                    )}
-                  />
-                  <View className="flex-1">
-                    <Text className="text-sm text-neutral-700 dark:text-neutral-300">
-                      {event.message}
-                    </Text>
-                    <Text className="text-xs text-neutral-400 dark:text-neutral-500">
-                      {event.timestamp.toLocaleTimeString()}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
+            events.map((event, index) => (
+              <EventCard key={`${event.type}-${index}`} event={event} />
+            ))
           )}
-        </ScrollView>
+        </div>
       </Card>
-    </View>
+    </div>
   );
 }

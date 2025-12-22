@@ -16,7 +16,7 @@ export interface WizardStepperProps {
 
 export const WizardStepper = ({ steps, currentStep, onStepClick, className }: WizardStepperProps) => {
   return (
-    <nav aria-label="Progress" className={cn("w-full px-2", className)}>
+    <nav aria-label="Progress" className={cn("w-full px-6 py-4", className)}>
       <ol role="list" className="flex items-center justify-between gap-2 max-w-4xl mx-auto">
         {steps.map((step, index) => {
           const isActive = index === currentStep;
@@ -88,18 +88,18 @@ export const WizardContainer = ({ children, header, footer, className }: WizardC
   return (
     <div className={cn("flex-1 flex flex-col min-h-0 overflow-hidden", className)}>
       {header && (
-        <div className="flex-shrink-0 px-2 sm:px-4 py-3 sm:py-4">
+        <div className="flex-shrink-0 px-6 py-4 sm:px-8 sm:py-6">
           {header}
         </div>
       )}
-      <div className="flex-1 overflow-y-auto px-2 sm:px-4">
+      <div className="flex-1 overflow-y-auto px-6 sm:px-8">
         {children}
+        {footer && (
+          <div className="mt-8 flex flex-shrink-0 items-center justify-between py-4 pb-safe">
+            {footer}
+          </div>
+        )}
       </div>
-      {footer && (
-        <div className="flex-shrink-0 flex items-center justify-between p-3 sm:p-4">
-          {footer}
-        </div>
-      )}
     </div>
   );
 };

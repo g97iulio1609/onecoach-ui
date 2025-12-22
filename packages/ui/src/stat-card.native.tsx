@@ -1,15 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Card } from './card';
-// @ts-ignore
+import { View, Text, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Card } from './card.native'; // Explicitly use native version to avoid type pollution
 import { LinearGradient } from 'expo-linear-gradient';
-import { cn } from '@onecoach/lib-design-system';
-import { cssInterop } from 'nativewind';
 import type { LucideIcon } from 'lucide-react-native';
-
-cssInterop(LinearGradient, {
-  className: 'style',
-});
 
 interface StatCardProps {
   label: string;
@@ -22,7 +14,8 @@ interface StatCardProps {
     isPositive: boolean;
     label?: string;
   };
-  className?: string;
+  style?: StyleProp<ViewStyle>;
+  className?: string; // Kept for interface compatibility
 }
 
 export function StatCard({
@@ -32,7 +25,7 @@ export function StatCard({
   subtitle,
   color = 'blue',
   trend,
-  className,
+  style,
 }: StatCardProps) {
   const gradients = {
     green: ['#22c55e', '#16a34a'],
@@ -48,14 +41,14 @@ export function StatCard({
   ];
 
   return (
-    <Card variant="elevated" className={cn('p-4', className)} padding="md">
-      <View className="flex-row items-start justify-between">
+    <Card variant="elevated" style={[styles.card, style]} padding="md">
+      <View style={styles.header}>
         <View>
-          <Text className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+          <Text style={styles.label}>
             {label}
           </Text>
-          <View className="mt-2 flex-row items-baseline gap-2">
-            <Text className="text-3xl font-extrabold text-neutral-900 dark:text-white">
+          <View style={styles.valueContainer}>
+            <Text style={styles.value}>
               {value}
             </Text>
           </View>
@@ -65,7 +58,7 @@ export function StatCard({
             colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            className="flex h-12 w-12 items-center justify-center rounded-xl shadow-sm"
+            style={styles.iconContainer}
           >
             <Icon size={24} color="white" />
           </LinearGradient>
@@ -73,30 +66,26 @@ export function StatCard({
       </View>
 
       {(subtitle || trend) && (
-        <View className="mt-4 flex-row items-center gap-2">
+        <View style={styles.footer}>
           {trend && (
             <View
-              className={cn(
-                'flex-row items-center gap-1 rounded-full px-2 py-0.5',
-                trend.isPositive
-                  ? 'bg-green-100 dark:bg-green-900/30'
-                  : 'bg-red-100 dark:bg-red-900/30'
-              )}
+              style={[
+                styles.trendBadge,
+                trend.isPositive ? styles.trendPositive : styles.trendNegative
+              ]}
             >
               <Text
-                className={cn(
-                  'text-xs font-medium',
-                  trend.isPositive
-                    ? 'text-green-700 dark:text-green-400'
-                    : 'text-red-700 dark:text-red-400'
-                )}
+                style={[
+                  styles.trendText,
+                  trend.isPositive ? styles.trendTextPositive : styles.trendTextNegative
+                ]}
               >
                 {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
               </Text>
             </View>
           )}
           {subtitle && (
-            <Text className="text-xs font-medium text-neutral-400 dark:text-neutral-500">
+            <Text style={styles.subtitle}>
               {subtitle}
             </Text>
           )}
@@ -105,3 +94,73 @@ export function StatCard({
     </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 16,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#737373', // neutral-500
+  },
+  valueContainer: {
+    marginTop: 8,
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 8,
+  },
+  value: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#171717', // neutral-900 (need dark mode handling ideally, but sticking to basics for now)
+  },
+  iconContainer: {
+    height: 48,
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    // shadow-sm logic if needed
+  },
+  footer: {
+    marginTop: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  trendBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    borderRadius: 9999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  trendPositive: {
+    backgroundColor: '#dcfce7', // green-100
+  },
+  trendNegative: {
+    backgroundColor: '#fee2e2', // red-100
+  },
+  trendText: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  trendTextPositive: {
+    color: '#15803d', // green-700
+  },
+  trendTextNegative: {
+    color: '#b91c1c', // red-700
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#a3a3a3', // neutral-400
+  },
+});

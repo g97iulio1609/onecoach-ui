@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-// @ts-ignore
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   Pressable,
@@ -16,6 +15,7 @@ import {
   ActivityIndicator,
   type ViewStyle,
   type TextStyle,
+  type StyleProp,
 } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
 import {
@@ -93,7 +93,7 @@ export const Button = React.forwardRef<View, ButtonProps>(
               <Icon size={iconSize} color={textColor} style={styles.icon} />
             )}
             {children && (
-              <Text style={[styles.text, sizeStyles.text, { color: textColor }, textStyle] as any}>
+              <Text style={[styles.text, sizeStyles.text, { color: textColor }, textStyle] as StyleProp<TextStyle>}>
                 {children}
               </Text>
             )}
@@ -151,7 +151,7 @@ export const Button = React.forwardRef<View, ButtonProps>(
             style={[
               sizeStyles.container, // Apply padding here for gradient
               { flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }
-            ] as any}
+            ] as StyleProp<ViewStyle>}
           >
             {renderContent('#ffffff')}
           </LinearGradient>
