@@ -10,7 +10,7 @@ import React from 'react';
 import { cn } from '@onecoach/lib-design-system';
 import { Card } from './card';
 
-export interface SelectionCardProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface SelectionCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   description?: string;
   selected?: boolean;
@@ -20,6 +20,7 @@ export interface SelectionCardProps extends React.ButtonHTMLAttributes<HTMLButto
   badge?: string;
   contentClassName?: string;
   compact?: boolean;
+  disabled?: boolean;
   // Support onPress for compatibility with React Native API
   onPress?: () => void;
 }
@@ -34,26 +35,46 @@ export function SelectionCard({
   badge,
   contentClassName,
   compact,
+  disabled,
   onClick,
   onPress,
   ...props
 }: SelectionCardProps) {
   // Support both onClick (web) and onPress (for compatibility)
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    
     if (onClick) {
-      onClick(e);
+      onClick(e as React.MouseEvent<HTMLDivElement>);
     } else if (onPress) {
       onPress();
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick(e);
+    }
+  };
+
+  const role = props.role || 'button';
+  const ariaProps = (role === 'radio' || role === 'checkbox')
+    ? { 'aria-checked': selected }
+    : { 'aria-pressed': selected };
+
   return (
-    <button
-      type="button"
+    <div
+      role={role}
+      tabIndex={disabled ? -1 : 0}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      aria-disabled={disabled}
+      {...ariaProps}
       className={cn(
-        'w-full text-left transition-all duration-300',
+        'w-full text-left transition-all duration-300 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl',
         selected ? 'scale-[1.02]' : 'hover:scale-[1.01]',
+        disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}
       {...props}
@@ -155,6 +176,6 @@ export function SelectionCard({
           </div>
         </div>
       </Card>
-    </button>
+    </div>
   );
 }
