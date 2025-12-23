@@ -42,6 +42,7 @@ export function AutosaveIndicator({
       const timer = setTimeout(() => setShowSaved(false), 3000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [lastSaved, isSaving, error]);
 
   // Error state
