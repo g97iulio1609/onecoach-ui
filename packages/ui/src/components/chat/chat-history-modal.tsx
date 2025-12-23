@@ -49,6 +49,7 @@ export function ChatHistoryModal({
   const [isSaving, setIsSaving] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectionMode, setSelectionMode] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -63,7 +64,12 @@ export function ChatHistoryModal({
     );
   };
 
-  const clearSelection = () => setSelectedIds([]);
+  const clearSelection = () => {
+    setSelectedIds([]);
+    setSelectionMode(false);
+  };
+
+  const enableSelectionMode = () => setSelectionMode(true);
 
   // Filter and Group Conversations
   const groupedConversations = useMemo(() => {
@@ -82,11 +88,11 @@ export function ChatHistoryModal({
 
     filtered.forEach(c => {
       const date = new Date(c.updatedAt);
-      if (isToday(date)) groups['Oggi'].push(c);
-      else if (isYesterday(date)) groups['Ieri'].push(c);
-      else if (isThisWeek(date)) groups['Questa Settimana'].push(c);
-      else if (isThisMonth(date)) groups['Questo Mese'].push(c);
-      else groups['Più vecchi'].push(c);
+      if (isToday(date)) groups['Oggi']!.push(c);
+      else if (isYesterday(date)) groups['Ieri']!.push(c);
+      else if (isThisWeek(date)) groups['Questa Settimana']!.push(c);
+      else if (isThisMonth(date)) groups['Questo Mese']!.push(c);
+      else groups['Più vecchi']!.push(c);
     });
 
     // Remove empty groups
@@ -175,23 +181,35 @@ export function ChatHistoryModal({
                   <Button
                     size="sm"
                     variant="ghost"
-                    disabled={selectedIds.length === 0}
+                    disabled={selectedIds.length === 0 && selectionMode}
                     onClick={() => {
-                      onDeleteSelected?.(selectedIds);
-                      clearSelection();
+                      if (!selectionMode) {
+                        enableSelectionMode();
+                      } else if (selectedIds.length > 0) {
+                        onDeleteSelected?.(selectedIds);
+                        clearSelection();
+                      }
                     }}
-                    className="text-red-600 hover:text-red-700"
+                    className={cn(
+                      selectionMode && selectedIds.length > 0
+                        ? "text-red-600 hover:text-red-700"
+                        : "text-neutral-600 hover:text-neutral-700"
+                    )}
                   >
-                    Elimina selezionate
+                    <Trash2 className="h-4 w-4" />
+                    <span className="hidden sm:inline ml-1">
+                      {selectionMode ? 'Elimina selezionate' : 'Seleziona'}
+                    </span>
                   </Button>
                 )}
-                {selectedIds.length > 0 && (
+                {selectionMode && (
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={clearSelection}
                   >
-                    Svuota selezione
+                    <X className="h-4 w-4" />
+                    <span className="hidden sm:inline ml-1">Annulla</span>
                   </Button>
                 )}
                 {onNewChat && (
@@ -204,7 +222,8 @@ export function ChatHistoryModal({
                       onClose();
                     }}
                   >
-                    + Nuova chat
+                    <span className="text-lg leading-none">+</span>
+                    <span className="hidden sm:inline ml-1">Nuova chat</span>
                   </Button>
                 )}
               </div>
@@ -251,19 +270,24 @@ export function ChatHistoryModal({
                           : "bg-white/70 border-white/40 hover:border-neutral-200 hover:bg-white/90 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10"
                       )}
                     >
-                      <div className="mt-1">
-                        <input
-                          type="checkbox"
-                          className="h-4 w-4 accent-indigo-500"
-                          checked={selectedIds.includes(conv.id)}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            toggleSelect(conv.id);
-                          }}
-                        />
-                      </div>
+                      {/* Checkbox: only show in selection mode on mobile, always on desktop */}
+                      {(selectionMode || !isMobile) && (
+                        <div className="mt-1">
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4 accent-indigo-500"
+                            checked={selectedIds.includes(conv.id)}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              toggleSelect(conv.id);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {/* Icon: hide on mobile to save space */}
                       <div className={cn(
                         "mt-1 h-8 w-8 rounded-lg flex items-center justify-center shrink-0",
+                        "hidden sm:flex",
                         activeId === conv.id ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400" : "bg-neutral-100 text-neutral-500 dark:bg-white/10 dark:text-neutral-400"
                       )}>
                         <MessageSquare className="h-4 w-4" />
