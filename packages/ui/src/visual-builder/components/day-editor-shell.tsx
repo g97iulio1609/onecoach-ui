@@ -105,20 +105,20 @@ export function DayEditorShell({
   // Theme-based color classes
   const colorClasses = {
     primary: {
-      border: 'hover:border-primary-500/30',
-      icon: 'group-hover:bg-primary-900/20 group-hover:text-primary-400',
+      border: 'hover:border-blue-500/30',
+      icon: 'group-hover:bg-blue-900/20 group-hover:text-blue-400',
       shadow: 'shadow-blue-500/20',
       gradient: 'bg-gradient-to-r from-blue-950/40 via-neutral-900/60 to-indigo-950/40',
     },
     emerald: {
       border: 'hover:border-emerald-500/30',
-      icon: 'group-hover:bg-emerald-900/20 group-hover:text-emerald-400',
+      icon: 'group-hover:bg-emerald-500/20 group-hover:text-emerald-500 dark:group-hover:bg-emerald-900/20 dark:group-hover:text-emerald-400',
       shadow: 'shadow-emerald-500/20',
       gradient: 'bg-gradient-to-r from-emerald-950/40 via-neutral-900/60 to-teal-950/40',
     },
   };
 
-  const colors = colorClasses[themeColor];
+  const colors = colorClasses[themeColor] || colorClasses.primary;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -139,19 +139,19 @@ export function DayEditorShell({
 
   return (
     <div className={cn('flex flex-col gap-6', className)}>
-      {/* Header Container - Glassmorphism Premium */}
-      <div className="glass-strong rounded-2xl border border-white/10 p-3 shadow-lg shadow-black/5 sm:p-5">
+      {/* Header Container - Clean Card Style */}
+      <div className="rounded-2xl border border-neutral-200 bg-white/50 p-3 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/50 dark:shadow-black/20 sm:p-5">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <h2 className="text-xl font-bold text-white sm:text-2xl">{title}</h2>
-              <div className="flex items-center gap-2 text-xs font-medium text-neutral-400 sm:text-sm">
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-white sm:text-2xl">{title}</h2>
+              <div className="flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 sm:text-sm">
                 <span>
                   {itemCount} {itemLabel}
                 </span>
                 {additionalStats && (
                   <>
-                    <span className="text-neutral-600">•</span>
+                    <span className="text-neutral-300 dark:text-neutral-600">•</span>
                     <span>{additionalStats}</span>
                   </>
                 )}
@@ -159,7 +159,7 @@ export function DayEditorShell({
             </div>
             <div className="flex items-center gap-2">
               <Button
-                variant={themeColor === 'emerald' ? 'success' : 'gradient-primary'}
+                variant={themeColor === 'emerald' ? 'success' : 'primary'}
                 icon={<Plus size={16} className="text-white" />}
                 onPress={onAdd}
                 className="flex-1 sm:w-auto"
@@ -192,22 +192,23 @@ export function DayEditorShell({
             <button
               onClick={onAdd}
               className={cn(
-                'group flex w-full flex-col items-center justify-center rounded-3xl border border-dashed border-white/10 py-16 transition-all',
-                colors.border,
-                'hover:bg-white/[0.02]'
+                'group flex w-full flex-col items-center justify-center rounded-3xl border border-dashed py-16 transition-all',
+                'border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:hover:bg-white/[0.02]',
+                colors.border
               )}
               type="button"
             >
               <div
                 className={cn(
-                  'mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-900/50 text-neutral-600 transition-colors',
+                  'mb-4 flex h-16 w-16 items-center justify-center rounded-2xl transition-colors',
+                  'bg-neutral-100 text-neutral-400 dark:bg-neutral-900/50 dark:text-neutral-600',
                   colors.icon,
-                  'group-hover:shadow-glow-sm'
+                  'group-hover:shadow-sm'
                 )}
               >
                 {emptyIcon}
               </div>
-              <span className="font-semibold text-neutral-300">{emptyMessage}</span>
+              <span className="font-semibold text-neutral-700 dark:text-neutral-300">{emptyMessage}</span>
               <span className="mt-1 text-sm text-neutral-500">{emptySubMessage}</span>
             </button>
           )}
@@ -217,7 +218,7 @@ export function DayEditorShell({
       {/* Mobile CTA */}
       <div className="sticky bottom-3 z-20 sm:hidden">
         <Button
-          variant="gradient-primary"
+          variant={themeColor === 'emerald' ? 'success' : 'gradient-primary'}
           icon={<Plus size={16} className="text-white" />}
           onPress={onAdd}
           className={cn('w-full shadow-lg', colors.shadow)}

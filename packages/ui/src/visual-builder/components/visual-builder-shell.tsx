@@ -102,59 +102,55 @@ export function VisualBuilderShell({
   // Theme configuration
   const themeConfig = {
     primary: {
-      glow1: 'from-primary-900/40 via-secondary-900/20',
-      glow2: 'from-secondary-800/30 via-primary-900/20',
-      glow3: 'from-primary-950/40 via-secondary-900/10',
-      selection: 'selection:bg-primary-500/30',
+      glow1: 'from-blue-500/20 via-indigo-500/20',
+      glow2: 'from-indigo-500/20 via-blue-500/20',
+      glow3: 'from-blue-500/10 via-indigo-500/10',
+      selection: 'selection:bg-blue-500/30',
       accentColor: 'primary',
-      activeTab: 'bg-primary-600/20 text-primary-200 ring-primary-500/30 shadow-[0_0_15px_-3px_rgba(37,99,235,0.3)] ring-1',
-      activeDay: 'border-primary-500 bg-white/[0.03] text-white',
-      activeDayGlow: 'from-primary-500/10',
-      addBtnText: 'text-primary-400 hover:bg-primary-500/10',
-      viewModeActive: 'bg-primary-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]',
-      pulseDot: 'bg-secondary-500'
+      activeTab: 'bg-white shadow-sm ring-1 ring-neutral-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:ring-blue-800',
+      activeDay: 'border-blue-500 bg-blue-50/50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-200',
+      activeDayGlow: 'from-blue-500/10',
+      addBtnText: 'text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20',
+      viewModeActive: 'bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-blue-600 dark:ring-0',
+      viewModeActiveText: 'text-blue-700 dark:text-white',
+      pulseDot: 'bg-blue-500'
     },
     emerald: {
-      glow1: 'from-emerald-900/40 via-teal-900/20',
-      glow2: 'from-teal-800/30 via-emerald-900/20',
-      glow3: 'from-emerald-950/40 via-teal-900/10',
+      glow1: 'from-emerald-500/20 via-teal-500/20',
+      glow2: 'from-teal-500/20 via-emerald-500/20',
+      glow3: 'from-emerald-500/10 via-teal-500/10',
       selection: 'selection:bg-emerald-500/30',
       accentColor: 'emerald',
-      activeTab: 'bg-emerald-600/20 text-emerald-200 shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)] ring-1 ring-emerald-500/30',
-      activeDay: 'border-emerald-500 bg-white/[0.03] text-white',
+      activeTab: 'bg-white shadow-sm ring-1 ring-neutral-200 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-800',
+      activeDay: 'border-emerald-500 bg-emerald-50/50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-200',
       activeDayGlow: 'from-emerald-500/10',
-      addBtnText: 'text-emerald-400 hover:bg-emerald-500/10',
-      viewModeActive: 'bg-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.5)]',
+      addBtnText: 'text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/20',
+      viewModeActive: 'bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-emerald-600 dark:ring-0',
+      viewModeActiveText: 'text-emerald-700 dark:text-white',
       pulseDot: 'bg-emerald-500'
     }
   }[theme];
 
   return (
-    <div className={cn("relative min-h-[100dvh] w-full bg-neutral-950 text-neutral-50", themeConfig.selection)}>
-      {/* Atmosphere / Background Glows */}
+    <div className={cn("relative min-h-[100dvh] w-full bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50", themeConfig.selection)}>
+      {/* Atmosphere / Background Glows - Subtler & Light Mode Compatible */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="magic-shimmer absolute inset-0 opacity-20" />
         <div
           className={cn(
-            "absolute -top-[15%] -left-[15%] h-[900px] w-[900px] animate-pulse rounded-full bg-gradient-to-br to-transparent mix-blend-screen blur-[150px]",
+            "absolute -top-[20%] -left-[10%] h-[800px] w-[800px] rounded-full bg-gradient-to-br to-transparent blur-[120px] opacity-40 dark:opacity-20",
             themeConfig.glow1
           )}
-          style={{ animationDuration: '8s' }}
         />
         <div className={cn(
-          "absolute top-[15%] -right-[15%] h-[700px] w-[700px] rounded-full bg-gradient-to-bl to-transparent mix-blend-screen blur-[130px]",
+          "absolute top-[10%] -right-[10%] h-[600px] w-[600px] rounded-full bg-gradient-to-bl to-transparent blur-[100px] opacity-40 dark:opacity-20",
           themeConfig.glow2
-        )} />
-        <div className={cn(
-          "absolute bottom-[-10%] left-[10%] h-[600px] w-[900px] rounded-full bg-gradient-to-t to-transparent blur-[140px]",
-          themeConfig.glow3
         )} />
       </div>
 
       {/* Main Content Container */}
-      <div className="relative z-10 min-h-[100dvh] bg-neutral-950/30 backdrop-blur-3xl">
-        {/* Header - Sticky with premium glass effect */}
-        <header className="glass-strong shadow-glow-sm sticky top-0 z-[1020] border-b-0 border-b-white/5 p-3 sm:px-6 sm:py-4">
+      <div className="relative z-10 min-h-[100dvh]">
+        {/* Header - Sticky with semantic glass effect */}
+        <header className="glass sticky top-0 z-[1020] border-b border-neutral-200/50 p-3 dark:border-white/5 sm:px-6 sm:py-4">
           
           {/* Top Bar: View Mode + Actions */}
           <div className="mb-2 flex items-center justify-between gap-4 sm:mb-6">
@@ -162,14 +158,14 @@ export function VisualBuilderShell({
               {onBack && (
                 <button
                    onClick={onBack}
-                   className="mr-2 hidden items-center gap-1 text-sm font-medium text-neutral-500 transition-colors hover:text-white sm:flex"
+                   className="mr-2 hidden items-center gap-1 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white sm:flex"
                 >
                   <ArrowLeft size={16} />
                 </button>
               )}
 
               {/* View Mode Switcher */}
-              <div className="flex items-center rounded-full bg-neutral-950/50 p-1 ring-1 ring-white/10 backdrop-blur-md">
+              <div className="flex items-center rounded-full bg-neutral-100/50 p-1 ring-1 ring-neutral-200 dark:bg-neutral-900/50 dark:ring-white/10">
                 {viewModes.map((mode) => (
                   <button
                     key={mode.id}
@@ -177,8 +173,8 @@ export function VisualBuilderShell({
                     className={cn(
                       'relative flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-all sm:gap-2 sm:px-3',
                       currentViewMode === mode.id
-                        ? 'text-white shadow-lg'
-                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                        ? themeConfig.viewModeActiveText
+                        : 'text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200'
                     )}
                   >
                     {currentViewMode === mode.id && (
@@ -190,7 +186,7 @@ export function VisualBuilderShell({
                 ))}
               </div>
 
-               {/* Optional Bottom/Middle Slot (e.g. Live Macro Summary) gets placed here on desktop to save space if desired, or can be passed in right actions */}
+               {/* Optional Bottom/Middle Slot */}
                {headerBottomSlot && (
                  <div className="hidden md:block">
                    {headerBottomSlot}
@@ -203,7 +199,7 @@ export function VisualBuilderShell({
               {headerActions}
 
               {/* Centralized Save Button Section */}
-              <div className="ml-2 flex items-center gap-2 border-l border-white/10 pl-4">
+              <div className="ml-2 flex items-center gap-2 border-l border-neutral-200 pl-4 dark:border-white/10">
                   {isEditMode && (
                     <AutosaveIndicator
                       isSaving={isSaving}
@@ -218,11 +214,8 @@ export function VisualBuilderShell({
                     onPress={onSave}
                     className={cn(
                       'h-9 px-5 text-sm font-medium transition-all duration-300',
-                      'glass-strong shadow-glow-sm border border-white/20',
-                      'bg-gradient-to-br from-white/10 to-white/5',
-                      'hover:shadow-glow hover:scale-[1.02] hover:border-white/30 hover:bg-white/20',
-                      'active:scale-[0.98]',
-                      'text-white'
+                      'border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-50',
+                      'dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20'
                     )}
                   >
                     {isSaving ? 'Salvataggio...' : 'Salva'}
@@ -242,13 +235,14 @@ export function VisualBuilderShell({
                     onChange={(e) => onTitleChange(e.target.value)}
                     placeholder="Nome Programma"
                     className={cn(
-                      'w-full bg-transparent text-2xl font-bold tracking-tight text-white outline-none placeholder:text-white/20 sm:text-4xl',
-                      'transition-all duration-200 focus:placeholder:text-white/10',
+                      'w-full bg-transparent text-2xl font-bold tracking-tight outline-none sm:text-4xl',
+                      'text-neutral-900 placeholder:text-neutral-300 dark:text-white dark:placeholder:text-white/20',
+                      'transition-all duration-200',
                       themeConfig.selection
                     )}
                   />
                 </div>
-                <div className="flex items-center gap-2 text-sm font-medium text-neutral-400">
+                <div className="flex items-center gap-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
                   <span className={cn("inline-block h-1.5 w-1.5 animate-pulse rounded-full", themeConfig.pulseDot)} />
                   {subtitle}
                 </div>
@@ -266,7 +260,7 @@ export function VisualBuilderShell({
                           'flex-shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-300',
                           currentWeekIndex === index
                             ? themeConfig.activeTab
-                            : 'text-neutral-500 hover:bg-white/5 hover:text-neutral-300'
+                            : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-white/5 dark:hover:text-neutral-300'
                         )}
                       >
                         Settimana {week.weekNumber}
@@ -296,7 +290,7 @@ export function VisualBuilderShell({
                         'group relative flex-shrink-0 rounded-t-xl border-b-2 px-4 py-2 text-sm font-medium transition-all duration-300',
                         currentDayIndex === index
                           ? themeConfig.activeDay
-                          : 'border-transparent text-neutral-500 hover:bg-white/[0.01] hover:text-neutral-300'
+                          : 'border-transparent text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700 dark:hover:bg-white/[0.01] dark:hover:text-neutral-300'
                       )}
                     >
                       <span className="relative z-10 truncate">{day.name || `Giorno ${day.dayNumber}`}</span>
@@ -312,7 +306,7 @@ export function VisualBuilderShell({
                             e.stopPropagation();
                             onRemoveDay(currentWeekIndex, index);
                           }}
-                          className="relative z-20 ml-2 inline-flex items-center rounded-sm p-0.5 text-neutral-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/10 hover:text-red-400"
+                          className="relative z-20 ml-2 inline-flex items-center rounded-sm p-0.5 text-neutral-400 opacity-0 transition-all group-hover:opacity-100 hover:bg-red-50 hover:text-red-500 dark:text-neutral-500 dark:hover:bg-white/10 dark:hover:text-red-400"
                         >
                           <Trash2 size={12} />
                         </span>
@@ -321,7 +315,7 @@ export function VisualBuilderShell({
                   ))}
                   <button
                     onClick={onAddDay}
-                    className="mb-[2px] flex h-full items-center rounded-t-xl px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-white/[0.02] hover:text-neutral-400"
+                    className="mb-[2px] flex h-full items-center rounded-t-xl px-4 py-2 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-white/[0.02] dark:hover:text-neutral-300"
                   >
                     <Plus size={14} className="mr-1" />
                     Giorno
