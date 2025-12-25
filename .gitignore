@@ -9,3 +9,5 @@ expo/.expo
 .expo
 coverage
 *.tsbuildinfo
+# macOS AppleDouble files
+._*
