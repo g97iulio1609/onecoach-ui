@@ -111,7 +111,7 @@ export function VisualBuilderShell({
       activeDay: 'border-blue-500 bg-blue-50/50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-200',
       activeDayGlow: 'from-blue-500/10',
       addBtnText: 'text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20',
-      viewModeActive: 'bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-blue-600 dark:ring-0',
+      viewModeActive: 'bg-neutral-50 shadow-sm ring-1 ring-neutral-200 dark:bg-blue-600 dark:ring-0',
       viewModeActiveText: 'text-blue-700 dark:text-white',
       pulseDot: 'bg-blue-500'
     },
@@ -125,7 +125,7 @@ export function VisualBuilderShell({
       activeDay: 'border-emerald-500 bg-emerald-50/50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-200',
       activeDayGlow: 'from-emerald-500/10',
       addBtnText: 'text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/20',
-      viewModeActive: 'bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-emerald-600 dark:ring-0',
+      viewModeActive: 'bg-neutral-50 shadow-sm ring-1 ring-neutral-200 dark:bg-emerald-600 dark:ring-0',
       viewModeActiveText: 'text-emerald-700 dark:text-white',
       pulseDot: 'bg-emerald-500'
     }
@@ -214,8 +214,8 @@ export function VisualBuilderShell({
                     onPress={onSave}
                     className={cn(
                       'h-9 px-5 text-sm font-medium transition-all duration-300',
-                      'border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-50',
-                      'dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20'
+                      'border border-neutral-200 bg-neutral-50 text-neutral-900 shadow-sm hover:bg-neutral-100',
+                      'dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10'
                     )}
                   >
                     {isSaving ? 'Salvataggio...' : 'Salva'}
