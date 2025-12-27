@@ -531,6 +531,7 @@ export const PromptInputActionMenuTrigger = ({ className }: { className?: string
       size="icon-sm"
       className={cn('h-8 w-8 rounded-lg', className)}
       aria-label="Apri menu allegati"
+      suppressHydrationWarning
     >
       <Paperclip className="h-4 w-4" />
     </Button>
