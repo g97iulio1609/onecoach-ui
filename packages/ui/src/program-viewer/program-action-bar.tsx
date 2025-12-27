@@ -9,6 +9,7 @@ export interface ProgramActionBarProps {
   onDelete?: () => void;
   trackLabel?: string;
   deleteLabel?: string;
+  backLabel?: string;
   variant?: 'workout' | 'nutrition';
   className?: string;
 }
@@ -18,7 +19,8 @@ export function ProgramActionBar({
   onTrack,
   onDelete,
   trackLabel = 'Track Today',
-  deleteLabel = 'Elimina Programma',
+  deleteLabel = 'Delete Program',
+  backLabel = 'Back',
   variant = 'workout',
   className = '',
 }: ProgramActionBarProps) {
@@ -32,10 +34,10 @@ export function ProgramActionBar({
       <button
         onClick={onBack}
         className="flex min-h-[44px] touch-manipulation items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-200 hover:bg-neutral-50 hover:shadow-sm active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-800/50 dark:bg-neutral-900 dark:text-neutral-300"
-        aria-label="Torna indietro"
+        aria-label={backLabel}
       >
         <ArrowLeft className="h-5 w-5" />
-        Indietro
+        {backLabel}
       </button>
       <div className="flex items-center gap-3">
         {onTrack && (

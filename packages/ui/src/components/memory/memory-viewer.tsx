@@ -9,7 +9,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ComponentType } from 'react';
 import { Card } from '../../card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../tabs';
 import { MemoryInsightsCard } from './memory-insights-card';
@@ -25,10 +24,28 @@ import {
   User,
 } from 'lucide-react';
 
+export interface MemoryViewerLabels {
+  domains?: {
+    workout?: string;
+    nutrition?: string;
+    oneagenda?: string;
+    projects?: string;
+    tasks?: string;
+    habits?: string;
+    general?: string;
+  };
+  invalidUserId?: string;
+  loadError?: string;
+  retry?: string;
+  preferences?: string;
+  noDataForDomain?: string;
+}
+
 export interface MemoryViewerProps {
   userId: string;
   initialDomain?: MemoryDomain;
   className?: string;
+  labels?: MemoryViewerLabels;
 }
 
 const isUuid = (value: string | null | undefined): value is string => {
@@ -36,21 +53,25 @@ const isUuid = (value: string | null | undefined): value is string => {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 };
 
-const domains: Array<{
-  id: MemoryDomain;
-  label: string;
-  icon: ComponentType<{ className?: string }>;
-}> = [
-  { id: 'workout', label: 'Allenamento', icon: Dumbbell },
-  { id: 'nutrition', label: 'Nutrizione', icon: UtensilsCrossed },
-  { id: 'oneagenda', label: 'OneAgenda', icon: Calendar },
-  { id: 'projects', label: 'Progetti', icon: FolderKanban },
-  { id: 'tasks', label: 'Task', icon: CheckSquare },
-  { id: 'habits', label: 'Abitudini', icon: Target },
-  { id: 'general', label: 'Generale', icon: User },
+const getDomainsConfig = (labels?: MemoryViewerLabels['domains']) => [
+  { id: 'workout' as MemoryDomain, label: labels?.workout ?? 'Workout', icon: Dumbbell },
+  { id: 'nutrition' as MemoryDomain, label: labels?.nutrition ?? 'Nutrition', icon: UtensilsCrossed },
+  { id: 'oneagenda' as MemoryDomain, label: labels?.oneagenda ?? 'OneAgenda', icon: Calendar },
+  { id: 'projects' as MemoryDomain, label: labels?.projects ?? 'Projects', icon: FolderKanban },
+  { id: 'tasks' as MemoryDomain, label: labels?.tasks ?? 'Tasks', icon: CheckSquare },
+  { id: 'habits' as MemoryDomain, label: labels?.habits ?? 'Habits', icon: Target },
+  { id: 'general' as MemoryDomain, label: labels?.general ?? 'General', icon: User },
 ];
 
-export function MemoryViewer({ userId, initialDomain = 'workout', className }: MemoryViewerProps) {
+export function MemoryViewer({ userId, initialDomain = 'workout', className, labels }: MemoryViewerProps) {
+  const domains = getDomainsConfig(labels?.domains);
+  const l = {
+    invalidUserId: labels?.invalidUserId ?? 'Invalid user ID',
+    loadError: labels?.loadError ?? 'Unable to load memory.',
+    retry: labels?.retry ?? 'Retry',
+    preferences: labels?.preferences ?? 'Preferences',
+    noDataForDomain: labels?.noDataForDomain ?? 'No data available for this domain',
+  };
   const [memory, setMemory] = useState<UserMemory | null>(null);
   const [activeDomain, setActiveDomain] = useState<MemoryDomain>(initialDomain);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,9 +79,9 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
   const controllerRef = useRef<AbortController | null>(null);
 
   const loadMemory = useCallback(async () => {
-    // Blocca subito se l'ID utente non è un UUID valido
+    // Block if user ID is not a valid UUID
     if (!isUuid(userId)) {
-      setError('ID utente non valido');
+      setError(l.invalidUserId);
       setMemory(null);
       setIsLoading(false);
       return;
@@ -98,7 +119,7 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') return;
       console.error('[Memory Viewer] Error:', err);
-      setError(err instanceof Error ? err.message : 'Errore nel caricamento della memoria');
+      setError(err instanceof Error ? err.message : l.loadError);
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +146,7 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
       <Card variant="glass" padding="md" className={className}>
         <div className="flex flex-col items-center gap-3 py-6 text-center">
           <p className="text-sm font-medium text-red-600 dark:text-red-400">
-            Non riusciamo a caricare la memoria.
+            {l.loadError}
           </p>
           <p className="text-xs text-neutral-500 dark:text-neutral-400">{error}</p>
           <button
@@ -133,7 +154,7 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
             onClick={() => void loadMemory()}
             className="bg-primary-500 hover:bg-primary-600 focus:ring-primary-500/70 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow focus:ring-2 focus:outline-none"
           >
-            Riprova
+            {l.retry}
           </button>
         </div>
       </Card>
@@ -169,7 +190,7 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
                     {Object.keys(domainData.preferences).length > 0 && (
                       <Card variant="glass" padding="md">
                         <h3 className="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
-                          Preferenze
+                          {l.preferences}
                         </h3>
                         <div className="space-y-2">
                           {Object.entries(domainData.preferences).map(([key, value]) => (
@@ -200,7 +221,7 @@ export function MemoryViewer({ userId, initialDomain = 'workout', className }: M
                 {!domainData && (
                   <Card variant="glass" padding="md">
                     <p className="text-center text-sm text-neutral-500 dark:text-neutral-400">
-                      Nessun dato disponibile per questo dominio
+                      {l.noDataForDomain}
                     </p>
                   </Card>
                 )}

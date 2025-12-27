@@ -17,6 +17,14 @@ export interface AutosaveIndicatorProps {
   onRetry?: () => void;
   /** Additional CSS classes */
   className?: string;
+  /** Labels for i18n support */
+  labels?: {
+    error?: string;
+    retry?: string;
+    saving?: string;
+    saved?: string;
+    unsaved?: string;
+  };
 }
 
 /**
@@ -32,7 +40,15 @@ export function AutosaveIndicator({
   hasPendingChanges = false,
   onRetry,
   className,
+  labels,
 }: AutosaveIndicatorProps) {
+  const l = {
+    error: labels?.error ?? 'Error',
+    retry: labels?.retry ?? 'Retry',
+    saving: labels?.saving ?? 'Saving...',
+    saved: labels?.saved ?? 'Saved',
+    unsaved: labels?.unsaved ?? 'Unsaved',
+  };
   const [showSaved, setShowSaved] = useState(false);
 
   // Show "Saved" indicator briefly after save completes
@@ -56,13 +72,13 @@ export function AutosaveIndicator({
         )}
       >
         <AlertCircle size={14} />
-        <span>Errore</span>
+        <span>{l.error}</span>
         {onRetry && (
           <button
             onClick={onRetry}
             className="ml-1 underline hover:no-underline"
           >
-            Riprova
+            {l.retry}
           </button>
         )}
       </div>
@@ -80,7 +96,7 @@ export function AutosaveIndicator({
         )}
       >
         <Loader2 size={14} className="animate-spin" />
-        <span>Salvataggio...</span>
+        <span>{l.saving}</span>
       </div>
     );
   }
@@ -97,7 +113,7 @@ export function AutosaveIndicator({
         )}
       >
         <Check size={14} />
-        <span>Salvato</span>
+        <span>{l.saved}</span>
       </div>
     );
   }
@@ -113,7 +129,7 @@ export function AutosaveIndicator({
         )}
       >
         <Cloud size={14} />
-        <span>Non salvato</span>
+        <span>{l.unsaved}</span>
       </div>
     );
   }

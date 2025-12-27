@@ -64,6 +64,16 @@ export interface VisualBuilderShellProps {
   headerActions?: ReactNode; // Middle right (1RM, Import, etc)
   headerBottomSlot?: ReactNode; // e.g. Macro summary
   
+  // i18n labels
+  labels?: {
+    save?: string;
+    saving?: string;
+    programNamePlaceholder?: string;
+    week?: string;
+    add?: string;
+    day?: string;
+  };
+  
   children: ReactNode;
 }
 
@@ -96,8 +106,18 @@ export function VisualBuilderShell({
   headerLeftStart,
   headerActions,
   headerBottomSlot,
+  labels,
   children
 }: VisualBuilderShellProps) {
+  // i18n labels with defaults
+  const l = {
+    save: labels?.save ?? 'Save',
+    saving: labels?.saving ?? 'Saving...',
+    programNamePlaceholder: labels?.programNamePlaceholder ?? 'Program Name',
+    week: labels?.week ?? 'Week',
+    add: labels?.add ?? 'Add',
+    day: labels?.day ?? 'Day',
+  };
 
   // Theme configuration
   const themeConfig = {
@@ -218,7 +238,7 @@ export function VisualBuilderShell({
                       'dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10'
                     )}
                   >
-                    {isSaving ? 'Salvataggio...' : 'Salva'}
+                    {isSaving ? l.saving : l.save}
                   </Button>
               </div>
             </div>
@@ -233,7 +253,7 @@ export function VisualBuilderShell({
                   <input
                     value={title}
                     onChange={(e) => onTitleChange(e.target.value)}
-                    placeholder="Nome Programma"
+                    placeholder={l.programNamePlaceholder}
                     className={cn(
                       'w-full bg-transparent text-2xl font-bold tracking-tight outline-none sm:text-4xl',
                       'text-neutral-900 placeholder:text-neutral-300 dark:text-white dark:placeholder:text-white/20',
@@ -263,7 +283,7 @@ export function VisualBuilderShell({
                             : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-white/5 dark:hover:text-neutral-300'
                         )}
                       >
-                        Settimana {week.weekNumber}
+                        {l.week} {week.weekNumber}
                       </button>
                     ))}
                     <button
@@ -271,7 +291,7 @@ export function VisualBuilderShell({
                       className={cn("flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors", themeConfig.addBtnText)}
                     >
                       <Plus size={12} />
-                      <span>Aggiungi</span>
+                      <span>{l.add}</span>
                     </button>
                   </div>
                 </div>
@@ -293,7 +313,7 @@ export function VisualBuilderShell({
                           : 'border-transparent text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700 dark:hover:bg-white/[0.01] dark:hover:text-neutral-300'
                       )}
                     >
-                      <span className="relative z-10 truncate">{day.name || `Giorno ${day.dayNumber}`}</span>
+                      <span className="relative z-10 truncate">{day.name || `${l.day} ${day.dayNumber}`}</span>
 
                       {/* Active Glow Effect */}
                       {currentDayIndex === index && (
@@ -318,7 +338,7 @@ export function VisualBuilderShell({
                     className="mb-[2px] flex h-full items-center rounded-t-xl px-4 py-2 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-white/[0.02] dark:hover:text-neutral-300"
                   >
                     <Plus size={14} className="mr-1" />
-                    Giorno
+                    {l.day}
                   </button>
                 </div>
               </div>
