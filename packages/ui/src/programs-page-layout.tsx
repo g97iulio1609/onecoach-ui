@@ -73,7 +73,18 @@ export interface ProgramsPageLayoutProps {
   createLink: string;
   
   /** Import button label */
+  /** Import button label */
   importLabel?: string;
+  /** Localized labels */
+  labels?: ProgramsPageLabels;
+}
+
+export interface ProgramsPageLabels {
+  startGeneration: string;
+  createManually: string;
+  createManuallyShort: string;
+  importShort: string;
+  didYouKnow: string;
 }
 
 /* =============================================================================
@@ -110,6 +121,14 @@ const themeConfig = {
    Component
 ============================================================================= */
 
+const DEFAULT_LABELS: ProgramsPageLabels = {
+  startGeneration: 'Start Generation',
+  createManually: 'Create Manually',
+  createManuallyShort: 'Manual',
+  importShort: 'Import',
+  didYouKnow: 'Did you know?',
+};
+
 export function ProgramsPageLayout({
   colorTheme,
   header,
@@ -121,7 +140,8 @@ export function ProgramsPageLayout({
   modals,
   onImportClick,
   createLink,
-  importLabel = 'Importa File',
+  importLabel = 'Import File',
+  labels = DEFAULT_LABELS,
 }: ProgramsPageLayoutProps) {
   const theme = themeConfig[colorTheme];
 
@@ -161,7 +181,7 @@ export function ProgramsPageLayout({
             >
               <Upload className="h-4 w-4" />
               <span className="hidden sm:inline">{importLabel}</span>
-              <span className="sm:hidden">Importa</span>
+              <span className="sm:hidden">{labels.importShort}</span>
             </button>
             <Link
               href={createLink}
@@ -172,8 +192,8 @@ export function ProgramsPageLayout({
               )}
             >
               <Plus className="h-4 w-4 text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200" />
-              <span className="hidden sm:inline">Crea Manualmente</span>
-              <span className="sm:hidden">Manuale</span>
+              <span className="hidden sm:inline">{labels.createManually}</span>
+              <span className="sm:hidden">{labels.createManuallyShort}</span>
             </Link>
           </div>
         </div>
@@ -211,7 +231,7 @@ export function ProgramsPageLayout({
                       theme.ctaButtonHover
                     )}
                   >
-                    Inizia Generazione
+                    {labels.startGeneration}
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </Link>
@@ -253,7 +273,7 @@ export function ProgramsPageLayout({
             {/* Quick Tips */}
             <Card variant="glass" className="p-6" glassIntensity="light">
               <h4 className="mb-3 font-semibold text-neutral-900 dark:text-neutral-100">
-                Lo sapevi?
+                {labels.didYouKnow}
               </h4>
               <ul className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
                 {tips.map((tip, index) => (

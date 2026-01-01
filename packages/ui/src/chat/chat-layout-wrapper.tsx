@@ -8,7 +8,8 @@ interface ChatLayoutWrapperProps {
   className?: string;
 }
 
-export function ChatLayoutWrapper({ children, className }: ChatLayoutWrapperProps) {
+export function ChatLayoutWrapper({
+  children, className }: ChatLayoutWrapperProps) {
   return (
     <div className={cn('relative flex h-[calc(100dvh-4rem)] w-full flex-col overflow-hidden', className)}>
       {/* Background - Premium gradient mesh (Nano Banana Pro Style) */}

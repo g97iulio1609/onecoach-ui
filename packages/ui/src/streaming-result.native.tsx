@@ -41,7 +41,8 @@ function getEventIcon(type: string, message: string) {
   return <Sparkles size={16} color="#a3a3a3" />; // neutral-400
 }
 
-function EventCard({ event }: { event: StreamEvent }) {
+function EventCard({
+  event }: { event: StreamEvent }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const hasData = event.data && Object.keys(event.data).length > 0;
 

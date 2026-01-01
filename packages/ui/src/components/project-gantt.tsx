@@ -22,7 +22,8 @@ export interface Project {
   tasks: ProjectTask[];
 }
 
-export function ProjectGantt({ project, className }: { project: Project; className?: string }) {
+export function ProjectGantt({
+  project, className }: { project: Project; className?: string }) {
   const startDate = startOfWeek(new Date(project.startDate), { weekStartsOn: 1 });
   const endDate = endOfWeek(new Date(project.endDate), { weekStartsOn: 1 });
   const days = eachDayOfInterval({ start: startDate, end: endDate });

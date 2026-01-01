@@ -14,7 +14,8 @@ interface FadeInProps {
 /**
  * Web version of FadeIn using CSS animations
  */
-export function FadeIn({ children, duration = 300, delay = 0, style }: FadeInProps) {
+export function FadeIn({
+  children, duration = 300, delay = 0, style }: FadeInProps) {
   const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {

@@ -436,7 +436,8 @@ export const usePromptInput = () => {
   return ctx;
 };
 
-export function PromptInputProvider({ children }: { children: React.ReactNode }) {
+export function PromptInputProvider({
+  children }: { children: React.ReactNode }) {
   const [attachments, setAttachments] = useState<PromptAttachment[]>([]);
   const [accept, setAccept] = useState<string | undefined>();
   const [multiple, setMultiple] = useState<boolean | undefined>(undefined);

@@ -75,9 +75,9 @@ export function getDialogLabels(
   title?: string
 ) {
   return {
-    confirm: confirmLabel || (type === 'confirm' ? 'Conferma' : 'OK'),
-    cancel: cancelLabel || 'Annulla',
-    title: title || (type === 'confirm' ? 'Conferma' : type === 'prompt' ? 'Input' : 'Avviso'),
+    confirm: confirmLabel || (type === 'confirm' ? 'Confirm' : 'OK'),
+    cancel: cancelLabel || 'Cancel',
+    title: title || (type === 'confirm' ? 'Confirm' : type === 'prompt' ? 'Input' : 'Notice'),
   };
 }
 

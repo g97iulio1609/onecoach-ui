@@ -15,14 +15,34 @@ import { cn } from '@onecoach/lib-design-system';
 import { useUIStore, useHeaderActions, useAuthStore } from '@onecoach/lib-stores';
 import { ThemeToggle } from '../theme-toggle';
 
+export interface AppShellHeaderLabels {
+  openMenu: string;
+  copilotEnabled: string;
+  copilotDisabled: string;
+  enableCopilot: string;
+  disableCopilot: string;
+  updateError: string;
+}
+
 export interface AppShellHeaderProps {
   brandHref?: string;
   brandLabel?: string;
   /** Extra content to render on the right side, before ThemeToggle */
   rightExtra?: React.ReactNode;
+  labels?: AppShellHeaderLabels;
 }
 
-export function AppShellHeader({ brandHref, brandLabel, rightExtra }: AppShellHeaderProps) {
+const DEFAULT_LABELS: AppShellHeaderLabels = {
+  openMenu: 'Apri menu',
+  copilotEnabled: 'Copilot attivato',
+  copilotDisabled: 'Copilot disattivato',
+  enableCopilot: 'Attiva Copilot',
+  disableCopilot: 'Disattiva Copilot',
+  updateError: "Errore durante l'aggiornamento delle preferenze",
+};
+
+export function AppShellHeader({
+  brandHref, brandLabel, rightExtra, labels = DEFAULT_LABELS }: AppShellHeaderProps) {
   const { toggleMobileMenu } = useUIStore();
   const { user, updateUser } = useAuthStore();
   const { actions: headerActions, leftContent } = useHeaderActions();
@@ -48,13 +68,13 @@ export function AppShellHeader({ brandHref, brandLabel, rightExtra }: AppShellHe
         throw new Error(`Errore aggiornamento preferenze (${response.status})`);
       }
 
-      toast.success(newValue ? 'Copilot attivato' : 'Copilot disattivato');
+      toast.success(newValue ? labels.copilotEnabled : labels.copilotDisabled);
     } catch (e) {
       // Revert on error
       updateUser({ copilotEnabled: !newValue });
       console.error('Failed to update copilot preference', e);
       toast.error(
-        e instanceof Error ? e.message : "Errore durante l'aggiornamento delle preferenze"
+        e instanceof Error ? e.message : labels.updateError
       );
     }
   };
@@ -79,7 +99,7 @@ export function AppShellHeader({ brandHref, brandLabel, rightExtra }: AppShellHe
           <button
             onClick={toggleMobileMenu}
             className="rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 lg:hidden dark:text-neutral-400 dark:hover:bg-neutral-800"
-            aria-label="Apri menu"
+            aria-label={labels.openMenu}
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -118,7 +138,7 @@ export function AppShellHeader({ brandHref, brandLabel, rightExtra }: AppShellHe
                 ? 'text-blue-600 dark:text-blue-400'
                 : 'text-neutral-500 dark:text-neutral-400'
             )}
-            title={user?.copilotEnabled ? 'Disattiva Copilot' : 'Attiva Copilot'}
+            title={user?.copilotEnabled ? labels.disableCopilot : labels.enableCopilot}
           >
             <Bot className="h-5 w-5" />
           </button>

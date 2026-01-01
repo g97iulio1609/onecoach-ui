@@ -8,7 +8,8 @@ import { Button } from './button';
 import { Input } from './input';
 import { Textarea } from './textarea';
 
-function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
+function InputGroup({
+  className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="input-group"

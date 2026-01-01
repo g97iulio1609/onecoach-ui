@@ -60,9 +60,20 @@ export interface VisualBuilderShellProps {
   onRemoveDay: (weekIndex: number, dayIndex: number) => void;
   
   // Custom Slots
-  headerLeftStart?: ReactNode; // Before / Name
-  headerActions?: ReactNode; // Middle right (1RM, Import, etc)
-  headerBottomSlot?: ReactNode; // e.g. Macro summary
+  headerLeftStart?: ReactNode;
+  headerActions?: ReactNode;
+  headerBottomSlot?: ReactNode;
+
+  // Custom Labels
+  labels?: {
+    save?: string;
+    saving?: string;
+    programNamePlaceholder?: string;
+    weekPrefix?: string;
+    add?: string;
+    dayPrefix?: string; // Used when day.name is missing
+    addDay?: string;
+  };
   
   children: ReactNode;
 }
@@ -96,8 +107,19 @@ export function VisualBuilderShell({
   headerLeftStart,
   headerActions,
   headerBottomSlot,
+  labels,
   children
 }: VisualBuilderShellProps) {
+
+  const l = {
+    save: labels?.save || 'Salva',
+    saving: labels?.saving || 'Salvataggio...',
+    programNamePlaceholder: labels?.programNamePlaceholder || 'Nome Programma',
+    weekPrefix: labels?.weekPrefix || 'Settimana',
+    add: labels?.add || 'Aggiungi',
+    dayPrefix: labels?.dayPrefix || 'Giorno',
+    addDay: labels?.addDay || 'Giorno', // Button text
+  };
 
   // Theme configuration
   const themeConfig = {
@@ -218,7 +240,7 @@ export function VisualBuilderShell({
                       'dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10'
                     )}
                   >
-                    {isSaving ? 'Salvataggio...' : 'Salva'}
+                    {isSaving ? l.saving : l.save}
                   </Button>
               </div>
             </div>
@@ -233,7 +255,7 @@ export function VisualBuilderShell({
                   <input
                     value={title}
                     onChange={(e) => onTitleChange(e.target.value)}
-                    placeholder="Nome Programma"
+                    placeholder={l.programNamePlaceholder}
                     className={cn(
                       'w-full bg-transparent text-2xl font-bold tracking-tight outline-none sm:text-4xl',
                       'text-neutral-900 placeholder:text-neutral-300 dark:text-white dark:placeholder:text-white/20',
@@ -263,7 +285,7 @@ export function VisualBuilderShell({
                             : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-white/5 dark:hover:text-neutral-300'
                         )}
                       >
-                        Settimana {week.weekNumber}
+                        {l.weekPrefix} {week.weekNumber}
                       </button>
                     ))}
                     <button
@@ -271,7 +293,7 @@ export function VisualBuilderShell({
                       className={cn("flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors", themeConfig.addBtnText)}
                     >
                       <Plus size={12} />
-                      <span>Aggiungi</span>
+                      <span>{l.add}</span>
                     </button>
                   </div>
                 </div>
@@ -293,7 +315,7 @@ export function VisualBuilderShell({
                           : 'border-transparent text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700 dark:hover:bg-white/[0.01] dark:hover:text-neutral-300'
                       )}
                     >
-                      <span className="relative z-10 truncate">{day.name || `Giorno ${day.dayNumber}`}</span>
+                      <span className="relative z-10 truncate">{day.name || `${l.dayPrefix} ${day.dayNumber}`}</span>
 
                       {/* Active Glow Effect */}
                       {currentDayIndex === index && (
@@ -318,7 +340,7 @@ export function VisualBuilderShell({
                     className="mb-[2px] flex h-full items-center rounded-t-xl px-4 py-2 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-white/[0.02] dark:hover:text-neutral-300"
                   >
                     <Plus size={14} className="mr-1" />
-                    Giorno
+                    {l.addDay}
                   </button>
                 </div>
               </div>

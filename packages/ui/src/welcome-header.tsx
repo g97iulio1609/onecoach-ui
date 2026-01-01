@@ -12,12 +12,6 @@ interface WelcomeHeaderProps {
 }
 
 export function WelcomeHeader({ userName, className, title, subtitle }: WelcomeHeaderProps) {
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Buongiorno';
-    if (hour < 18) return 'Buon pomeriggio';
-    return 'Buonasera';
-  };
 
   return (
     <Card variant="glass"
@@ -36,11 +30,13 @@ export function WelcomeHeader({ userName, className, title, subtitle }: WelcomeH
         bordered
       />
       <div className="flex flex-col gap-1">
-        <span className="text-lg font-medium text-neutral-500 dark:text-neutral-400">
-          {subtitle || `${getGreeting()},`}
-        </span>
+        {subtitle && (
+          <span className="text-lg font-medium text-neutral-500 dark:text-neutral-400">
+            {subtitle}
+          </span>
+        )}
         <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
-          {title || userName || 'Atleta'}
+          {title || userName || 'Welcome'}
         </h1>
       </div>
     </Card>

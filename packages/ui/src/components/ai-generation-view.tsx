@@ -39,15 +39,15 @@ export interface AIGenerationViewProps {
 
 export function AIGenerationView({
   title = 'AI Architect',
-  subtitle = 'Generazione in corso...',
+  subtitle = 'Generation in progress...',
   progress,
   logs,
   isGenerating,
   isSuccess,
   error,
-  successTitle = 'Fatto!',
-  successMessage = 'Generazione completata con successo.',
-  successActionLabel = 'Continua',
+  successTitle = 'Done!',
+  successMessage = 'Generation completed successfully.',
+  successActionLabel = 'Continue',
   onSuccessAction,
   onRetry,
   className,
@@ -83,10 +83,10 @@ export function AIGenerationView({
           </div>
           <div>
             <h3 className="font-semibold text-white">
-              {isSuccess ? 'Completato' : error ? 'Errore' : title}
+              {isSuccess ? 'Completed' : error ? 'Error' : title}
             </h3>
             <p className="text-xs text-neutral-400">
-              {isSuccess ? 'Processo terminato' : error ? 'Si è verificato un problema' : subtitle}
+              {isSuccess ? 'Process finished' : error ? 'A problem occurred' : subtitle}
             </p>
           </div>
         </div>
@@ -149,14 +149,14 @@ export function AIGenerationView({
                 <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 ring-1 ring-red-500/50">
                   <AlertCircle className="h-8 w-8 text-red-500" />
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-white">Qualcosa è andato storto</h3>
+                <h3 className="mb-2 text-xl font-bold text-white">Something went wrong</h3>
                 <p className="mb-6 text-sm text-neutral-400">{error}</p>
                 {onRetry && (
                   <button
                     onClick={onRetry}
                     className="rounded-lg bg-white px-6 py-2 font-medium text-neutral-900 hover:bg-neutral-100"
                   >
-                    Riprova
+                    Retry
                   </button>
                 )}
               </div>

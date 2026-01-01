@@ -24,7 +24,8 @@ export interface MemoryEditorProps {
   className?: string;
 }
 
-export function MemoryEditor({ userId, domain, onSave, className }: MemoryEditorProps) {
+export function MemoryEditor({
+  userId, domain, onSave, className }: MemoryEditorProps) {
   const [preferences, setPreferences] = useState<Record<string, unknown>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);

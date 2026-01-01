@@ -32,6 +32,10 @@ export interface ProgramCardAction {
   onClick?: () => void;
 }
 
+export interface ProgramCardLabels {
+  noDescription: string;
+}
+
 export interface ProgramCardProps {
   /** Unique identifier for the program */
   id: string;
@@ -59,6 +63,8 @@ export interface ProgramCardProps {
   onToggleSelect?: (id: string) => void;
   /** Additional CSS classes */
   className?: string;
+  /** Localized labels */
+  labels?: ProgramCardLabels;
 }
 
 /* =============================================================================
@@ -94,6 +100,10 @@ const actionHoverColors = {
    Component
 ============================================================================= */
 
+const DEFAULT_LABELS: ProgramCardLabels = {
+  noDescription: 'Nessuna descrizione disponibile.',
+};
+
 export function ProgramCard({
   id,
   name,
@@ -108,6 +118,7 @@ export function ProgramCard({
   selectionMode = false,
   onToggleSelect,
   className,
+  labels = DEFAULT_LABELS,
 }: ProgramCardProps) {
   const router = useRouter();
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -225,7 +236,7 @@ export function ProgramCard({
         <div className="mb-5 flex-1">
           <h3 className="mb-2 text-xl leading-tight font-bold break-words text-white">{name}</h3>
           <p className="line-clamp-2 text-sm leading-relaxed text-neutral-400">
-            {description || 'Nessuna descrizione disponibile.'}
+            {description || labels.noDescription}
           </p>
         </div>
 

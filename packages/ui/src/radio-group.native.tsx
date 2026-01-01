@@ -26,7 +26,7 @@ export interface RadioGroupProps {
 }
 
 export function RadioGroup({
-    value: controlledValue,
+  value: controlledValue,
     defaultValue,
     onChange,
     disabled = false,

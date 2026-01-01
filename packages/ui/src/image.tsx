@@ -9,6 +9,7 @@ type ExpoNativeImageProps = ComponentProps<typeof ExpoImage> & {
   width?: number;
   height?: number;
   alt?: string;
+  className?: string;
 };
 
 export function Image({ src, source, width, height, alt, ...rest }: ExpoNativeImageProps) {

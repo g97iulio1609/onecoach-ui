@@ -26,7 +26,8 @@ interface AdminTabsProps {
   className?: string;
 }
 
-export function AdminTabs({ tabs, defaultTab, onTabChange, className }: AdminTabsProps) {
+export function AdminTabs({
+  tabs, defaultTab, onTabChange, className }: AdminTabsProps) {
   const [activeTab, setActiveTab] = useState<string>(() => {
     // Preferisci hash dall'URL, poi default
     if (typeof window !== 'undefined') {

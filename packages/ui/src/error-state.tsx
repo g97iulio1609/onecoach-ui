@@ -28,10 +28,10 @@ export const ErrorState = ({
   action,
   className = '',
 }: ErrorStateProps) => {
-  const errorTitle = title ?? 'Si è verificato un errore';
+  const errorTitle = title ?? 'An error occurred';
   const errorMessage = error?.message ?? null;
   const errorDescription =
-    description ?? message ?? errorMessage ?? 'Qualcosa è andato storto. Riprova più tardi.';
+    description ?? message ?? errorMessage ?? 'Something went wrong. Please try again later.';
 
   return (
     <div className={`animate-fadeIn mt-20 text-center text-slate-500 ${className}`}>

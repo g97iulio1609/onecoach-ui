@@ -19,7 +19,8 @@ export interface TabButtonProps extends TabButtonSharedProps {
 
 import { cn } from '@onecoach/lib-design-system';
 
-export const TabButton = ({ active, onClick, icon: Icon, label, count, className }: TabButtonProps) => {
+export const TabButton = ({
+  active, onClick, icon: Icon, label, count, className }: TabButtonProps) => {
   const safeIcon =
     typeof Icon === 'function'
       ? Icon

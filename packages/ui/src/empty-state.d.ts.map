@@ -1,1 +1,0 @@
-{"version":3,"file":"empty-state.d.ts","sourceRoot":"","sources":["empty-state.tsx"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAE/C,MAAM,WAAW,eAAe;IAC9B,IAAI,EAAE,UAAU,CAAC;IACjB,KAAK,EAAE,MAAM,CAAC;IACd,WAAW,EAAE,MAAM,CAAC;CACrB;AAED,eAAO,MAAM,UAAU,GAAI,oCAAoC,eAAe,4CAU7E,CAAC"}

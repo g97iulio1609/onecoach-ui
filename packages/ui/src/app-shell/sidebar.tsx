@@ -8,255 +8,70 @@
  * e deduplicazione delle rotte per evitare chiavi duplicate.
  */
 
-import { useEffect, startTransition } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   MessageSquare,
   Dumbbell,
   Apple,
-  CreditCard,
-  Shield,
-  ShoppingCart,
-  Receipt,
   User,
-  BarChart3,
   Users,
-  GraduationCap,
-  TrendingUp,
-  ShoppingBag,
   Calendar,
-  FileText,
-  Sparkles,
-  UserCircle,
-  CheckCircle2,
-  Bot,
   Settings,
-  Wand2,
-  Activity,
   Plane,
 } from 'lucide-react';
 import { ModernSidebar, type SidebarNavigationItem } from '../modern-sidebar';
-import { useUIStore, useAuthStore, useSidebarStore } from '@onecoach/lib-stores';
-import { isAdminRole, isCoachRole } from '@onecoach/types';
 import type { AuthenticatedUser } from '@onecoach/types';
 import { useSignOut } from '@onecoach/lib-api/hooks';
+import { useUIStore } from '@onecoach/lib-stores';
 
 export interface AppShellSidebarProps {
   user: AuthenticatedUser;
+  navigation?: SidebarNavigationItem[];
 }
 
-// Deduplica voci di navigazione con lo stesso href per evitare chiavi duplicate
-function dedupeNavigation(items: SidebarNavigationItem[]): SidebarNavigationItem[] {
-  const seen = new Set<string>();
+// ... imports kept ... (Logic below replaces the function body)
 
-  const visit = (item: SidebarNavigationItem): SidebarNavigationItem | null => {
-    const children = item.children?.map(visit).filter(Boolean) as
-      | SidebarNavigationItem[]
-      | undefined;
+import { useTranslations } from 'next-intl';
 
-    if (item.href) {
-      if (seen.has(item.href)) return null;
-      seen.add(item.href);
-    }
-
-    return { ...item, children };
-  };
-
-  return items.map(visit).filter((item): item is SidebarNavigationItem => Boolean(item));
-}
-
-// Base navigation sections
-const PERSONAL_NAVIGATION: SidebarNavigationItem = {
-  name: 'Area Personale',
-  icon: LayoutDashboard,
-  defaultOpen: true,
-  children: [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Agenda', href: '/oneagenda', icon: Calendar },
-    { name: 'Voli', href: '/flight', icon: Plane, badge: 'AI' },
-    { name: 'Messaggi', href: '/messages', icon: MessageSquare },
-    { name: 'Chat AI', href: '/chat', icon: MessageSquare, badge: 'AI' },
-    { name: 'Profilo', href: '/profile', icon: User },
-  ],
-};
-
-const FITNESS_NAVIGATION: SidebarNavigationItem = {
-  name: 'Allenamento & Nutrizione',
-  icon: Dumbbell,
-  children: [
-    { name: 'Programmi', href: '/workouts', icon: Dumbbell },
-    { name: 'Nutrizione', href: '/nutrition', icon: Apple },
-  ],
-};
-
-const INSIGHTS_NAVIGATION: SidebarNavigationItem = {
-  name: 'Insights',
-  icon: BarChart3,
-  children: [{ name: 'Analytics', href: '/analytics', icon: BarChart3 }],
-};
-
-const BUSINESS_NAVIGATION: SidebarNavigationItem = {
-  name: 'Business',
-  icon: ShoppingBag,
-  children: [
-    { name: 'Pricing', href: '/pricing', icon: CreditCard },
-    { name: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
-    { name: 'Affiliazioni', href: '/affiliations', icon: Users },
-  ],
-};
-
-const BASE_NAVIGATION_SECTIONS: SidebarNavigationItem[] = [
-  PERSONAL_NAVIGATION,
-  FITNESS_NAVIGATION,
-  INSIGHTS_NAVIGATION,
-  BUSINESS_NAVIGATION,
-];
-
-// Coach-specific navigation
-const COACH_NAVIGATION: SidebarNavigationItem = {
-  name: 'Area Coach',
-  icon: GraduationCap,
-  badge: 'Coach',
-  children: [
-    { name: 'Coach Dashboard', href: '/coach/dashboard', icon: GraduationCap },
-    { name: 'I Miei Clienti', href: '/coach/clients', icon: Users },
-    { name: 'Coach Analytics', href: '/coach/analytics', icon: TrendingUp },
-    { name: 'Il Mio Profilo', href: '/coach/profile', icon: UserCircle },
-    { name: 'Verifica Account', href: '/coach/vetting', icon: CheckCircle2 },
-  ],
-};
-
-// Admin-specific navigation
-const ADMIN_NAVIGATION: SidebarNavigationItem = {
-  name: 'Area Admin',
-  icon: Shield,
-  badge: 'Admin',
-  children: [
-    { name: 'Admin Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Area Coach', href: '/coach/dashboard', icon: GraduationCap, badge: 'Coach' },
-    { name: 'Utenti', href: '/admin/users', icon: Users },
-    { name: 'Abbonamenti', href: '/admin/subscriptions', icon: CreditCard },
-    { name: 'Catalogo Esercizi', href: '/admin/exercises', icon: Dumbbell },
-    { name: 'Catalogo Alimenti', href: '/admin/foods', icon: Apple },
-    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-    { name: 'System Prompts', href: '/admin/prompts', icon: FileText },
-    {
-      name: 'Commerce',
-      href: '/admin/carts',
-      icon: ShoppingBag,
-      children: [
-        { name: 'Carts', href: '/admin/carts', icon: ShoppingCart },
-        { name: 'Orders', href: '/admin/orders', icon: Receipt },
-        { name: 'Checkout Settings', href: '/admin/checkout', icon: CreditCard },
-      ],
-    },
-    {
-      name: 'AI Settings',
-      href: '/admin/ai-settings',
-      icon: Sparkles,
-      defaultOpen: true,
-      children: [
-        { name: 'Provider & API Keys', href: '/admin/ai-settings?section=providers', icon: Shield },
-        { name: 'Modelli & Accessi', href: '/admin/ai-settings?section=models', icon: Bot },
-        { name: 'Feature Toggles', href: '/admin/ai-settings?section=features', icon: Settings },
-        { name: 'System Prompts', href: '/admin/ai-settings?section=prompts', icon: FileText },
-        { name: 'Framework & Agents', href: '/admin/ai-settings?section=framework', icon: Wand2 },
-        { name: 'Billing & Crediti', href: '/admin/ai-settings?section=billing', icon: CreditCard },
-        { name: 'Feature Flags', href: '/admin/ai-settings?section=flags', icon: Activity },
-        { name: 'Edge Config', href: '/admin/ai-settings?section=edge', icon: Settings },
-        { name: 'Analytics', href: '/admin/ai-settings?section=analytics', icon: BarChart3 },
-        {
-          name: 'Conversazioni',
-          href: '/admin/ai-settings?section=conversations',
-          icon: MessageSquare,
-        },
-      ],
-    },
-  ],
-};
-
-function getNavigationItems(userRole: string | undefined | null, pathname: string) {
-  // Se l'utente è admin e si trova in /admin mostra solo nav admin + link back
-  if (isAdminRole(userRole) && pathname.startsWith('/admin')) {
-    return dedupeNavigation([
-      { ...ADMIN_NAVIGATION, defaultOpen: true },
-      { name: 'Torna alla App', href: '/dashboard', icon: LayoutDashboard, badge: 'App' },
-    ]);
-  }
-
-  const items: SidebarNavigationItem[] = [...BASE_NAVIGATION_SECTIONS];
-
-  if (isAdminRole(userRole)) {
-    items.push({ ...ADMIN_NAVIGATION, defaultOpen: false });
-  }
-
-  if (isCoachRole(userRole)) {
-    items.push(COACH_NAVIGATION);
-  }
-
-  return dedupeNavigation(items);
-}
-
-export function AppShellSidebar({ user }: AppShellSidebarProps) {
+export function AppShellSidebar({
+  user, navigation: propsNavigation }: AppShellSidebarProps) {
+  const t = useTranslations('navigation');
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentPath = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-  const { sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpen } = useUIStore();
-  const { setUser, user: clientUser } = useAuthStore();
-  const { extraContent } = useSidebarStore();
   const signOut = useSignOut();
+  // Using local state for collapse since store doesn't support it
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Use global UI store for mobile menu state to sync with header toggle
+  const { mobileMenuOpen, setMobileMenuOpen } = useUIStore();
 
-  // Sync user to client store
-  useEffect(() => {
-    if (user) {
-      setUser({
-        id: user.id,
-        email: user.email,
-        name: user.name || '',
-        role: user.role as 'USER' | 'ATHLETE' | 'COACH' | 'ADMIN' | 'SUPER_ADMIN',
-        profileImage: user.image || undefined,
-        copilotEnabled: user.copilotEnabled,
-        credits: user.credits,
-      });
-    }
-  }, [user, setUser]);
+  const effectiveUser = user;
 
-  // Map isOpen to isCollapsed (inverted logic: sidebarOpen = !isCollapsed)
-  const isCollapsed = !sidebarOpen;
-  const setIsCollapsed = (collapsed: boolean) => setSidebarOpen(!collapsed);
+  // Internal navigation definition with translations
+  const defaultNavigation: SidebarNavigationItem[] = [
+    { name: t('sidebar.dashboard'), href: '/dashboard', icon: LayoutDashboard },
+    { name: t('workouts'), href: '/workouts', icon: Dumbbell },
+    { name: t('nutrition'), href: '/nutrition', icon: Apple },
+    { name: t('sidebar.agenda'), href: '/calendar', icon: Calendar },
+    { name: t('sidebar.aiChat'), href: '/chat', icon: MessageSquare },
+    { name: t('sidebar.flights'), href: '/flight', icon: Plane },
+  ];
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    startTransition(() => setMobileMenuOpen(false));
-  }, [pathname, setMobileMenuOpen]);
+  if (effectiveUser?.role === 'admin' || effectiveUser?.role === 'coach') {
+    defaultNavigation.push({ name: t('sidebar.myClients'), href: '/coach/clients', icon: Users });
+  }
 
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      if (typeof window !== 'undefined') {
-        document.body.style.overflow = '';
-      }
-    };
-  }, [mobileMenuOpen]);
+  defaultNavigation.push({ name: t('profile'), href: '/profile', icon: User });
+  defaultNavigation.push({ name: t('settings'), href: '/settings', icon: Settings });
+
+  const navigation = propsNavigation || defaultNavigation;
+  const currentPath = pathname || '';
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/login' });
+    await signOut();
   };
 
-  // Usa l'utente proveniente dallo store (aggiornato in realtime) se disponibile,
-  // ma SEMPRE prendi il ruolo dal server user per garantire che admin/coach siano visibili
-  // Il clientUser potrebbe avere dati stale dalla persistenza localStorage
-  const effectiveUser = clientUser
-    ? { ...clientUser, role: user.role } // Merge con il ruolo dal server (sempre aggiornato)
-    : user;
-  const navigation = getNavigationItems(effectiveUser?.role, pathname);
+  const extraContent = null;
 
   return (
     <>

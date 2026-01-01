@@ -66,3 +66,12 @@ export * from './checkout';
 export * from './components';
 export * from './program-card';
 export * from './programs-page-layout';
+// Program Viewer
+export * from './program-viewer/program-action-bar';
+export * from './program-viewer/program-day-card';
+export * from './program-viewer/program-goals-section';
+export * from './program-viewer/program-info-card';
+export * from './program-viewer/program-week-card';
+// Visual Builder Base Components
+export * from './visual-builder/components/base/EditorHeader';
+export * from './visual-builder/components/base/VersionHistory';
