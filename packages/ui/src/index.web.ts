@@ -47,6 +47,7 @@ export * from './components/model-selector';
 export { ModelSelector as LegacyModelSelector } from './legacy-model-selector';
 export * from './theme-toggle';
 export * from './date-picker-with-presets';
+export * from './date-picker';
 
 // Design System - Typography
 export * from './typography';

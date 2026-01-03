@@ -2,6 +2,8 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "types": ["vitest/globals", "@testing-library/jest-dom", "react-native-web"],
     "paths": {
       "ui/*": ["./src/*"],

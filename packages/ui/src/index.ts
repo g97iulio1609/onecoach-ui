@@ -11,6 +11,7 @@ export * from './collapsible';
 export * from './combobox';
 export * from './command';
 export * from './date-picker-with-presets';
+export * from './date-picker';
 export * from './dialog';
 export * from './drawer';
 export * from './dropdown-menu';

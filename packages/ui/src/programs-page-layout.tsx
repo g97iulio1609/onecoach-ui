@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { type ReactNode } from 'react';
 import { Plus, Sparkles, ArrowRight, Upload } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
-import { Card } from '@onecoach/ui';
+import { Card } from './card';
 
 /* =============================================================================
    Types
