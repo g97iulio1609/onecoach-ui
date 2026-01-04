@@ -2,10 +2,15 @@
 
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, MoreVertical } from 'lucide-react';
 import { Button } from '../../button';
 import { AutosaveIndicator } from './autosave-indicator';
 import { cn } from '@onecoach/lib-design-system';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '../../dropdown-menu';
 
 export interface ViewModeItem {
   id: string;
@@ -63,6 +68,7 @@ export interface VisualBuilderShellProps {
   headerLeftStart?: ReactNode;
   headerActions?: ReactNode;
   headerBottomSlot?: ReactNode;
+  mobileActionsMenu?: ReactNode;
 
   // Custom Labels
   labels?: {
@@ -107,6 +113,7 @@ export function VisualBuilderShell({
   headerLeftStart,
   headerActions,
   headerBottomSlot,
+  mobileActionsMenu,
   labels,
   children
 }: VisualBuilderShellProps) {
@@ -175,8 +182,8 @@ export function VisualBuilderShell({
         <header className="glass sticky top-0 z-[1020] border-b border-neutral-200/50 p-3 dark:border-white/5 sm:px-6 sm:py-4">
           
           {/* Top Bar: View Mode + Actions */}
-          <div className="mb-2 flex items-center justify-between gap-4 sm:mb-6">
-            <div className="flex items-center gap-4">
+          <div className="mb-2 flex items-center justify-between gap-2 sm:mb-6 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {onBack && (
                 <button
                    onClick={onBack}
@@ -218,7 +225,31 @@ export function VisualBuilderShell({
 
             {/* Right Actions */}
             <div className="flex items-center gap-2">
-              {headerActions}
+              {/* Desktop Actions */}
+              <div className="hidden items-center gap-2 sm:flex">
+                {headerActions}
+              </div>
+
+              {/* Mobile Menu Action */}
+              <div className="sm:hidden">
+                 <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 transition-colors hover:bg-neutral-100 dark:border-white/10 dark:bg-white/5 dark:text-neutral-400">
+                      <MoreVertical size={16} />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    {/* Inject actions as menu items */}
+                    <div className="p-1 sm:hidden">
+                       {mobileActionsMenu ? (
+                         mobileActionsMenu
+                       ) : (
+                         <div className="p-2 text-xs text-neutral-400">No extra actions</div>
+                       )}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
               {/* Centralized Save Button Section */}
               <div className="ml-2 flex items-center gap-2 border-l border-neutral-200 pl-4 dark:border-white/10">
@@ -235,7 +266,7 @@ export function VisualBuilderShell({
                     variant="secondary"
                     onPress={onSave}
                     className={cn(
-                      'h-9 px-5 text-sm font-medium transition-all duration-300',
+                      'h-9 px-3 text-sm font-medium transition-all duration-300 sm:px-5',
                       'border border-neutral-200 bg-neutral-50 text-neutral-900 shadow-sm hover:bg-neutral-100',
                       'dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10'
                     )}
@@ -246,25 +277,25 @@ export function VisualBuilderShell({
             </div>
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-4 sm:gap-6">
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between sm:gap-6">
               {/* Title Section */}
-              <div className="min-w-0 flex-1 space-y-2">
-                <div className="flex items-center gap-3">
+              <div className="min-w-0 flex-1 space-y-1 sm:space-y-2">
+                <div className="flex items-center gap-2 sm:gap-3">
                   {headerLeftStart}
                   <input
                     value={title}
                     onChange={(e) => onTitleChange(e.target.value)}
                     placeholder={l.programNamePlaceholder}
                     className={cn(
-                      'w-full bg-transparent text-2xl font-bold tracking-tight outline-none sm:text-4xl',
+                      'w-full bg-transparent text-xl font-bold tracking-tight outline-none sm:text-4xl',
                       'text-neutral-900 placeholder:text-neutral-300 dark:text-white dark:placeholder:text-white/20',
                       'transition-all duration-200',
                       themeConfig.selection
                     )}
                   />
                 </div>
-                <div className="flex items-center gap-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                <div className="flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 sm:text-sm">
                   <span className={cn("inline-block h-1.5 w-1.5 animate-pulse rounded-full", themeConfig.pulseDot)} />
                   {subtitle}
                 </div>

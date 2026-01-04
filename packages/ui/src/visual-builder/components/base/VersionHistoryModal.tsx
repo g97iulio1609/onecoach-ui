@@ -177,6 +177,28 @@ export function VersionHistoryModal<T>({
               >
                 ← Back to history
               </button>
+              
+              <div className="flex items-center justify-between">
+                 <h3 className="text-sm font-medium text-neutral-500">
+                    Comparing Version {history.length - (selectedForCompare.sort((a,b)=>a-b)[1] ?? 0)} vs {history.length - (selectedForCompare.sort((a,b)=>a-b)[0] ?? 0)}
+                 </h3>
+                 <button
+                    onClick={() => {
+                      const olderIdx = [...selectedForCompare].sort((a,b)=>a-b)[1];
+                      if (olderIdx !== undefined) {
+                        handleRestore(olderIdx);
+                      }
+                    }}
+                    className={cn(
+                      "flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
+                      "bg-neutral-100 text-neutral-700 hover:bg-neutral-200",
+                      "dark:bg-white/10 dark:text-neutral-300 dark:hover:bg-white/20"
+                    )}
+                 >
+                    <RotateCcw size={14} />
+                    Restore Original
+                 </button>
+              </div>
 
               <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4 dark:border-white/10 dark:bg-neutral-800/50">
                 {!semanticDiff || semanticDiff.length === 0 ? (
@@ -326,7 +348,7 @@ export function VersionHistoryModal<T>({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="flex items-center gap-1">
                        <button
                          onClick={(e) => {
                            e.stopPropagation();
