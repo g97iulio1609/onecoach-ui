@@ -15,12 +15,18 @@ export interface EntityReference {
   parentName?: string; // "Week 1 • Day 2" - context
 }
 
+export interface SemanticChangeDetail {
+  label: string;
+  from?: any;
+  to?: any;
+}
+
 export interface SemanticChange {
   id: string; // unique key for rendering
   entity: EntityReference;
   action: ChangeType;
   description: string; // "Modified sets", "Added to Day 1"
-  details: string[]; // ["weight: 80 -> 85", "reps: 10 -> 12"]
+  details: SemanticChangeDetail[];
 }
 
 // ----------------------------------------------------------------------------
@@ -146,18 +152,29 @@ export function computeSemanticDiff(
       if (action === 'removed') entry.description = `Removed ${name}`;
     } else {
       const readableField = formatDiffSubPath(subPath);
-      let valString = '';
-      if (valueChange) {
-         valString = `: ${formatVal(valueChange.from)} → ${formatVal(valueChange.to)}`;
-      }
-      entry.details.push(`${readableField}${valString}`);
+      
+      entry.details.push({
+        label: readableField,
+        from: valueChange?.from,
+        to: valueChange?.to
+      });
     }
   };
   
   diff.changed.forEach(c => processPath(c.path, 'modified', { from: c.from, to: c.to }));
-  diff.added.forEach(path => processPath(path, 'added'));
-  diff.removed.forEach(path => processPath(path, 'removed'));
+  // For added/removed, we don't usually have "sub-field" details unless we traverse the object.
+  // For now, if "Added" acts on 'self', we don't list details.
+  // If "Modified" acts on fields, we list details. 
+  // What if "Added" path is weeks[0].days[0].exercises[2].setGroups[0] ?
+  // If it's a deep add, we currently mark the Whole Entity as Modified, with a detail of "Added Set Group 1".
+  diff.added.forEach(path => processPath(path, 'modified', { from: undefined, to: 'Added' })); // Treat deep adds as modifications to parent with "Added" value
+  diff.removed.forEach(path => processPath(path, 'modified', { from: 'Removed', to: undefined }));
 
+  // Post-processing: If an entry has "Added" or "Removed" action on 'self', clear details?
+  // Actually, if we add an Exercise, we don't want 10 details saying "Added Set 1", "Added Weight", etc.
+  // The 'self' logic above handles the top-level entity.
+  // If we have `exercises[0]` added, subPath is 'self', action becomes 'added'. Details should be empty.
+  
   return Array.from(changes.values());
 }
 
@@ -175,8 +192,4 @@ function formatDiffSubPath(subPath: string): string {
     .trim();
 }
 
-function formatVal(val: any): string {
-  if (val === null || val === undefined) return 'empty';
-  if (typeof val === 'object') return '...';
-  return String(val);
-}
+

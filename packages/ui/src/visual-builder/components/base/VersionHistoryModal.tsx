@@ -72,10 +72,7 @@ export function VersionHistoryModal<T>({
   const [selectedForCompare, setSelectedForCompare] = useState<number[]>([]);
   const [showDiff, setShowDiff] = useState(false);
 
-  const gradientClass =
-    variant === 'emerald'
-      ? 'from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800'
-      : 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800';
+
 
   const accentClass =
     variant === 'emerald'
@@ -236,13 +233,46 @@ export function VersionHistoryModal<T>({
 
                            {/* Details List */}
                            {change.details.length > 0 && (
-                             <div className="mt-2 space-y-1">
-                               {change.details.map((detail, idx) => (
-                                 <div key={idx} className="flex items-start gap-1.5 text-sm text-neutral-600 dark:text-neutral-300">
-                                   <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-neutral-300 dark:bg-neutral-600" />
-                                   <span>{detail}</span>
-                                 </div>
-                               ))}
+                             <div className="mt-3">
+                               {/* Headers for Desktop */}
+                               <div className="hidden grid-cols-2 gap-4 border-b border-neutral-100 pb-1 text-xs font-medium text-neutral-400 dark:border-white/5 dark:text-neutral-500 sm:grid">
+                                 <div>PREVIOUS</div>
+                                 <div className="border-l border-neutral-100 pl-4 dark:border-white/5">CURRENT</div>
+                               </div>
+
+                               <div className="divide-y divide-neutral-100 dark:divide-white/5">
+                                 {change.details.map((detail, idx) => (
+                                   <div key={idx} className="grid grid-cols-1 gap-1 py-2 sm:grid-cols-2 sm:gap-4">
+                                     {/* Left Column (Previous) */}
+                                     <div className="flex flex-col sm:block">
+                                       <span className="mb-0.5 text-[10px] font-medium text-neutral-400 sm:hidden">PREVIOUS</span>
+                                       <div className="flex items-baseline justify-between gap-2">
+                                         <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                                            {detail.label}
+                                         </span>
+                                         <span className="text-sm font-medium text-red-600/80 line-through decoration-red-600/50 dark:text-red-400/80">
+                                            {formatValue(detail.from)}
+                                         </span>
+                                       </div>
+                                     </div>
+
+                                     {/* Right Column (Current) */}
+                                     {change.action !== 'removed' && (
+                                      <div className="flex flex-col border-l border-neutral-100 pl-0 dark:border-white/5 sm:pl-4">
+                                        <span className="mb-0.5 mt-1 text-[10px] font-medium text-neutral-400 sm:hidden">CURRENT</span>
+                                        <div className="flex items-baseline justify-between gap-2">
+                                          <span className="text-sm text-neutral-500 dark:text-neutral-400 sm:hidden">
+                                              {detail.label}
+                                          </span>
+                                          <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                                              {formatValue(detail.to)}
+                                          </span>
+                                        </div>
+                                      </div>
+                                     )}
+                                   </div>
+                                 ))}
+                               </div>
                              </div>
                            )}
                         </div>
@@ -256,90 +286,58 @@ export function VersionHistoryModal<T>({
             // History List
             <div className="space-y-2">
               {history.map((version, index) => {
-                // Calculate inline diff for this version compared to next version
-                const inlineDiff = getDiff && index < history.length - 1
-                  ? getDiff(index, index + 1)
-                  : null;
-
+                const isCurrent = index === 0;
+                const isSelected = selectedForCompare.includes(index);
+                
                 return (
                   <div
-                    key={version.id}
+                    key={index}
                     className={cn(
-                      'flex flex-col gap-2 rounded-xl border p-4 transition-all',
-                      'border-neutral-200 bg-neutral-50/50 hover:border-neutral-300 hover:bg-neutral-100/50',
-                      'dark:border-white/10 dark:bg-neutral-800/30 dark:hover:border-white/20 dark:hover:bg-neutral-800/50',
-                      selectedForCompare.includes(index) &&
-                        'ring-2 ring-blue-500 dark:ring-blue-400'
+                      'group relative flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all',
+                      isSelected
+                        ? 'border-blue-500 bg-blue-50 dark:border-blue-500 dark:bg-blue-900/20'
+                        : 'border-transparent hover:bg-neutral-50 dark:hover:bg-white/5'
                     )}
+                    onClick={() => toggleCompareSelection(index)}
                   >
-                    <div className="flex items-center gap-3">
-                      {/* Compare checkbox */}
-                      {getDiff && (
-                        <button
-                          onClick={() => toggleCompareSelection(index)}
-                          className={cn(
-                            'flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors',
-                            selectedForCompare.includes(index)
-                              ? 'border-blue-500 bg-blue-500 text-white'
-                              : 'border-neutral-300 dark:border-neutral-600'
-                          )}
-                        >
-                          {selectedForCompare.includes(index) && <Check size={12} />}
-                        </button>
-                      )}
-
-                      {/* Version info */}
-                      <div className="min-w-0 flex-1">
-                        <p className="font-medium text-neutral-900 dark:text-white">
-                          {labels.version ?? 'Version'} {history.length - index}
-                          {index === 0 && (
-                            <span className="ml-2 text-xs font-normal text-emerald-600 dark:text-emerald-400">
-                              ({labels.current ?? 'Current'})
-                            </span>
-                          )}
-                        </p>
-                        <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
-                          {formatTimestamp(new Date(version.timestamp))}
-                          {version.description && ` • ${version.description}`}
-                        </p>
-                      </div>
-
-                      {/* Restore button */}
-                      {index > 0 && (
-                        <button
-                          onClick={() => handleRestore(index)}
-                          className={cn(
-                            'flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white',
-                            'bg-gradient-to-r shadow-md transition-all hover:shadow-lg',
-                            gradientClass
-                          )}
-                        >
-                          <RotateCcw size={14} />
-                          {labels.restore ?? 'Restore'}
-                        </button>
+                    <div className="relative mt-1">
+                      {isSelected ? (
+                         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white">
+                           <Check size={12} />
+                         </div>
+                      ) : (
+                         <div className="h-5 w-5 rounded-full border-2 border-neutral-300 dark:border-neutral-600 group-hover:border-neutral-400" />
                       )}
                     </div>
-
-                    {/* Inline diff summary */}
-                    {inlineDiff && inlineDiff.hasChanges && (
-                      <div className="flex flex-wrap gap-2 text-xs">
-                        {inlineDiff.added.length > 0 && (
-                          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-                            +{inlineDiff.added.length} {labels.added ?? 'added'}
-                          </span>
-                        )}
-                        {inlineDiff.removed.length > 0 && (
-                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                            -{inlineDiff.removed.length} {labels.removed ?? 'removed'}
-                          </span>
-                        )}
-                        {inlineDiff.changed.length > 0 && (
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-                            ~{inlineDiff.changed.length} {labels.modified ?? 'modified'}
-                          </span>
-                        )}
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                         <span className="font-medium text-neutral-900 dark:text-white">
+                            {version.description || (index === 0 ? 'Current Version' : `Version ${history.length - index}`)}
+                         </span>
+                         {isCurrent && (
+                           <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:bg-white/10 dark:text-neutral-300">
+                             Current
+                           </span>
+                         )}
                       </div>
-                    )}
+                      <div className="mt-1 flex items-center text-xs text-neutral-500 dark:text-neutral-400">
+                        <span>{formatTimestamp(new Date(version.timestamp))}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                       <button
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           handleRestore(index);
+                         }}
+                         className="rounded p-1.5 hover:bg-neutral-200 dark:hover:bg-white/10"
+                         title={labels.restore ?? 'Restore this version'}
+                       >
+                         <RotateCcw size={16} className="text-neutral-500 dark:text-neutral-400" />
+                       </button>
+                    </div>
                   </div>
                 );
               })}
@@ -347,23 +345,36 @@ export function VersionHistoryModal<T>({
           )}
         </div>
 
-        {/* Footer with compare button */}
-        {getDiff && selectedForCompare.length === 2 && !showDiff && (
-          <div className="border-t border-neutral-200 px-6 py-4 dark:border-white/10">
-            <button
-              onClick={handleCompare}
-              className={cn(
-                'flex w-full items-center justify-center gap-2 rounded-xl py-3 font-medium text-white',
-                'bg-gradient-to-r shadow-md transition-all hover:shadow-lg',
-                gradientClass
-              )}
-            >
-              <GitCompare size={18} />
-              {labels.compare ?? 'Compare Selected'}
-            </button>
-          </div>
-        )}
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t border-neutral-200 bg-neutral-50 px-6 py-4 dark:border-white/10 dark:bg-neutral-900/50">
+           <div className="text-sm text-neutral-500 dark:text-neutral-400">
+             {selectedForCompare.length === 2 
+                ? '2 versions selected' 
+                : `${selectedForCompare.length} selected for compare`}
+           </div>
+           {selectedForCompare.length === 2 && !showDiff && (
+             <button
+               onClick={handleCompare}
+               className={cn(
+                 "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors",
+                 variant === 'emerald' 
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-blue-600 hover:bg-blue-700"
+               )}
+             >
+               <GitCompare size={16} />
+               {labels.compare ?? 'Compare Versions'}
+             </button>
+           )}
+        </div>
       </div>
     </div>
   );
+}
+
+function formatValue(val: any): string {
+  if (val === null || val === undefined) return 'empty';
+  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+  if (typeof val === 'object') return '...';
+  return String(val);
 }
