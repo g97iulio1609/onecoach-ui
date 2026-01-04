@@ -20,7 +20,7 @@ export interface Milestone {
   id: string;
   title: string;
   description?: string;
-  status: 'PENDING' | 'ACTIVE' | 'COMPLETED';
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
   dueDate?: string | Date;
   order: number;
   tasks?: Task[];

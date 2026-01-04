@@ -45,3 +45,5 @@ export * from './use-oneagenda-generation';
 
 // Visual Builder hooks
 export * from './use-visual-builder-state';
+export * from './use-versioned-state';
+export * from './use-persistent-versioned-state';
