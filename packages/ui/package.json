@@ -41,7 +41,9 @@
     "@onecoach/lib-api": "workspace:*",
     "@onecoach/lib-core": "workspace:*",
     "@onecoach/lib-design-system": "workspace:*",
+    "@onecoach/ui-core": "workspace:*",
     "@onecoach/lib-stores": "workspace:*",
+
     "@onecoach/types": "workspace:*",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",

@@ -1,0 +1,6 @@
+[submodule "packages/oneui-workout"]
+	path = packages/oneui-workout
+	url = https://github.com/g97iulio1609/oneui-workout.git
+[submodule "packages/oneui-core"]
+	path = packages/oneui-core
+	url = https://github.com/g97iulio1609/oneui-core.git
