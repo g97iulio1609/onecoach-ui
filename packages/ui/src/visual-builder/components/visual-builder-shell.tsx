@@ -131,6 +131,7 @@ export function VisualBuilderShell({
   // Theme configuration
   const themeConfig = {
     primary: {
+      header: 'bg-white/80 border-b border-neutral-200/50 dark:bg-slate-900/90 dark:border-blue-500/10 backdrop-blur-md dark:shadow-[0_4px_30px_-4px_rgba(59,130,246,0.1)]',
       glow1: 'from-blue-500/20 via-indigo-500/20',
       glow2: 'from-indigo-500/20 via-blue-500/20',
       glow3: 'from-blue-500/10 via-indigo-500/10',
@@ -145,6 +146,7 @@ export function VisualBuilderShell({
       pulseDot: 'bg-blue-500'
     },
     emerald: {
+      header: 'bg-white/80 border-b border-neutral-200/50 dark:bg-slate-900/90 dark:border-emerald-500/10 backdrop-blur-md dark:shadow-[0_4px_30px_-4px_rgba(16,185,129,0.1)]',
       glow1: 'from-emerald-500/20 via-teal-500/20',
       glow2: 'from-teal-500/20 via-emerald-500/20',
       glow3: 'from-emerald-500/10 via-teal-500/10',
@@ -179,7 +181,7 @@ export function VisualBuilderShell({
       {/* Main Content Container */}
       <div className="relative z-10 min-h-[100dvh]">
         {/* Header - Sticky with semantic glass effect */}
-        <header className="glass sticky top-0 z-[1020] border-b border-neutral-200/50 p-3 dark:border-white/5 sm:px-6 sm:py-4">
+        <header className={cn("sticky top-0 z-[1020] p-3 sm:px-6 sm:py-4 transition-all duration-300", themeConfig.header)}>
           
           {/* Top Bar: View Mode + Actions */}
           <div className="mb-2 flex items-center justify-between gap-2 sm:mb-6 sm:gap-4">
