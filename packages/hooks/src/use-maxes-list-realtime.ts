@@ -4,18 +4,8 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 // We need access to the supabase client. Usually provided by a context or hook.
 // Assuming useSupabase or createClientComponentClient
-// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'; 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'; 
 import { logger } from '@onecoach/lib-shared';
-
-// Temporary stub due to monorepo install failure
-const createClientComponentClient = () => ({
-  channel: (_name: string) => ({
-    on: (_event: string, _filter: any, callback: (payload: any) => void) => ({
-      subscribe: () => callback({})
-    })
-  }),
-  removeChannel: (_channel: any) => {}
-} as any);
 
 export function useMaxesListRealtime() {
   const supabase = createClientComponentClient();

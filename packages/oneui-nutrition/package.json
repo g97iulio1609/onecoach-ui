@@ -16,6 +16,7 @@
     "@onecoach/types-nutrition": "workspace:*",
     "@onecoach/ui": "workspace:*",
     "@onecoach/features-nutrition": "workspace:*",
+    "@onecoach/features-food": "workspace:*",
     "@onecoach/ui-coach": "workspace:*",
     "@onecoach/schemas": "workspace:*",
     "@onecoach/lib-shared": "workspace:*",

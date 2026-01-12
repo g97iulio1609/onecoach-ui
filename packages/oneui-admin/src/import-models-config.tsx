@@ -335,7 +335,7 @@ export function ImportModelsConfig({ models }: ImportModelsConfigProps) {
           body: JSON.stringify(configToSave),
         });
         if (!response.ok) {
-          const message = await getErrorMessage(response, visionT('unknownError'), (key) =>
+          const message = await fetchErrorMessage(response, visionT('unknownError'), (key: string) =>
             visionT(key)
           );
           throw new Error(message);

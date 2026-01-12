@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
 import { Timer, Volume2, VolumeX, Minus, Plus, Pause, Play, FastForward, X, Dumbbell } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
-import { Card, Button } from '@onecoach/ui-core';
+import { Card, Button } from '@onecoach/ui';
 
 interface RestTimerProps {
   duration: number;
@@ -130,12 +130,14 @@ export function RestTimer({
           <Timer className="h-5 w-5 animate-pulse" />
           <span className="text-sm font-bold tracking-widest uppercase">Recupero</span>
         </div>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => setSoundEnabled(!soundEnabled)}
-          className="rounded-full bg-white/5 p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          className="rounded-full bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
         >
           {soundEnabled ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-        </button>
+        </Button>
       </div>
 
       {/* Custom Glass Progress Ring */}
@@ -287,12 +289,14 @@ export function RestTimer({
         </div>
 
         {/* Close Absolute Button */}
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onSkip}
-          className="absolute top-6 right-6 rounded-full bg-white/5 p-2 text-neutral-400 transition-colors hover:bg-white/10 hover:text-white"
+          className="absolute top-6 right-6 rounded-full bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
         >
           <X className="h-6 w-6" />
-        </button>
+        </Button>
 
         {content}
       </div>

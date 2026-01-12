@@ -10,7 +10,7 @@
 import { useMemo } from 'react';
 import { Plus, Trash2, BookOpen, Bookmark, GripVertical } from 'lucide-react';
 import { DayCard } from './day-card';
-import { SortableList, SortableItem, type SortableItemRenderProps } from '@onecoach/ui-core';
+import { SortableList, SortableItem, type SortableItemRenderProps, Button } from '@onecoach/ui-core';
 import { createNutritionDayDragId } from '@onecoach/lib-shared';
 import { cn } from '@onecoach/lib-design-system';
 import { useTranslations } from 'next-intl';
@@ -132,69 +132,73 @@ export function WeekCard({
                 />
               </div>
             )}
-            <button
+            <Button
+              variant="ghost"
               onClick={onToggle}
               className={cn(
-                '-mx-2 flex items-center gap-3 rounded-xl px-3 py-2 text-left text-lg font-bold transition-all hover:bg-neutral-800/50 group'
+                '-mx-2 h-auto flex items-center gap-3 rounded-xl px-3 py-2 text-left text-lg font-bold transition-all hover:bg-neutral-800/50 group whitespace-normal'
               )}
             >
-              <div className="flex flex-col">
+              <div className="flex flex-col items-start">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-widest group-hover:text-emerald-400 transition-colors">{t('viewer.labels.week')}</span>
                 <span className="text-3xl font-black text-white">{week.weekNumber}</span>
               </div>
-            </button>
+            </Button>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button
+            <Button
+              variant="default"
+              size="sm"
               onClick={onAddDay}
               className={cn(
-                'flex min-h-[40px] touch-manipulation items-center justify-center gap-2 rounded-xl px-5 py-2 text-xs font-bold whitespace-nowrap text-white transition-all duration-200',
-                'bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-900/20 hover:shadow-emerald-900/40',
-                'border border-emerald-500/20'
+                'min-h-[40px] px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-900/20 hover:shadow-emerald-900/40 border border-emerald-500/20'
               )}
             >
-              <Plus className="h-4 w-4 flex-shrink-0" />
+              <Plus className="h-4 w-4 flex-shrink-0 mr-2" />
               <span>{t('viewer.labels.day')}</span>
-            </button>
+            </Button>
             {onAddDayFromTemplate && (
-              <button
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={onAddDayFromTemplate}
                 className={cn(
-                  'flex min-h-[40px] touch-manipulation items-center justify-center gap-2 rounded-xl px-5 py-2 text-xs font-bold whitespace-nowrap text-slate-400 transition-all duration-200',
-                  'bg-slate-800 border border-slate-700 hover:border-slate-600 hover:text-white hover:bg-slate-700'
+                  'min-h-[40px] px-5 py-2 text-xs font-bold text-slate-400 bg-slate-800 border-slate-700 hover:border-slate-600 hover:text-white hover:bg-slate-700'
                 )}
                 title={t('templates.title')}
               >
-                <BookOpen className="h-4 w-4 flex-shrink-0" />
+                <BookOpen className="h-4 w-4 flex-shrink-0 mr-2" />
                 <span>Template</span>
-              </button>
+              </Button>
             )}
             {week.days && week.days.length > 0 && onSaveWeekAsTemplate && (
-              <button
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={(e: React.MouseEvent<HTMLElement>) => {
                   e.stopPropagation();
                   onSaveWeekAsTemplate();
                 }}
                 className={cn(
-                  'flex min-h-[40px] touch-manipulation items-center justify-center gap-2 rounded-xl px-5 py-2 text-xs font-bold whitespace-nowrap text-slate-400 transition-all duration-200',
-                  'bg-slate-800 border border-slate-700 hover:border-slate-600 hover:text-white hover:bg-slate-700'
+                  'min-h-[40px] w-10 text-slate-400 bg-slate-800 border-slate-700 hover:border-slate-600 hover:text-white hover:bg-slate-700'
                 )}
                 title={t('saveAsTemplate.week')}
               >
                 <Bookmark className="h-4 w-4 flex-shrink-0" />
-              </button>
+              </Button>
             )}
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={onRemoveWeek}
               className={cn(
-                'flex min-h-[40px] min-w-[40px] touch-manipulation items-center justify-center rounded-xl transition-all duration-200',
-                                'text-slate-600 hover:text-red-400 hover:bg-red-500/10'
+                'min-h-[40px] min-w-[40px] text-slate-600 hover:text-red-400 hover:bg-red-500/10'
               )}
               aria-label={t('ariaLabels.removeWeek')}
             >
               <Trash2 className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
 

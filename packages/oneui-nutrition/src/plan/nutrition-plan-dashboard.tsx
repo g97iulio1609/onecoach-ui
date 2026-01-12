@@ -15,7 +15,7 @@ import {
   ShoppingCart,
 } from 'lucide-react';
 import { getWeekAndDayFromDate } from '@onecoach/lib-shared';
-import { Spinner } from '@onecoach/ui';
+import { Spinner, Heading, Text, Button } from '@onecoach/ui';
 import type { NutritionPlan, Meal, NutritionDay } from '@onecoach/types-nutrition';
 
 // --- HELPER COMPONENTS ---
@@ -154,13 +154,14 @@ export function NutritionPlanDashboard({
         {/* --- Header Section --- */}
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="flex-1">
-            <button
+            <Button
+              variant="ghost"
               onClick={onBack}
-              className="mb-6 flex items-center gap-2 text-sm font-medium text-slate-400 transition-colors hover:text-white"
+              className="mb-6 gap-2 text-sm font-medium text-slate-400 transition-colors hover:text-white"
             >
               <ChevronLeft className="h-4 w-4" />
               {labels.backToPlans}
-            </button>
+            </Button>
 
             <div className="mb-3 flex items-center gap-3">
               <span className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold tracking-wider text-emerald-400 uppercase">
@@ -172,31 +173,33 @@ export function NutritionPlanDashboard({
               </span>
             </div>
 
-            <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl uppercase">
+            <Heading level={1} size="4xl" weight="extrabold" className="tracking-tight text-white sm:text-5xl uppercase">
               {plan.name}
-            </h1>
+            </Heading>
             {plan.description && (
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
+              <Text size="lg" className="mt-4 max-w-2xl leading-relaxed text-slate-300">
                 {plan.description}
-              </p>
+              </Text>
             )}
           </div>
 
           {/* Header Actions */}
           <div className="flex gap-3">
-            <button
+            <Button
+              variant="outline"
               onClick={() => router.push(`/nutrition/${planId}/shopping`)}
-              className="flex h-10 items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm font-semibold text-emerald-400 shadow-sm transition-all hover:border-emerald-500/30 hover:bg-emerald-500/10"
+              className="h-10 gap-2 border-slate-800 bg-slate-900 text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/10"
             >
               <ShoppingCart className="h-4 w-4" />
               {labels.shoppingList}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={onDelete}
-              className="flex h-10 items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-4 text-sm font-semibold text-rose-500 shadow-sm transition-all hover:border-rose-500/30 hover:bg-rose-500/10"
+              className="h-10 gap-2 border-slate-800 bg-slate-900 text-rose-500 hover:border-rose-500/30 hover:bg-rose-500/10"
             >
               {labels.delete}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -221,13 +224,13 @@ export function NutritionPlanDashboard({
                         </span>
                       </div>
 
-                      <h2 className="mb-2 text-3xl font-bold text-white">
+                      <Heading level={2} size="3xl" weight="bold" className="mb-2 text-white">
                         {labels.day} {todayPreview.dayNumber}
-                      </h2>
-                      <p className="text-neutral-400">
+                      </Heading>
+                      <Text className="text-neutral-400">
                         {labels.week} {todayPreview.weekNumber} •{' '}
                         {Math.round(todayPreview.day.totalMacros.calories)} kcal
-                      </p>
+                      </Text>
 
                       <div className="mt-4 flex gap-3">
                         <div className="flex flex-col">
@@ -259,10 +262,10 @@ export function NutritionPlanDashboard({
                       </div>
                     </div>
 
-                    <button
+                    <Button
                       onClick={handleTrackToday}
                       disabled={isTracking}
-                      className="group/btn relative flex w-full items-center justify-center gap-3 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] hover:bg-emerald-500 hover:shadow-emerald-500/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+                      className="w-full justify-center gap-3 rounded-xl bg-emerald-600 px-8 py-6 text-base font-bold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-500 hover:shadow-emerald-500/50 sm:w-auto"
                     >
                       {isTracking ? (
                         <Spinner size="sm" className="text-white" />
@@ -272,7 +275,7 @@ export function NutritionPlanDashboard({
                           {labels.trackNow}
                         </>
                       )}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -280,10 +283,10 @@ export function NutritionPlanDashboard({
 
             {/* Weekly Schedule */}
             <div className="space-y-6">
-              <h3 className="flex items-center gap-2 text-xl font-bold text-white">
+              <Heading level={3} size="xl" weight="bold" className="flex items-center gap-2 text-white">
                 <Calendar className="h-5 w-5 text-slate-400" />
                 {labels.foodPlan}
-              </h3>
+              </Heading>
 
               <div className="space-y-8">
                 {(plan.weeks || []).map((week) => (
@@ -294,9 +297,9 @@ export function NutritionPlanDashboard({
                         {week.weekNumber}
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold tracking-wide text-white uppercase">
+                        <Heading level={4} size="sm" weight="bold" className="tracking-wide text-white uppercase">
                           {labels.week} {week.weekNumber}
-                        </h4>
+                        </Heading>
                       </div>
                       <div className="h-px flex-1 bg-slate-800" />
                     </div>
@@ -319,9 +322,9 @@ export function NutritionPlanDashboard({
                               </span>
                             </div>
 
-                            <h5 className="mb-3 text-lg font-bold text-white">
+                            <Heading level={5} size="lg" weight="bold" className="mb-3 text-white">
                               {labels.day} {day.dayNumber}
-                            </h5>
+                            </Heading>
 
                             <div className="mb-4 flex flex-wrap gap-2">
                               <MacroPill label="P" value={day.totalMacros.protein} color="blue" />
@@ -372,9 +375,9 @@ export function NutritionPlanDashboard({
             <div className="sticky top-8 space-y-6">
               {/* Program Stats */}
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-sm backdrop-blur-xl">
-                <h3 className="mb-4 text-sm font-bold tracking-widest text-slate-400 uppercase">
+                <Heading level={3} size="sm" weight="bold" className="mb-4 tracking-widest text-slate-400 uppercase">
                   {labels.macroGoals}
-                </h3>
+                </Heading>
                 <div className="space-y-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -438,9 +441,9 @@ export function NutritionPlanDashboard({
 
               {/* Goals */}
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-sm backdrop-blur-xl">
-                <h3 className="mb-4 text-sm font-bold tracking-widest text-slate-400 uppercase">
+                <Heading level={3} size="sm" weight="bold" className="mb-4 tracking-widest text-slate-400 uppercase">
                   {labels.goals}
-                </h3>
+                </Heading>
                 <div className="flex flex-wrap gap-2">
                   {(plan.goals || [labels.maintenance]).map((goal, idx) => (
                     <span

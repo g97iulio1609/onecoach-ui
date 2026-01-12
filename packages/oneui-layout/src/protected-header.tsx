@@ -6,8 +6,8 @@
 
 'use client';
 
-import { Link } from 'app/navigation';
-import { usePathname } from 'app/navigation';
+import { Link, usePathname } from './navigation';
+
 import { useSignOut } from '@onecoach/lib-api/hooks';
 import { useHeaderActions } from '@onecoach/lib-stores';
 import {
@@ -24,7 +24,8 @@ import {
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from '@onecoach/ui-core';
-import { LanguageSwitcher } from '@/components/language-switcher';
+import { LanguageSwitcher } from './language-switcher';
+
 import { useTranslations } from 'next-intl';
 import { isAdminRole } from "@onecoach/types-core";
 import { normalizeRole } from "@onecoach/types";

@@ -1,5 +1,6 @@
 import type React from 'react';
 import { cn } from '@onecoach/lib-design-system';
+import { Heading, Text } from '@onecoach/ui';
 import { KpiCard, type KpiCardProps } from './kpi-card';
 
 export interface DashboardHeaderProps {
@@ -21,11 +22,13 @@ export function DashboardHeader({
     <div className={cn('mb-10 flex flex-col gap-6', className)}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <Heading level={1} size="3xl" weight="bold" className="tracking-tight text-neutral-900 dark:text-white">
             {title}
-          </h1>
+          </Heading>
           {description && (
-            <p className="text-base text-neutral-600 dark:text-neutral-400">{description}</p>
+            <Text size="base" className="text-neutral-600 dark:text-neutral-400">
+              {description}
+            </Text>
           )}
         </div>
         {actions && <div className="flex flex-wrap gap-3">{actions}</div>}

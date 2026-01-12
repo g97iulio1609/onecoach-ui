@@ -11,7 +11,7 @@ import { useSkills } from '@onecoach/lib-visual-builder/hooks';
 import type { Skill } from '@onecoach/lib-visual-builder/types';
 import { Plus, Edit, Trash2, Code, Rocket, Calendar } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { Checkbox } from '@onecoach/ui';
+import { Checkbox, Heading, Text, Button, Badge } from '@onecoach/ui';
 
 interface SkillsListProps {
   onEdit?: (skill: Skill) => void;
@@ -73,7 +73,7 @@ export function SkillsList({ onEdit, onCreate }: SkillsListProps) {
   if (loading && skills.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="text-lg text-gray-500">{t('common.skills_list.loading_skills')}</div>
+        <Text size="lg" className="text-gray-500">{t('common.skills_list.loading_skills')}</Text>
       </div>
     );
   }
@@ -83,18 +83,18 @@ export function SkillsList({ onEdit, onCreate }: SkillsListProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{t('common.skills_list.my_skills')}</h1>
-          <p className="text-muted-foreground">
+          <Heading level={1} size="3xl" weight="bold">{t('common.skills_list.my_skills')}</Heading>
+          <Text className="text-muted-foreground">
             {t('common.skills_list.manage_your_custom_skills')}
-          </p>
+          </Text>
         </div>
-        <button
+        <Button
           onClick={onCreate}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          className="gap-2"
         >
           <Plus size={16} />
           {t('common.skills_list.create_new_skill')}
-        </button>
+        </Button>
       </div>
 
       {/* Filters */}
@@ -122,20 +122,20 @@ export function SkillsList({ onEdit, onCreate }: SkillsListProps) {
             {/* Header */}
             <div className="mb-3 flex items-start justify-between">
               <div className="flex-1">
-                <h3 className="font-semibold">{skill.name}</h3>
-                <p className="text-sm text-gray-600">v{skill.version}</p>
+                <Heading level={3} weight="semibold">{skill.name}</Heading>
+                <Text size="sm" className="text-gray-600">v{skill.version}</Text>
               </div>
               {skill.isActive && (
-                <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+                <Badge variant="success">
                   Active
-                </span>
+                </Badge>
               )}
             </div>
 
             {/* Description */}
-            <p className="mb-4 line-clamp-2 text-sm text-gray-600">
+            <Text size="sm" className="mb-4 line-clamp-2 text-gray-600">
               {skill.description || 'No description'}
-            </p>
+            </Text>
 
             {/* Metadata */}
             <div className="mb-4 space-y-1 text-xs text-gray-500">
@@ -154,36 +154,43 @@ export function SkillsList({ onEdit, onCreate }: SkillsListProps) {
 
             {/* Actions */}
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => onEdit?.(skill)}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+                className="flex-1 gap-1"
               >
                 <Edit size={14} />
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                size="sm"
                 onClick={() => handleGenerateCode(skill.id, skill.name)}
-                className="flex items-center justify-center gap-1 rounded-lg bg-purple-600 px-3 py-1.5 text-sm text-white hover:bg-purple-700"
+                className="gap-1 bg-purple-600 hover:bg-purple-700 text-white border-0"
                 title={t('common.skills_list.generate_code')}
               >
                 <Code size={14} />
-              </button>
+              </Button>
               {!skill.isActive && (
-                <button
+                <Button
+                  variant="success"
+                  size="sm"
                   onClick={() => handleDeploy(skill.id, skill.name)}
-                  className="flex items-center justify-center gap-1 rounded-lg bg-green-600 px-3 py-1.5 text-sm text-white hover:bg-green-700"
+                  className="gap-1"
                   title="Deploy"
                 >
                   <Rocket size={14} />
-                </button>
+                </Button>
               )}
-              <button
+              <Button
+                variant="danger"
+                size="sm"
                 onClick={() => handleDelete(skill.id, skill.name)}
-                className="flex items-center justify-center gap-1 rounded-lg bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700"
+                className="gap-1"
                 title="Delete"
               >
                 <Trash2 size={14} />
-              </button>
+              </Button>
             </div>
           </div>
         ))}
@@ -191,14 +198,14 @@ export function SkillsList({ onEdit, onCreate }: SkillsListProps) {
 
       {skills.length === 0 && !loading && (
         <div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
-          <p className="mb-4 text-lg text-gray-600">{t('common.skills_list.no_skills_yet')}</p>
-          <button
+          <Text size="lg" className="mb-4 text-gray-600">{t('common.skills_list.no_skills_yet')}</Text>
+          <Button
             onClick={onCreate}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            className="gap-2"
           >
             <Plus size={16} />
             {t('common.skills_list.create_your_first_skill')}
-          </button>
+          </Button>
         </div>
       )}
     </div>

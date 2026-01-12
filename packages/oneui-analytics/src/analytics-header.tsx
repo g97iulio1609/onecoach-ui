@@ -1,4 +1,4 @@
-import { Card } from '@onecoach/ui';
+import { Card, Heading, Text, Button } from '@onecoach/ui';
 import { Calendar, Download, Share2 } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
 
@@ -30,44 +30,60 @@ export function AnalyticsHeader({
     <div className={cn('mb-8 space-y-4', className)}>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">{title}</h1>
-          {subtitle && <p className="mt-1 text-neutral-500 dark:text-neutral-400">{subtitle}</p>}
+          <Heading level={1} size="3xl" weight="bold" className="text-neutral-900 dark:text-white">
+            {title}
+          </Heading>
+          {subtitle && (
+            <Text className="mt-1 text-neutral-500 dark:text-neutral-400">
+              {subtitle}
+            </Text>
+          )}
         </div>
 
         <div className="flex gap-2">
-          <button className="rounded-full border border-white/10 bg-white/10 p-2 transition-colors hover:bg-white/20">
+          <Button
+            variant="ghost"
+            className="rounded-full border border-white/10 bg-white/10 p-2 transition-colors hover:bg-white/20 h-auto w-auto"
+          >
             <Download size={20} className="text-neutral-700 dark:text-neutral-300" />
-          </button>
-          <button className="rounded-full border border-white/10 bg-white/10 p-2 transition-colors hover:bg-white/20">
+          </Button>
+          <Button
+            variant="ghost"
+            className="rounded-full border border-white/10 bg-white/10 p-2 transition-colors hover:bg-white/20 h-auto w-auto"
+          >
             <Share2 size={20} className="text-neutral-700 dark:text-neutral-300" />
-          </button>
+          </Button>
         </div>
       </div>
 
       <Card variant="glass" className="flex items-center justify-between p-2">
         <div className="flex items-center space-x-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800">
           {periods.map((p) => (
-            <button
+            <Button
               key={p.value}
               onClick={() => onPeriodChange(p.value)}
+              variant="ghost"
               className={cn(
-                'rounded-md px-3 py-1.5 text-sm font-medium transition-all',
+                'rounded-md px-3 py-1.5 text-sm font-medium transition-all h-auto',
                 period === p.value
                   ? 'bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-white'
                   : 'text-neutral-500 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >
               {p.label}
-            </button>
+            </Button>
           ))}
         </div>
 
-        <button className="flex items-center space-x-2 rounded-lg px-3 py-1.5 transition-colors hover:bg-white/10">
+        <Button
+          variant="ghost"
+          className="flex items-center space-x-2 rounded-lg px-3 py-1.5 transition-colors hover:bg-white/10 h-auto"
+        >
           <Calendar size={16} className="text-neutral-500 dark:text-neutral-400" />
           <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
             Personalizza
           </span>
-        </button>
+        </Button>
       </Card>
     </div>
   );

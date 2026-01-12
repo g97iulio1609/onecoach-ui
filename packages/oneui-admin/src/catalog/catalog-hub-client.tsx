@@ -2,7 +2,7 @@
 
 import { CatalogHeader, CatalogGrid, ResourceCard } from '@onecoach/ui';
 import { Dumbbell, UtensilsCrossed, FileText, ArrowRight, type LucideIcon } from 'lucide-react';
-import { useRouter } from 'app/navigation';
+import { useRouter } from '@onecoach/ui-layout';
 import { useTranslations, useLocale } from 'next-intl';
 
 interface CatalogHubClientProps {

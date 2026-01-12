@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, Pause, Play, Square } from 'lucide-react';
-import { Button } from '@onecoach/ui-core';
+import { Button, Heading, Text } from '@onecoach/ui';
 
 interface LiveWorkoutHeaderProps {
   programName?: string;
@@ -48,20 +48,24 @@ export function LiveWorkoutHeader({
     <div className="flex items-center justify-between px-4 py-3">
       {/* Left: Back + Title */}
       <div className="flex items-center gap-3">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onBack}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white"
+          className="rounded-full text-neutral-400 hover:bg-neutral-800 hover:text-white"
           aria-label="Back"
         >
           <ArrowLeft className="h-5 w-5" />
-        </button>
+        </Button>
         <div>
-          <h1 className="text-sm font-bold leading-tight text-white">
+        <div>
+          <Heading level={1} size="xl" weight="bold" className="leading-tight text-white">
             {programName || t('common.workout') || 'Training Session'}
-          </h1>
+          </Heading>
           {sessionLabel && (
-            <p className="text-xs text-neutral-500">{sessionLabel}</p>
+            <Text size="xs" className="text-neutral-500">{sessionLabel}</Text>
           )}
+        </div>
         </div>
       </div>
 

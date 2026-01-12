@@ -10,7 +10,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import { Search, Loader2, Bookmark, Clock, X } from 'lucide-react';
-import type { NutritionTemplate, Meal } from '@onecoach/types';
+import type { NutritionTemplate, Meal } from '@onecoach/types-nutrition';
 import { useDebounce } from '@onecoach/hooks';
 
 interface MealTemplateSelectorProps {

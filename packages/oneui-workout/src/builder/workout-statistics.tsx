@@ -21,6 +21,7 @@ import {
 } from 'recharts';
 import { cn } from '@onecoach/lib-design-system';
 import { Activity, Dumbbell, TrendingUp, Zap, Layers, Repeat } from 'lucide-react';
+import { Heading, Text } from '@onecoach/ui';
 import type { NameType, Payload, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 import { WorkoutStatisticsService } from '@onecoach/lib-workout';
 import { motion, type Variants } from 'framer-motion';
@@ -216,15 +217,15 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
                 <item.icon size={24} />
               </div>
               <div>
-                <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                <Text size="sm" weight="medium" className="text-neutral-500 dark:text-neutral-400">
                   {item.label}
-                </p>
-                <p className="text-2xl font-bold text-neutral-900 dark:text-white">
+                </Text>
+                <Text weight="bold" className="text-2xl text-neutral-900 dark:text-white">
                   {item.value}
                   {item.sub && (
-                    <span className="text-sm font-normal text-neutral-500">{item.sub}</span>
+                    <Text as="span" size="sm" weight="normal" className="text-neutral-500">{item.sub}</Text>
                   )}
-                </p>
+                </Text>
               </div>
             </div>
           </motion.div>
@@ -244,9 +245,9 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
               <div className="rounded-md bg-blue-500/10 p-1.5 ring-1 ring-blue-500/20">
                 <Layers size={18} className="text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+              <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
                 {t('volumePerMuscle')}
-              </h3>
+              </Heading>
             </div>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -307,9 +308,9 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
               <div className="rounded-md bg-purple-500/10 p-1.5 ring-1 ring-purple-500/20">
                 <Activity size={18} className="text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+              <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
                 {t('balance')}
-              </h3>
+              </Heading>
             </div>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -343,9 +344,9 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
             <div className="rounded-md bg-emerald-500/10 p-1.5 ring-1 ring-emerald-500/20">
               <TrendingUp size={18} className="text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+            <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
               {t('weeklyProgression')}
-            </h3>
+            </Heading>
           </div>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -427,9 +428,9 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
                 <div className="rounded-md bg-orange-500/10 p-1.5 ring-1 ring-orange-500/20">
                   <Repeat size={18} className="text-orange-600 dark:text-orange-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
                   {t('exerciseAnalysis')}
-                </h3>
+                </Heading>
               </div>
             </div>
             <div className="flex-1 overflow-x-auto">
@@ -508,9 +509,9 @@ export function WorkoutStatistics({ program, customProgram }: WorkoutStatisticsP
                 <div className="rounded-md bg-pink-500/10 p-1.5 ring-1 ring-pink-500/20">
                   <Dumbbell size={18} className="text-pink-600 dark:text-pink-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
                   {t('muscleGroupDetails')}
-                </h3>
+                </Heading>
               </div>
             </div>
             <div className="flex-1 overflow-x-auto">

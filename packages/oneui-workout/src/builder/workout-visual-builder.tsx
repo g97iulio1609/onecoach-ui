@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -12,6 +14,7 @@ import { ArrowLeft, BarChart2, Layout, TrendingUp, Dumbbell, Upload } from 'luci
 // import { WorkoutClipboardProvider } from './workout-clipboard-provider';
 import type { LucideIcon } from 'lucide-react';
 import { WorkoutStatus } from '@onecoach/types/client';
+import { Text, Button } from '@onecoach/ui';
 import { DayEditor } from './day-editor';
 import { WorkoutStatistics } from './workout-statistics';
 import { ProgressionManager } from './progression-manager';
@@ -228,43 +231,34 @@ export function WorkoutVisualBuilder({ initialProgram, onSave, onImportClick }: 
   ); */
 
   // 1RM Button logic (kept as is, passed to headerActions)
+  // 1RM Button logic
   const oneRmButton = (
-    <button
+    <Button
+      variant="secondary"
       onClick={() => setIsOneRmModalOpen(true)}
-      className={cn(
-        'group flex items-center gap-2 rounded-full border transition-colors',
-        'border-neutral-200 bg-neutral-50 text-neutral-600',
-        'hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900',
-        'dark:border-white/10 dark:bg-white/5 dark:text-neutral-400',
-        'dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white',
-        'h-9 w-9 justify-center sm:h-auto sm:w-auto sm:px-4 sm:py-2'
-      )}
+      className="h-9 w-9 justify-center rounded-full sm:h-auto sm:w-auto sm:px-4 sm:py-2"
     >
-      <Dumbbell size={16} />
-      <span className="hidden text-sm font-medium sm:inline">{t('actions.oneRm')}</span>
-    </button>
+      <Dumbbell size={16} className="mr-2" />
+      <span className="hidden sm:inline">{t('actions.oneRm')}</span>
+    </Button>
   );
 
   const importButton = (
-    <button
+    <Button
+      variant="success"
       onClick={() => {
         if (onImportClick) onImportClick();
          /* else setIsImportModalOpen(true); */
       }}
       className={cn(
-        'group flex items-center gap-2 rounded-full border transition-colors',
-        'border-emerald-200 bg-emerald-50 text-emerald-600',
-        'hover:border-emerald-300 hover:bg-emerald-100 hover:text-emerald-700',
-        'dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400',
-        'dark:hover:border-emerald-500/40 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300',
-        'h-9 w-9 justify-center sm:h-auto sm:w-auto sm:px-4 sm:py-2',
+        "h-9 w-9 justify-center rounded-full sm:h-auto sm:w-auto sm:px-4 sm:py-2",
         !onImportClick && 'hidden'
       )}
       title={t('actions.importFile')}
     >
-      <Upload size={16} />
-      <span className="hidden text-sm font-medium sm:inline">{t('actions.import')}</span>
-    </button>
+      <Upload size={16} className="mr-2" />
+      <span className="hidden sm:inline">{t('actions.import')}</span>
+    </Button>
   );
 
   // Mobile header injection: only leftContent for navigation breadcrumb.
@@ -337,24 +331,25 @@ export function WorkoutVisualBuilder({ initialProgram, onSave, onImportClick }: 
         }
         mobileActionsMenu={
           <div className="flex flex-col gap-1 p-1">
-            <button
+            <Button
+              variant="ghost"
               onClick={() => {
                 // setIsImportModalOpen(true);
                  if (onImportClick) onImportClick();
-                // Close menu logic would be needed if controlled, but here it's inside content
               }}
-              className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-white/10"
+              className="w-full justify-start gap-2"
             >
               <Upload size={16} />
               {t('actions.import')}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => setIsOneRmModalOpen(true)}
-              className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-white/10"
+              className="w-full justify-start gap-2"
             >
               <Dumbbell size={16} />
               {t('actions.oneRm')}
-            </button>
+            </Button>
           </div>
         }
       >
@@ -372,10 +367,10 @@ export function WorkoutVisualBuilder({ initialProgram, onSave, onImportClick }: 
                   <Layout className="h-10 w-10" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xl font-medium text-neutral-900 dark:text-neutral-300">
+                  <Text size="xl" weight="medium" className="text-neutral-900 dark:text-neutral-300">
                     {t('emptyState.noDaySelected')}
-                  </p>
-                  <p className="text-sm text-neutral-500">{t('emptyState.selectDay')}</p>
+                  </Text>
+                  <Text size="sm" className="text-neutral-500">{t('emptyState.selectDay')}</Text>
                 </div>
               </div>
             )

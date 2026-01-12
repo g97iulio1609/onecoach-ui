@@ -7,7 +7,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Input, Select } from '@onecoach/ui';
+import { Input, Select, Heading, Text } from '@onecoach/ui';
 import { CoachClientCard } from './coach-client-card';
 import { useCoachClients } from '@onecoach/features/coach/hooks';
 import { LoadingState, ErrorState } from '@onecoach/ui/components';
@@ -48,8 +48,8 @@ export function CoachClientsList() {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Users className="mb-4 h-12 w-12 text-neutral-300 dark:text-neutral-600" />
-        <h3 className="mb-2 text-lg font-semibold">{t('empty.title')}</h3>
-        <p className="text-neutral-500 dark:text-neutral-400">{t('empty.description')}</p>
+        <Heading level={3} size="lg" weight="semibold" className="mb-2">{t('empty.title')}</Heading>
+        <Text className="text-neutral-500 dark:text-neutral-400">{t('empty.description')}</Text>
       </div>
     );
   }

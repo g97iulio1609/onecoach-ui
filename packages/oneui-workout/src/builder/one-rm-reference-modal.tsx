@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useLayoutEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Modal, ModalFooter, Button } from '@onecoach/ui';

@@ -12,5 +12,10 @@ export { OperationsTab } from './operations-tab';
 export { AnalyticsTab } from './analytics-tab';
 export { ConversationsTab } from './conversations-tab';
 
+// Consolidated tabs (performance optimized)
+export { InsightsTab } from './insights-tab';
+export { AIConfigTab } from './ai-config-tab';
+export { PlatformTab } from './platform-tab';
+
 export * from './types';
 export * from './constants';

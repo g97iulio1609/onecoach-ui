@@ -14,7 +14,8 @@
 import { useContext } from 'react';
 import { QueryClientContext } from '@tanstack/react-query';
 import { QueryProvider } from '@onecoach/lib-api/react-query';
-import { RealtimeProvider } from '@/components/providers/realtime-provider';
+import { RealtimeProvider } from '@onecoach/ui-core';
+
 import { useGlobalCopilotContext } from '@onecoach/lib-copilot';
 
 interface ProtectedClientLayoutProps {

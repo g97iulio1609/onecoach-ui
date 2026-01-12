@@ -10,16 +10,24 @@
       "default": "./src/index.ts"
     }
   },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "@onecoach/ui-core": "workspace:*",
+    "@onecoach/ui-layout": "workspace:*",
     "@onecoach/lib-design-system": "workspace:*",
+    "@onecoach/lib-api-client": "workspace:*",
+    "@onecoach/hooks": "workspace:*",
+    "@onecoach/schemas": "workspace:*",
     "@onecoach/types-domain": "workspace:*",
     "@onecoach/ui": "workspace:*",
-    "lucide-react": "^0.562.0",
-    "next-intl": "^3.26.3"
+    "@onecoach/types-database": "workspace:*",
+    "lucide-react": "^0.562.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   }
 }

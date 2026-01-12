@@ -6,7 +6,7 @@ import { Info } from 'lucide-react';
 import { getExerciseSets } from '@onecoach/one-workout';
 import { LiveSetTracker } from './live-set-tracker';
 import { ExerciseInstructions } from './exercise-instructions';
-import { Button } from '@onecoach/ui-core';
+import { Button, Heading, Text, Badge } from '@onecoach/ui';
 import type { Exercise, ExerciseSet } from '@onecoach/schemas';
 
 export interface LiveExerciseCardProps {
@@ -35,18 +35,19 @@ export function LiveExerciseCard({
     <div className={`flex flex-col ${className}`}>
       {/* Exercise Header */}
       <div className="mb-6 text-center">
-        <h2 className="mb-3 text-3xl font-black tracking-tight text-white">
+        <Heading level={2} size="3xl" weight="extrabold" className="mb-3 tracking-tight text-white">
           {exercise.name}
-        </h2>
+        </Heading>
         {/* Muscle Tags */}
         <div className="flex flex-wrap justify-center gap-2">
           {muscleGroups.map((mg: string) => (
-            <span
+            <Badge
               key={mg}
-              className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-semibold text-neutral-300"
+              variant="outline"
+              className="bg-neutral-800 text-neutral-300 border-0"
             >
               {t(`muscles.${mg.toLowerCase()}`) || mg}
-            </span>
+            </Badge>
           ))}
         </div>
         {/* Info Button */}
@@ -92,9 +93,9 @@ export function LiveExerciseCard({
 
         {sets.length === 0 && (
           <div className="rounded-2xl border border-dashed border-neutral-700 py-10 text-center">
-            <p className="text-sm text-neutral-500">
+            <Text size="sm" className="text-neutral-500">
               {t('live_exercise_card.nessun_set_programmato_per_questo_eserci')}
-            </p>
+            </Text>
           </div>
         )}
       </div>

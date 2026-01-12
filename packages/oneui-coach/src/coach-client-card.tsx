@@ -4,7 +4,7 @@
  * Display card for a single client
  */
 'use client';
-import { Avatar, Badge, Card } from '@onecoach/ui';
+import { Avatar, Badge, Card, Heading, Text } from '@onecoach/ui';
 import { formatDistanceToNow } from 'date-fns';
 import type { Locale } from 'date-fns';
 import { it, enUS } from 'date-fns/locale';
@@ -57,12 +57,12 @@ export function CoachClientCard({ client }: CoachClientCardProps) {
                   bordered
                 />
                 <div>
-                  <h3 className="line-clamp-1 font-semibold text-neutral-900 dark:text-neutral-100">
+                  <Heading level={3} size="md" weight="semibold" className="line-clamp-1 text-neutral-900 dark:text-neutral-100">
                     {displayName}
-                  </h3>
+                  </Heading>
                   <div className="flex items-center gap-1.5 text-xs text-neutral-500">
                     <Clock className="h-3 w-3" />
-                    <span>{lastActiveText}</span>
+                    <Text size="xs" className="text-neutral-500">{lastActiveText}</Text>
                   </div>
                 </div>
               </div>

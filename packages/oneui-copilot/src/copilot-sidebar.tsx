@@ -28,6 +28,10 @@ export interface CopilotSidebarProps {
     | 'analytics'
     | 'oneagenda'
     | 'exercise'
+    | 'marketplace'
+    | 'athlete'
+    | 'settings'
+    | 'admin'
     | 'general';
   contextData?: NutritionPlan | WorkoutProgram | Record<string, unknown> | null;
   onContextUpdate?: (

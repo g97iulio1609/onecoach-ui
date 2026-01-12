@@ -7,6 +7,7 @@ import { getExerciseSets } from '@onecoach/one-workout';
 import { formatDuration } from '@onecoach/lib-shared';
 import type { WorkoutSession } from '@onecoach/types-workout';
 import { type Exercise } from '@onecoach/schemas';
+import { Button, Heading, Text } from '@onecoach/ui';
 
 interface WorkoutCompleteModalProps {
   isOpen: boolean;
@@ -113,13 +114,14 @@ export function WorkoutCompleteModal({
         <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-indigo-500/20 blur-[80px]" />
 
         {/* Close Button */}
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 rounded-full bg-white/5 p-2 text-neutral-400 backdrop-blur-sm transition-colors hover:bg-white/10 hover:text-white"
+          className="absolute top-4 right-4 z-20 rounded-full bg-white/5 text-neutral-400 backdrop-blur-sm hover:bg-white/10 hover:text-white"
         >
           <X className="h-5 w-5" />
-        </button>
+        </Button>
 
         <div className="relative z-10 px-6 pt-10 pb-8 text-center">
           {/* Hero Icon */}
@@ -127,12 +129,12 @@ export function WorkoutCompleteModal({
             <Trophy className="h-10 w-10 text-white drop-shadow-md" />
           </div>
 
-          <h2 className="mb-2 text-3xl font-extrabold tracking-tight text-white">
+          <Heading level={2} size="3xl" weight="extrabold" className="mb-2 tracking-tight text-white">
             {t('workout_complete_modal.allenamento_completato')}
-          </h2>
-          <p className="mb-8 text-neutral-400">
+          </Heading>
+          <Text size="base" className="mb-8 text-neutral-400">
             {t('workout_complete_modal.ottimo_lavoro_continua_cosi')}
-          </p>
+          </Text>
 
           {/* Stats Grid - Glass Style */}
           <div className="mb-8 grid grid-cols-2 gap-3">
@@ -177,33 +179,34 @@ export function WorkoutCompleteModal({
                 <Trophy className="h-4 w-4 text-indigo-400" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-indigo-300">
+                <Heading level={4} size="sm" weight="bold" className="text-indigo-300">
                   {t('workout_complete_modal.nessun_nuovo_record')}
-                </h4>
-                <p className="mt-0.5 text-xs text-indigo-200/60">
+                </Heading>
+                <Text size="xs" className="mt-0.5 text-indigo-200/60">
                   {t('workout_complete_modal.spingi_di_piu_la_prossima_volta_per_batt')}
-                </p>
+                </Text>
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 sm:flex-row">
-            <button
+            <Button
+              variant="outline"
               onClick={onClose}
-              className="order-2 flex-1 rounded-xl border border-neutral-700 bg-transparent py-3.5 text-sm font-bold text-neutral-300 transition-all hover:bg-white/5 hover:text-white sm:order-1"
+              className="order-2 flex-1 rounded-xl border-neutral-700 bg-transparent py-6 text-sm font-bold text-neutral-300 hover:bg-white/5 hover:text-white sm:order-1"
             >
               Chiudi
-            </button>
+            </Button>
 
             {onViewSummary && (
-              <button
+              <Button
                 onClick={onViewSummary}
-                className="order-1 flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] hover:bg-emerald-500 sm:order-2"
+                className="order-1 flex-1 gap-2 rounded-xl bg-emerald-600 py-6 text-sm font-bold text-white shadow-lg shadow-emerald-500/25 hover:scale-[1.02] hover:bg-emerald-500 sm:order-2"
               >
                 {t('workout_complete_modal.vedi_dettagli')}
                 <ArrowRight className="h-4 w-4" />
-              </button>
+              </Button>
             )}
           </div>
         </div>

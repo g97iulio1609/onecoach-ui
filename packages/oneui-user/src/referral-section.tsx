@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { Copy, Users, Coins, Share2, Check } from 'lucide-react';
-import { Button, IconBadge, Input } from '@onecoach/ui';
+import { Button, IconBadge, Input, Heading, Text } from '@onecoach/ui';
 import { useTranslations } from 'next-intl';
 import { darkModeClasses, cn } from '@onecoach/lib-design-system';
 import { LoadingState } from '@onecoach/ui/components';
@@ -96,26 +96,26 @@ export function ReferralSection() {
         <div className="mb-6 flex items-center gap-3">
           <IconBadge icon={Share2} variant="success" size="md" />
           <div className="min-w-0 flex-1">
-            <h2 className="text-base font-semibold break-words text-neutral-900 sm:text-lg dark:text-neutral-100">
+            <Heading level={2} size="md" weight="semibold" className="break-words text-neutral-900 sm:text-lg dark:text-neutral-100">
               {t('common.ui.referralSuccess')}
-            </h2>
-            <p className="text-xs break-words text-neutral-600 sm:text-sm dark:text-neutral-300">
+            </Heading>
+            <Text size="xs" className="break-words text-neutral-600 sm:text-sm dark:text-neutral-300">
               {t('common.ui.referralDesc')}
-            </p>
+            </Text>
           </div>
         </div>
         <div className={cn('rounded-lg border p-4 text-center', darkModeClasses.card.base)}>
           <div className="mb-3 flex justify-center">
             <IconBadge icon={Share2} variant="neutral" size="md" />
           </div>
-          <p className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-200">
+          <Text size="sm" weight="medium" className="mb-1 text-neutral-700 dark:text-neutral-200">
             {error?.includes('non è attualmente disponibile')
               ? t('common.empty.noPlans')
               : t('common.errors.generic')}
-          </p>
-          <p className="mb-4 text-xs text-neutral-600 dark:text-neutral-400">
+          </Text>
+          <Text size="xs" className="mb-4 text-neutral-600 dark:text-neutral-400">
             {error || t('common.empty.noData')}
-          </p>
+          </Text>
           <Button variant="outline" size="sm" onClick={fetchData}>
             {t('common.ui.retry')}
           </Button>
@@ -133,20 +133,20 @@ export function ReferralSection() {
       <div className="mb-6 flex items-center gap-3">
         <IconBadge icon={Share2} variant="success" size="md" />
         <div className="min-w-0 flex-1">
-          <h2 className="text-base font-semibold break-words text-neutral-900 sm:text-lg dark:text-neutral-100">
+          <Heading level={2} size="md" weight="semibold" className="break-words text-neutral-900 sm:text-lg dark:text-neutral-100">
             {t('common.ui.referralSuccess')}
-          </h2>
-          <p className="text-xs break-words text-neutral-600 sm:text-sm dark:text-neutral-300">
+          </Heading>
+          <Text size="xs" className="break-words text-neutral-600 sm:text-sm dark:text-neutral-300">
             {t('common.ui.referralDesc')}
-          </p>
+          </Text>
         </div>
       </div>
       <div className="grid gap-6 overflow-x-hidden lg:grid-cols-2">
         {/* Referral Code Card */}
         <div className={cn('rounded-lg border p-5', darkModeClasses.card.base)}>
-          <h3 className="mb-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          <Heading level={3} size="sm" weight="medium" className="mb-4 text-neutral-700 dark:text-neutral-300">
             {t('common.ui.referralCode')}
-          </h3>
+          </Heading>
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
               <Input
@@ -164,9 +164,9 @@ export function ReferralSection() {
               {copied ? t('common.ui.done') : t('common.actions.copy')}
             </Button>
           </div>
-          <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+          <Text size="xs" className="mt-3 text-neutral-500 dark:text-neutral-400">
             {t('common.ui.welcomeBonus')}
-          </p>
+          </Text>
         </div>
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
@@ -177,9 +177,9 @@ export function ReferralSection() {
                 {t('common.ui.invitedFriends')}
               </span>
             </div>
-            <p className="text-2xl font-bold text-neutral-900 dark:text-white">
+            <Heading level={3} size="2xl" weight="bold" className="text-neutral-900 dark:text-white">
               {data.stats.totalReferrals}
-            </p>
+            </Heading>
           </div>
           <div className={cn('rounded-lg border p-4', darkModeClasses.card.base)}>
             <div className="mb-2 flex items-center gap-2">
@@ -188,13 +188,13 @@ export function ReferralSection() {
                 {t('common.ui.earnedCredits')}
               </span>
             </div>
-            <p className="text-2xl font-bold text-neutral-900 dark:text-white">
+            <Heading level={3} size="2xl" weight="bold" className="text-neutral-900 dark:text-white">
               {data.stats.totalEarnings}
-            </p>
+            </Heading>
             {data.stats.pendingEarnings > 0 && (
-              <p className="mt-1 text-xs text-yellow-600 dark:text-yellow-500">
+              <Text size="xs" className="mt-1 text-yellow-600 dark:text-yellow-500">
                 + {data.stats.pendingEarnings} {t('common.ui.pending')}
-              </p>
+              </Text>
             )}
           </div>
         </div>

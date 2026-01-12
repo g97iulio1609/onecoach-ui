@@ -14,7 +14,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Card, LoadingIndicator } from '@onecoach/ui';
+import { Card, LoadingIndicator, Text, Heading } from '@onecoach/ui';
 
 import { AlertTriangle } from 'lucide-react';
 
@@ -61,7 +61,9 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     return (
       <div className="rounded-lg border border-white/20 bg-white/80 p-3 shadow-lg backdrop-blur-md dark:bg-black/80">
-        <p className="mb-2 font-medium text-neutral-900 dark:text-white">{label}</p>
+        <Text weight="medium" className="mb-2 text-neutral-900 dark:text-white">
+          {label}
+        </Text>
         {payload.map((entry, index) => {
           if (!entry) return null;
           return (
@@ -108,7 +110,7 @@ export function AnalyticsChart({
       >
         <div className="flex flex-col items-center text-center">
           <AlertTriangle className="mb-2 h-8 w-8 text-neutral-400" />
-          <p className="text-neutral-500 dark:text-neutral-400">Nessun dato disponibile</p>
+          <Text className="text-neutral-500 dark:text-neutral-400">Nessun dato disponibile</Text>
         </div>
       </Card>
     );
@@ -227,7 +229,9 @@ export function AnalyticsChart({
   return (
     <Card variant="glass" className={`p-6 ${className}`}>
       {title && (
-        <h3 className="mb-6 text-lg font-semibold text-neutral-900 dark:text-white">{title}</h3>
+        <Heading level={3} size="lg" weight="semibold" className="mb-6 text-neutral-900 dark:text-white">
+          {title}
+        </Heading>
       )}
       <div style={{ height }}>
         <ResponsiveContainer width="100%" height="100%">

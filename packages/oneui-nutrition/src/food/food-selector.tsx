@@ -9,7 +9,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Search, Loader2, X, Check } from 'lucide-react';
-import type { FoodItem } from '@onecoach/types';
+import type { FoodItem } from '@onecoach/types-nutrition';
 import { logger } from '@onecoach/lib-shared';
 import { useTranslations } from 'next-intl';
 

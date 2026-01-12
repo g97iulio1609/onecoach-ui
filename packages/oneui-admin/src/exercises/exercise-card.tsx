@@ -16,7 +16,7 @@ import { ExerciseActionsMenu, type ExerciseAction } from './exercise-actions-men
 import { STATUS_BADGE_STYLES, STATUS_LABELS } from './exercise-constants';
 import { ShieldCheck, ShieldX, Edit3, ClipboardList, Trash2, Dumbbell } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
-import { Checkbox } from '@onecoach/ui';
+import { Checkbox, Heading, Text } from '@onecoach/ui';
 
 function getExerciseName(exercise: LocalizedExercise): string {
   return exercise.translations?.[0]?.name || exercise.slug || exercise.id;
@@ -204,13 +204,14 @@ export function ExerciseCard({
         <div className="min-w-0 space-y-2.5">
           {/* Nome + Status */}
           <div className="flex flex-wrap items-center gap-2.5">
-            <h3
-              className={cn(
-                'truncate text-base font-bold text-neutral-900 sm:text-lg dark:text-neutral-100'
-              )}
+            <Heading
+              level={3}
+              weight="bold"
+              size="sm"
+              className="truncate text-neutral-900 sm:text-lg dark:text-neutral-100"
             >
               {getExerciseName(exercise)}
-            </h3>
+            </Heading>
             <span
               className={cn(
                 'inline-flex flex-shrink-0 items-center rounded-full px-2.5 py-1 text-xs font-semibold',
@@ -224,9 +225,9 @@ export function ExerciseCard({
 
           {/* Overview */}
           {exercise.overview && (
-            <p className="line-clamp-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+            <Text className="line-clamp-1 leading-relaxed text-neutral-600 dark:text-neutral-300" size="sm">
               {exercise.overview}
-            </p>
+            </Text>
           )}
 
           {/* Tags */}

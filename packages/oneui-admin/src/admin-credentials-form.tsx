@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
  * Form per aggiornare le credenziali admin o super admin
  */
 import { useState } from 'react';
-import { Button, Input, Label } from '@onecoach/ui';
+import { Button, Input, Label, Text } from '@onecoach/ui';
 import { validatePassword } from '@onecoach/lib-shared';
 
 const ADMIN_PASSWORD_REQUIREMENTS = {
@@ -102,9 +102,9 @@ export function AdminCredentialsForm({ type, initialData, canEdit }: AdminCreden
   if (!canEdit && type === 'super_admin') {
     return (
       <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
-        <p className="text-sm text-yellow-800 dark:text-yellow-200">
+        <Text size="sm" className="text-yellow-800 dark:text-yellow-200">
           {t('admin.admin_credentials_form.solo_i_super_admin_possono_modificare_le')}
-        </p>
+        </Text>
       </div>
     );
   }
@@ -138,9 +138,9 @@ export function AdminCredentialsForm({ type, initialData, canEdit }: AdminCreden
           placeholder={getPasswordRequirementsMessage(ADMIN_PASSWORD_REQUIREMENTS)}
           minLength={ADMIN_PASSWORD_REQUIREMENTS.minLength}
         />
-        <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+        <Text size="xs" className="mt-1 text-neutral-500 dark:text-neutral-400">
           {getPasswordRequirementsMessage(ADMIN_PASSWORD_REQUIREMENTS)}
-        </p>
+        </Text>
       </div>
       {/* Confirm Password */}
       <div>
@@ -188,13 +188,13 @@ export function AdminCredentialsForm({ type, initialData, canEdit }: AdminCreden
       {/* Error Message */}
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20">
-          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+          <Text size="sm" className="text-red-800 dark:text-red-200">{error}</Text>
         </div>
       )}
       {/* Success Message */}
       {success && (
         <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-900/20">
-          <p className="text-sm text-green-800 dark:text-green-200">{success}</p>
+          <Text size="sm" className="text-green-800 dark:text-green-200">{success}</Text>
         </div>
       )}
       {/* Submit Button */}

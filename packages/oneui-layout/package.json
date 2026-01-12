@@ -12,10 +12,15 @@
   },
   "dependencies": {
     "@onecoach/ui-core": "workspace:*",
-    "@onecoach/lib-design-system": "workspace:*"
+    "@onecoach/lib-design-system": "workspace:*",
+    "@onecoach/translations": "workspace:*",
+    "@onecoach/hooks": "workspace:*",
+    "@onecoach/types-core": "workspace:*",
+    "@onecoach/types": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   }
 }

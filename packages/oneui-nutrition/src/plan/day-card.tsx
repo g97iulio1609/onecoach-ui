@@ -10,7 +10,7 @@
 import { useMemo } from 'react';
 import { Trash2, GripVertical, Plus, BookOpen, Bookmark } from 'lucide-react';
 import { MealCard } from './meal-card';
-import { SortableList, SortableItem, type SortableItemRenderProps } from '@onecoach/ui-core';
+import { SortableList, SortableItem, type SortableItemRenderProps, Button } from '@onecoach/ui-core';
 import { createMealDragId } from '@onecoach/lib-shared';
 import { cn } from '@onecoach/lib-design-system';
 import { useTranslations } from 'next-intl';
@@ -118,66 +118,70 @@ export function DayCard({
                 />
               </div>
             )}
-            <button
+            <Button
+              variant="ghost"
               onClick={onToggle}
               className={cn(
-                '-mx-2 flex items-center gap-2 rounded-lg px-2 text-lg font-bold tracking-tight text-white transition-colors hover:text-emerald-400'
+                '-mx-2 flex items-center gap-2 rounded-lg px-2 text-lg font-bold tracking-tight text-white transition-colors hover:text-emerald-400 hover:bg-slate-800/50'
               )}
             >
               <span className="uppercase text-slate-500 text-xs font-bold tracking-widest">{t('viewer.labels.day')}</span>
               <span className="text-xl">{day.dayNumber}</span>
-            </button>
+            </Button>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button
+            <Button
+              variant="default"
+              size="sm"
               onClick={onAddMeal}
               className={cn(
-                'flex min-h-[36px] items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all duration-200',
-                'bg-emerald-500 text-black hover:bg-emerald-400',
-                'shadow-lg shadow-emerald-500/10'
+                'gap-1.5 px-3.5 text-xs font-semibold whitespace-nowrap bg-emerald-500 text-black hover:bg-emerald-400 shadow-lg shadow-emerald-500/10'
               )}
             >
               <Plus className="h-4 w-4 flex-shrink-0" />
               <span>{t('visualBuilder.dayEditor.mealPrefix')}</span>
-            </button>
+            </Button>
             {onAddMealFromTemplate && (
-              <button
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={onAddMealFromTemplate}
                 className={cn(
-                  'flex min-h-[36px] items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all duration-200',
-                  'border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                  'gap-1.5 px-3.5 text-xs font-semibold whitespace-nowrap border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
                 )}
                 title={t('visualBuilder.dayEditor.loadFromTemplate')}
               >
                 <BookOpen className="h-4 w-4 flex-shrink-0" />
                 <span>Template</span>
-              </button>
+              </Button>
             )}
             {day.meals.length > 0 && onSaveDayAsTemplate && (
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={(e: React.MouseEvent<HTMLElement>) => {
                   e.stopPropagation();
                   onSaveDayAsTemplate();
                 }}
                 className={cn(
-                  'flex min-h-[36px] items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all duration-200',
-                  'text-slate-400 hover:text-white hover:bg-slate-800'
+                  'h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800'
                 )}
                 title={t('saveAsTemplate.day')}
               >
                 <Bookmark className="h-4 w-4 flex-shrink-0" />
-              </button>
+              </Button>
             )}
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={onRemoveDay}
               className={cn(
-                'flex min-h-[36px] min-w-[36px] items-center justify-center rounded-lg transition-all duration-200',
-                                'text-slate-500 hover:text-red-400 hover:bg-red-500/10'
+                'h-9 w-9 text-slate-500 hover:text-red-400 hover:bg-red-500/10'
               )}
               aria-label={t('ariaLabels.removeDay')}
             >
               <Trash2 className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -188,12 +192,13 @@ export function DayCard({
                 <p className="text-slate-500 font-medium">
                   {t('emptyStates.noMeals')}
                 </p>
-                <button 
+                <Button 
+                  variant="ghost"
                   onClick={onAddMeal}
-                  className="mt-4 text-emerald-500 hover:text-emerald-400 text-sm font-semibold"
+                  className="mt-4 text-emerald-500 hover:text-emerald-400 text-sm font-semibold hover:bg-transparent p-0"
                 >
                   {t('visualBuilder.dayEditor.mealPrefix')}
-                </button>
+                </Button>
               </div>
             ) : enableDragDrop ? (
               <SortableList items={mealDragIds} strategy="vertical">

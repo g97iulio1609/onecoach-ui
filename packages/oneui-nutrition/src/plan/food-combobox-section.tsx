@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 
 import { Plus } from 'lucide-react';
 import { FoodCombobox } from '../food/food-combobox';
-import type { FoodItem } from '@onecoach/types';
+import type { FoodItem } from '@onecoach/types-nutrition';
 import { darkModeClasses, cn } from '@onecoach/lib-design-system';
 
 interface FoodComboboxSectionProps {

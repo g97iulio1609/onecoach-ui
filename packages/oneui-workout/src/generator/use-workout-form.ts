@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { ActivityLevel, DifficultyLevel, Sex, WorkoutGoal } from '@onecoach/types/client';
 import type { WorkoutGenerationInput } from '@onecoach/schemas';

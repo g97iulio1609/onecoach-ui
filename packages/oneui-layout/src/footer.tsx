@@ -4,7 +4,8 @@
  * Footer riutilizzabile con link alle policy
  */
 
-import { Link } from 'app/navigation';
+import { Link } from './navigation';
+
 
 import { useTranslations } from 'next-intl';
 

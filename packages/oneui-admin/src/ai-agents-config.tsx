@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Button, CatalogGrid, ResourceCard, Slider } from '@onecoach/ui';
 import { Power, PowerOff, Save } from 'lucide-react';
-import { toggleAgentAction, updateWorkoutGenerationRetryAction } from '@/app/actions/admin-actions';
 import { toast } from 'sonner';
 import { logger } from '@onecoach/lib-shared';
 import { useTranslations } from 'next-intl';
@@ -19,9 +18,14 @@ export type AgentConfig = {
 
 interface AIAgentsConfigProps {
   configs: AgentConfig[];
+  onToggleAgent?: (
+    agentId: string,
+    isEnabled: boolean
+  ) => Promise<{ success: boolean; error?: string }>;
+  onUpdateRetryCount?: (count: number) => Promise<{ success: boolean; error?: string }>;
 }
 
-export function AIAgentsConfig({ configs }: AIAgentsConfigProps) {
+export function AIAgentsConfig({ configs, onToggleAgent, onUpdateRetryCount }: AIAgentsConfigProps) {
   const t = useTranslations('admin.aiSettings.framework.agents');
   const [optimisticConfigs, setOptimisticConfigs] = useState(configs);
   const [retryCount, setRetryCount] = useState<number>(() => {
@@ -40,7 +44,10 @@ export function AIAgentsConfig({ configs }: AIAgentsConfigProps) {
     );
 
     try {
-      const result = await toggleAgentAction(agentId, newStatus);
+      if (!onToggleAgent) {
+        throw new Error('Action handler not provided');
+      }
+      const result = await onToggleAgent(agentId, newStatus);
       if (!result.success) {
         throw new Error(result.error);
       }
@@ -59,7 +66,10 @@ export function AIAgentsConfig({ configs }: AIAgentsConfigProps) {
 
   const handleRetryUpdate = async () => {
     try {
-      const result = await updateWorkoutGenerationRetryAction(retryCount);
+      if (!onUpdateRetryCount) {
+        throw new Error('Action handler not provided');
+      }
+      const result = await onUpdateRetryCount(retryCount);
       if (!result.success) {
         throw new Error(result.error);
       }

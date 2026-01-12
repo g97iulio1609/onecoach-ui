@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@onecoach/lib-design-system';
-import { Container, Stack } from '@onecoach/ui';
+import { Container, Stack, Heading, Text } from '@onecoach/ui';
 
 export type AdminPageProps = {
   children: React.ReactNode;
@@ -61,10 +61,14 @@ export function AdminSection({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             {title && (
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">{title}</h3>
+              <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-white">
+                {title}
+              </Heading>
             )}
             {description && (
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">{description}</p>
+              <Text size="sm" className="text-neutral-600 dark:text-neutral-400">
+                {description}
+              </Text>
             )}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

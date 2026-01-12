@@ -11,7 +11,7 @@
  */
 'use client';
 import { useEffect, useMemo, useRef } from 'react';
-import { createFoodSchema } from '@onecoach/schemas/food.schema';
+import { createFoodSchema } from '@onecoach/schemas';
 import { Button, Input, Modal, ModalFooter } from '@onecoach/ui';
 import { Save } from 'lucide-react';
 import { BrandCombobox } from './brand-combobox';

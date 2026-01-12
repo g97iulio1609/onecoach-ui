@@ -11,8 +11,8 @@
 import { Button } from '@onecoach/ui';
 import type { LucideIcon } from 'lucide-react';
 import { MoreVertical } from 'lucide-react';
-import { AdminDropdownMenu } from '@/components/admin/shared/admin-dropdown-menu';
-import type { AdminMenuItem } from '@/components/admin/shared/admin-menu-item.types';
+import { AdminDropdownMenu } from '../shared/admin-dropdown-menu';
+import type { AdminMenuItem } from '../shared/admin-menu-item.types';
 import { cn } from '@onecoach/lib-design-system';
 
 export interface ExerciseAction {

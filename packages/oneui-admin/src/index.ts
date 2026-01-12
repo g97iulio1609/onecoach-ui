@@ -6,7 +6,7 @@
 // Top-level components
 export { AdminCredentialsForm } from './admin-credentials-form';
 export { AdminQuickActions } from './admin-quick-actions';
-export { AIAgentsConfig } from './ai-agents-config';
+export { AIAgentsConfig, type AgentConfig } from './ai-agents-config';
 export { EdgeConfigPanel } from './edge-config-panel';
 export { FrameworkConfigPanel } from './framework-config-panel';
 export { ImportModelsConfig } from './import-models-config';

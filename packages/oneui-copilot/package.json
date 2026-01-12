@@ -10,16 +10,29 @@
       "default": "./src/index.ts"
     }
   },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "@onecoach/ui-core": "workspace:*",
     "@onecoach/lib-design-system": "workspace:*",
     "@onecoach/types-domain": "workspace:*",
+    "@onecoach/types-nutrition": "workspace:*",
+    "@onecoach/types-workout": "workspace:*",
+    "@onecoach/lib-chat-core": "workspace:*",
+    "@onecoach/lib-stores": "workspace:*",
     "@onecoach/ui": "workspace:*",
-    "lucide-react": "^0.562.0",
-    "next-intl": "^3.26.3"
+    "lucide-react": "^0.562.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   }
 }

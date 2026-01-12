@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Search, Loader2, X, Check } from 'lucide-react';
-import type { FoodItem } from '@onecoach/types';
+import type { FoodItem } from '@onecoach/types-nutrition';
 import { useDebounce } from '@onecoach/hooks';
 
 interface FoodComboboxProps {

@@ -9,7 +9,7 @@
 
 import { Apple, Calendar, Target, Eye, Edit, Trash2, Send, Copy } from 'lucide-react';
 import { ProgramCard, type ProgramCardAction } from '@onecoach/ui';
-import type { NutritionPlan } from '@onecoach/types';
+import type { NutritionPlan } from '@onecoach/types-nutrition';
 import { useTranslations } from 'next-intl';
 
 interface NutritionPlanCardProps {

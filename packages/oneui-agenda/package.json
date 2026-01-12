@@ -10,7 +10,12 @@
       "default": "./src/index.ts"
     }
   },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules"
+  },
   "dependencies": {
+    "@onecoach/ui": "workspace:*",
     "@onecoach/ui-core": "workspace:*",
     "@onecoach/lib-design-system": "workspace:*"
   },

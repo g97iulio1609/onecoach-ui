@@ -2,6 +2,7 @@
 
 import { ChevronLeft, Flame, Droplets, Wheat, Beef, Utensils, Play } from 'lucide-react';
 import { MealGroupModern } from '../live/v2/meal-group-modern';
+import { Heading, Text, Button } from '@onecoach/ui';
 import type { NutritionPlan, Meal } from '@onecoach/types-nutrition';
 
 
@@ -30,10 +31,10 @@ export function NutritionDayDetail({
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
         <div className="text-center">
-          <h2 className="text-xl font-bold text-neutral-900 dark:text-white">Giorno non trovato</h2>
-          <button onClick={onBack} className="mt-4 text-emerald-600 hover:underline">
+          <Heading level={2} size="xl" weight="bold" className="text-neutral-900 dark:text-white">Giorno non trovato</Heading>
+          <Button variant="ghost" onClick={onBack} className="mt-4 text-emerald-600 hover:text-emerald-700 hover:no-underline hover:bg-transparent p-0">
             Torna al piano
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -50,13 +51,14 @@ export function NutritionDayDetail({
       <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pt-4 pb-8 lg:px-6">
         {/* Header */}
         <div className="mb-8">
-          <button
+          <Button
+            variant="ghost"
             onClick={onBack}
-            className="mb-6 flex items-center gap-2 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+            className="mb-6 gap-2 text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white pl-0 hover:bg-transparent"
           >
             <ChevronLeft className="h-4 w-4" />
             Torna al piano
-          </button>
+          </Button>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -69,18 +71,18 @@ export function NutritionDayDetail({
                   Giorno {dayNumber}
                 </span>
               </div>
-              <h1 className="text-3xl font-black text-white uppercase tracking-tight">
+              <Heading level={1} size="3xl" weight="extrabold" className="text-white uppercase tracking-tight">
                 Dettaglio Giornaliero
-              </h1>
+              </Heading>
             </div>
 
-            <button
+            <Button
               onClick={onTrack}
-              className="group relative flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] hover:bg-emerald-500 hover:shadow-emerald-500/50 active:scale-[0.98]"
+              className="gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-500 hover:shadow-emerald-500/50"
             >
               <Play className="h-4 w-4 fill-current" />
               Traccia questo giorno
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -91,10 +93,10 @@ export function NutritionDayDetail({
               <Flame className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Calorie</p>
-              <p className="text-2xl font-black text-white">
+              <Text size="xs" weight="bold" className="text-slate-500 uppercase tracking-wider">Calorie</Text>
+              <Heading level={3} size="2xl" weight="extrabold" className="text-white">
                 {Math.round(day.totalMacros.calories)}
-              </p>
+              </Heading>
             </div>
           </div>
 
@@ -103,10 +105,10 @@ export function NutritionDayDetail({
               <Beef className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Proteine</p>
-              <p className="text-2xl font-black text-white">
+              <Text size="xs" weight="bold" className="text-slate-500 uppercase tracking-wider">Proteine</Text>
+              <Heading level={3} size="2xl" weight="extrabold" className="text-white">
                 {Math.round(day.totalMacros.protein)}g
-              </p>
+              </Heading>
             </div>
           </div>
 
@@ -115,12 +117,12 @@ export function NutritionDayDetail({
               <Wheat className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <Text size="xs" weight="bold" className="text-slate-500 uppercase tracking-wider">
                 Carboidrati
-              </p>
-              <p className="text-2xl font-black text-white">
+              </Text>
+              <Heading level={3} size="2xl" weight="extrabold" className="text-white">
                 {Math.round(day.totalMacros.carbs)}g
-              </p>
+              </Heading>
             </div>
           </div>
 
@@ -129,20 +131,20 @@ export function NutritionDayDetail({
               <Droplets className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Grassi</p>
-              <p className="text-2xl font-black text-white">
+              <Text size="xs" weight="bold" className="text-slate-500 uppercase tracking-wider">Grassi</Text>
+              <Heading level={3} size="2xl" weight="extrabold" className="text-white">
                 {Math.round(day.totalMacros.fats)}g
-              </p>
+              </Heading>
             </div>
           </div>
         </div>
 
         {/* Meals List */}
         <div className="space-y-6">
-          <h2 className="flex items-center gap-2 text-xl font-bold text-white mb-6">
+          <Heading level={2} size="xl" weight="bold" className="flex items-center gap-2 text-white mb-6">
             <Utensils className="h-5 w-5 text-slate-400" />
             Pasti del Giorno
-          </h2>
+          </Heading>
 
           <div className="gap-6 grid">
             {day.meals?.map((meal: Meal, index: number) => (

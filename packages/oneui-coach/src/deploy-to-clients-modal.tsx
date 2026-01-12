@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Button, Checkbox, Input } from '@onecoach/ui';
+import { Button, Checkbox, Input, Select } from '@onecoach/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@onecoach/ui/dialog';
 import { useCoachClients } from '@onecoach/features/coach/hooks';
 import { LoadingState } from '@onecoach/ui/components';
@@ -178,14 +178,14 @@ export function DeployToClientsModal({
                 <span className="text-neutral-500">
                   {selectedUsers.length} / {filteredClients.length} selezionati
                 </span>
-                <div className="flex gap-2">
-                  <button onClick={selectAll} className="text-primary-600 hover:underline">
+                <div className="flex gap-2 items-center">
+                  <Button variant="ghost" size="sm" onClick={selectAll} className="text-primary-600 hover:underline h-auto p-0">
                     Tutti
-                  </button>
+                  </Button>
                   <span className="text-neutral-300">|</span>
-                  <button onClick={deselectAll} className="text-primary-600 hover:underline">
+                  <Button variant="ghost" size="sm" onClick={deselectAll} className="text-primary-600 hover:underline h-auto p-0">
                     Nessuno
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -237,12 +237,12 @@ export function DeployToClientsModal({
                   <label className="mb-1 block text-sm font-medium">
                     {t('coach.deploy_to_clients_modal.visibilita')}
                   </label>
-                  <select
+                  <Select
                     value={visibility}
-                    onChange={(e) =>
-                      setVisibility(e.target.value as 'PRIVATE' | 'SHARED_WITH_COACH')
+                    onValueChange={(value) =>
+                      setVisibility(value as 'PRIVATE' | 'SHARED_WITH_COACH')
                     }
-                    className="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+                    className="w-full"
                   >
                     <option value="SHARED_WITH_COACH">
                       {t('coach.deploy_to_clients_modal.visibile_a_te')}
@@ -250,7 +250,7 @@ export function DeployToClientsModal({
                     <option value="PRIVATE">
                       {t('coach.deploy_to_clients_modal.solo_utente')}
                     </option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 

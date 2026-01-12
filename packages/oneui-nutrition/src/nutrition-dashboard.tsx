@@ -7,7 +7,7 @@ import { Plus, Sparkles, ChefHat, ArrowRight, Calendar, Utensils, Play } from 'l
 import { useNutritionPlans } from '@onecoach/features-nutrition';
 import { getAllNutritionPlanDays } from '@onecoach/lib-shared';
 import { cn } from '@onecoach/lib-design-system';
-import { Card } from '@onecoach/ui';
+import { Card, Heading, Text, Button } from '@onecoach/ui';
 import { NutritionHeader } from './nutrition-header';
 import { SavedNutritionPlans } from './saved-plans';
 import type { NutritionPlan } from "@onecoach/types-nutrition";
@@ -71,14 +71,18 @@ export function NutritionDashboard() {
                   <Sparkles className="h-3 w-3" />
                   {t('nutrition.nutrition_dashboard.ai_powered')}
                 </div>
-                <h2 className="mb-3 text-3xl font-bold">{t('cta.title')}</h2>
-                <p className="mb-8 max-w-xl text-lg text-green-100">{t('cta.description')}</p>
+                <Heading level={2} size="3xl" weight="bold" className="mb-3">
+                  {t('cta.title')}
+                </Heading>
+                <Text size="lg" className="mb-8 max-w-xl text-green-100">
+                  {t('cta.description')}
+                </Text>
 
                 <Link href="/nutrition/generate">
-                  <button className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-green-600 shadow-lg transition-transform hover:scale-105 hover:bg-green-50 active:scale-95">
+                  <Button className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-green-600 shadow-lg transition-transform hover:scale-105 hover:bg-green-50 active:scale-95 h-auto">
                     {t('generator.startGeneration')}
                     <ArrowRight className="h-4 w-4" />
-                  </button>
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -87,15 +91,16 @@ export function NutritionDashboard() {
             {activePlan && todayPreview && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="flex items-center gap-2 text-xl font-bold text-neutral-900 dark:text-white">
+                  <Heading level={2} size="xl" weight="bold" className="flex items-center gap-2 text-neutral-900 dark:text-white">
                     <Utensils className="h-5 w-5 text-emerald-500" />
                     {t('dashboard.activePlan')}: {activePlan.name}
-                  </h2>
+                  </Heading>
                   <Link
                     href={`/nutrition/${activePlan.id}`}
-                    className="text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400"
                   >
-                    {t('dashboard.viewAll')} →
+                    <Button variant="ghost" className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 p-0 hover:bg-transparent">
+                      {t('dashboard.viewAll')} →
+                    </Button>
                   </Link>
                 </div>
 
@@ -113,45 +118,47 @@ export function NutritionDashboard() {
                           </span>
                         </div>
 
-                        <h3 className="mb-2 text-3xl font-bold text-white">
+                        <Heading level={3} size="3xl" weight="bold" className="mb-2 text-white">
                           {Math.round(todayPreview.totalMacros.calories)} kcal
-                        </h3>
-
+                        </Heading>
+                        
                         <div className="mt-4 flex gap-4">
                           <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-neutral-500 uppercase">
+                            <Text size="xs" weight="bold" className="text-neutral-500 uppercase">
                               {t('sharedMacros.protein')}
-                            </span>
-                            <span className="text-lg font-bold text-white">
+                            </Text>
+                            <Text size="lg" weight="bold" className="text-white">
                               {Math.round(todayPreview.totalMacros.protein)}g
-                            </span>
+                            </Text>
                           </div>
                           <div className="h-8 w-px bg-neutral-800" />
                           <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-neutral-500 uppercase">
+                            <Text size="xs" weight="bold" className="text-neutral-500 uppercase">
                               {t('sharedMacros.carbs')}
-                            </span>
-                            <span className="text-lg font-bold text-white">
+                            </Text>
+                            <Text size="lg" weight="bold" className="text-white">
                               {Math.round(todayPreview.totalMacros.carbs)}g
-                            </span>
+                            </Text>
                           </div>
                           <div className="h-8 w-px bg-neutral-800" />
                           <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-neutral-500 uppercase">
+                            <Text size="xs" weight="bold" className="text-neutral-500 uppercase">
                               {t('sharedMacros.fats')}
-                            </span>
-                            <span className="text-lg font-bold text-white">
+                            </Text>
+                            <Text size="lg" weight="bold" className="text-white">
                               {Math.round(todayPreview.totalMacros.fats)}g
-                            </span>
+                            </Text>
                           </div>
                         </div>
                       </div>
 
                       <Link href={`/nutrition/${activePlan.id}/track`}>
-                        <button className="group/btn relative flex w-full items-center justify-center gap-3 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] hover:bg-emerald-500 hover:shadow-emerald-500/50 active:scale-[0.98] sm:w-auto">
+                        <Button 
+                          className="w-full justify-center gap-3 rounded-xl bg-emerald-600 px-8 py-6 text-base font-bold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-500 hover:shadow-emerald-500/50 sm:w-auto"
+                        >
                           <Play className="h-5 w-5 fill-current" />
                           {t('dashboard.trackNow')}
-                        </button>
+                        </Button>
                       </Link>
                     </div>
                   </div>
@@ -171,24 +178,24 @@ export function NutritionDashboard() {
               <div className="mb-4 inline-flex rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
                 <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+              <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-neutral-100">
                 {t('features.ai.title')}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+              </Heading>
+              <Text size="sm" className="mt-2 leading-relaxed text-neutral-600 dark:text-neutral-400">
                 {t('features.ai.description')}
-              </p>
+              </Text>
             </Card>
 
             <Card variant="glass" className="p-6">
               <div className="mb-4 inline-flex rounded-lg bg-emerald-100 p-2 dark:bg-emerald-900/30">
                 <ChefHat className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+              <Heading level={3} size="lg" weight="semibold" className="text-neutral-900 dark:text-neutral-100">
                 {t('features.scientific.title')}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+              </Heading>
+              <Text size="sm" className="mt-2 leading-relaxed text-neutral-600 dark:text-neutral-400">
                 {t('features.scientific.description')}
-              </p>
+              </Text>
             </Card>
           </div>
         </div>

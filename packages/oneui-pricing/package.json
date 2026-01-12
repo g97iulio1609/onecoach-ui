@@ -15,11 +15,11 @@
     "@onecoach/lib-design-system": "workspace:*",
     "@onecoach/types-domain": "workspace:*",
     "@onecoach/ui": "workspace:*",
-    "lucide-react": "^0.562.0",
-    "next-intl": "^3.26.3"
+    "lucide-react": "^0.562.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   }
 }

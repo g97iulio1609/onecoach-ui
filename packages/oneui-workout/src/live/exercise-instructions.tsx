@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { FileText, CheckCircle2, Dumbbell } from 'lucide-react';
-import { Badge } from '@onecoach/ui-core';
+import { Badge, Heading, Text } from '@onecoach/ui';
 import type { Exercise } from "@onecoach/schemas";
 
 
@@ -31,9 +31,9 @@ export function ExerciseInstructions({ exercise, className = '' }: ExerciseInstr
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-400">
                 <FileText className="h-4 w-4" />
-                <h4 className="text-xs font-bold tracking-widest uppercase">Descrizione</h4>
+                <Heading level={4} size="xs" weight="bold" className="tracking-widest uppercase">Descrizione</Heading>
               </div>
-              <p className="text-sm leading-relaxed text-neutral-300">{exercise.description}</p>
+              <Text size="sm" className="leading-relaxed text-neutral-300">{exercise.description}</Text>
             </div>
           )}
 
@@ -42,7 +42,7 @@ export function ExerciseInstructions({ exercise, className = '' }: ExerciseInstr
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-400">
                 <Dumbbell className="h-4 w-4" />
-                <h4 className="text-xs font-bold tracking-widest uppercase">Attrezzatura</h4>
+                <Heading level={4} size="xs" weight="bold" className="tracking-widest uppercase">Attrezzatura</Heading>
               </div>
               <div className="flex flex-wrap gap-2">
                 {exercise.equipment.map((eq: string, index: number) => (
@@ -63,9 +63,9 @@ export function ExerciseInstructions({ exercise, className = '' }: ExerciseInstr
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-400">
                 <CheckCircle2 className="h-4 w-4" />
-                <h4 className="text-xs font-bold tracking-widest uppercase">
+                <Heading level={4} size="xs" weight="bold" className="tracking-widest uppercase">
                   {t('exercise_instructions.punti_chiave')}
-                </h4>
+                </Heading>
               </div>
 
               {/* 

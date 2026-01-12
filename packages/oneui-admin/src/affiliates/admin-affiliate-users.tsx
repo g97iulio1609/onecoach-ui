@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 
 import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
-import { useRouter } from 'app/navigation';
+import { useRouter } from '@onecoach/ui-layout';
 import { CatalogToolbar, CatalogGrid, ResourceCard } from '@onecoach/ui';
 
 

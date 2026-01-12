@@ -41,12 +41,12 @@ import {
   usePlanOperations,
   useMacrosCalculations,
   useTemplateOperations,
-} from '@onecoach/features/nutrition/hooks'; // Assuming this works if oneui-nutrition depends on it
+} from '@onecoach/features-nutrition/hooks'; // Assuming this works if oneui-nutrition depends on it
 import { useExpansionState } from '@onecoach/hooks'; // Fixed import
-import { useFoodDrawer } from '@onecoach/features/food/hooks';
+import { useFoodDrawer } from '@onecoach/features-food/hooks';
 import { useAdminCheck } from '@onecoach/hooks'; // Fixed import
 import { needsRecalculation } from '@onecoach/lib-shared';
-import { useNutritionDnd } from '@onecoach/features/nutrition/hooks';
+import { useNutritionDnd } from '@onecoach/features-nutrition/hooks';
 import { PlanMetadataForm } from './components/plan-metadata-form';
 import { TargetMacrosForm } from './components/target-macros-form';
 import { RecalculateModal } from './components/recalculate-modal';

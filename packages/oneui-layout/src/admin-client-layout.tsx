@@ -14,7 +14,8 @@
 import { useContext } from 'react';
 import { QueryClientContext } from '@tanstack/react-query';
 import { QueryProvider } from '@onecoach/lib-api/react-query';
-import { AdminRealtimeProvider } from '@/components/providers/realtime-provider';
+import { AdminRealtimeProvider } from '@onecoach/ui-core';
+
 
 interface AdminClientLayoutProps {
   children: React.ReactNode;

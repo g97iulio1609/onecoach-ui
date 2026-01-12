@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
  * Display public coach profile information
  */
 
-import { Card } from '@onecoach/ui';
+import { Card, Heading, Text } from '@onecoach/ui';
 import { CheckCircle2, Linkedin, Instagram, Globe } from 'lucide-react';
 
 export interface PublicCoachProfileData {
@@ -67,7 +67,9 @@ export function PublicCoachProfile({ profile }: PublicCoachProfileProps) {
           {/* Info */}
           <div className="flex-1 text-center sm:text-left">
             <div className="mb-2 flex items-center justify-center gap-2 sm:justify-start">
-              <h1 className="text-2xl font-bold">{profile.user.name || 'Coach'}</h1>
+              <Heading level={1} size="2xl" weight="bold">
+                {profile.user.name || 'Coach'}
+              </Heading>
               {isVerified && (
                 <span className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
                   Verificato
@@ -143,32 +145,36 @@ export function PublicCoachProfile({ profile }: PublicCoachProfileProps) {
       {/* Bio */}
       {profile.bio && (
         <Card>
-          <h2 className="mb-3 text-lg font-semibold">Biografia</h2>
-          <p className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
+          <Heading level={2} size="lg" weight="semibold" className="mb-3">
+            Biografia
+          </Heading>
+          <Text className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
             {profile.bio}
-          </p>
+          </Text>
         </Card>
       )}
 
       {/* Credentials */}
       {profile.credentials && (
         <Card>
-          <h2 className="mb-3 text-lg font-semibold">Credenziali</h2>
-          <p className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
+          <Heading level={2} size="lg" weight="semibold" className="mb-3">
+            Credenziali
+          </Heading>
+          <Text className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
             {profile.credentials}
-          </p>
+          </Text>
         </Card>
       )}
 
       {/* Coaching Style */}
       {profile.coachingStyle && (
         <Card>
-          <h2 className="mb-3 text-lg font-semibold">
+          <Heading level={2} size="lg" weight="semibold" className="mb-3">
             {t('coach.public_coach_profile.stile_di_coaching')}
-          </h2>
-          <p className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
+          </Heading>
+          <Text className="whitespace-pre-line text-neutral-700 dark:text-neutral-300">
             {profile.coachingStyle}
-          </p>
+          </Text>
         </Card>
       )}
     </div>

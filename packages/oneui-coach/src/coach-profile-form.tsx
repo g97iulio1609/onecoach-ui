@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, Button, Input, Label, Switch, Textarea, Avatar } from '@onecoach/ui';
+import { Card, Button, Input, Label, Switch, Textarea, Avatar, Heading, Text } from '@onecoach/ui';
 import { coachApi, coachKeys, type CoachProfile } from '@onecoach/lib-api-client';
 import { cn } from '@onecoach/lib-design-system';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -151,13 +151,13 @@ const CredentialChip = ({ credential, onRemove }: { credential: string; onRemove
     className="group flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-700 transition-all hover:border-indigo-300 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 dark:hover:border-indigo-700"
   >
     <span>{credential}</span>
-    <button
-      type="button"
+    <Button
+      variant="ghost"
       onClick={onRemove}
-      className="rounded-full p-0.5 opacity-60 transition-opacity hover:bg-indigo-200 hover:opacity-100 dark:hover:bg-indigo-800"
+      className="h-auto p-0.5 opacity-60 transition-opacity hover:bg-indigo-200 hover:opacity-100 dark:hover:bg-indigo-800 rounded-full"
     >
       <X size={12} />
-    </button>
+    </Button>
   </motion.div>
 );
 
@@ -518,9 +518,9 @@ export function CoachProfileForm({ initialProfile, isLoading }: CoachProfileForm
 
           {/* Info */}
           <div>
-            <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl dark:text-white">
+            <Heading level={2} size="xl" weight="bold" className="text-neutral-900 sm:text-2xl dark:text-white">
               {user?.name || 'Coach'}
-            </h2>
+            </Heading>
             <div className="mt-1 flex items-center gap-2">
               <VerificationBadge status={initialProfile?.verificationStatus || 'PENDING'} />
             </div>
@@ -585,9 +585,9 @@ export function CoachProfileForm({ initialProfile, isLoading }: CoachProfileForm
                     rows={5}
                     className="bg-white/50 backdrop-blur-sm dark:bg-black/20"
                   />
-                  <p className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">
+                  <Text size="xs" className="mt-2 text-neutral-500 dark:text-neutral-400">
                     {t('coach_profile_form.descrivi_la_tua_esperienza_e_il_tuo_appr')}
-                  </p>
+                  </Text>
                 </Card>
 
                 {/* Credentials */}
@@ -681,9 +681,9 @@ export function CoachProfileForm({ initialProfile, isLoading }: CoachProfileForm
                 variant="glass"
                 className="border border-white/20 bg-white/60 p-6 shadow-xl backdrop-blur-xl dark:border-white/5 dark:bg-black/30"
               >
-                <h3 className="mb-6 text-lg font-semibold">
+                <Heading level={3} size="lg" weight="semibold" className="mb-6">
                   {t('coach_profile_form.social_media_link')}
-                </h3>
+                </Heading>
                 <div className="space-y-5">
                   {/* LinkedIn */}
                   <div>
@@ -775,9 +775,9 @@ export function CoachProfileForm({ initialProfile, isLoading }: CoachProfileForm
                         <Label htmlFor="isPubliclyVisible" className="text-base font-semibold">
                           {t('coach_profile_form.visibilita_pubblica')}
                         </Label>
-                        <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                        <Text size="sm" className="mt-1 text-neutral-600 dark:text-neutral-400">
                           {t('coach_profile_form.rendi_il_tuo_profilo_visibile_nel_market')}
-                        </p>
+                        </Text>
                       </div>
                     </div>
                     <Switch

@@ -4,6 +4,7 @@ import { Check, Edit2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ExerciseSet } from '@onecoach/schemas';
 import React from 'react';
+import { Button } from '@onecoach/ui';
 
 export interface LiveSetTrackerProps {
   set: ExerciseSet;
@@ -86,18 +87,18 @@ export function LiveSetTracker({
           </div>
 
           {/* Complete Button */}
-          <button
+          <Button
             onClick={() =>
               onComplete(setIndex, {
                 repsDone: actualReps || targetReps,
                 weightDone: actualWeight || targetWeight,
               })
             }
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-4 text-base font-bold text-black shadow-lg transition-all hover:bg-neutral-100 active:scale-[0.98]"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-6 text-base font-bold text-black shadow-lg transition-all hover:bg-neutral-100 active:scale-[0.98]"
           >
             <Check className="h-5 w-5 stroke-[3]" />
             {t('completeSet')}
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -123,13 +124,15 @@ export function LiveSetTracker({
           </div>
         </div>
 
-        <button
-          onClick={() => onUpdate(setIndex, { done: false })}
-          className="rounded-lg p-2 text-neutral-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-neutral-800 hover:text-neutral-300"
-          aria-label="Edit"
-        >
-          <Edit2 className="h-4 w-4" />
-        </button>
+        <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onUpdate(setIndex, { done: false })}
+            className="rounded-lg p-2 text-neutral-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-neutral-800 hover:text-neutral-300"
+            aria-label="Edit"
+          >
+            <Edit2 className="h-4 w-4" />
+          </Button>
       </div>
     );
   }

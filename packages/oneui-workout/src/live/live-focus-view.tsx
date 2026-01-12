@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useMemo, useCallback } from 'react';
 import { AlertTriangle, ChevronRight, Dumbbell } from 'lucide-react';
-import { EmptyState } from '@onecoach/ui';
-import { Button } from '@onecoach/ui-core';
+import { EmptyState, Heading, Text, Button } from '@onecoach/ui';
 import { getExerciseSets } from '@onecoach/one-workout';
 import type { Exercise, ExerciseSet } from '@onecoach/schemas';
 import type { WorkoutSession } from '@onecoach/types-workout';
@@ -99,8 +98,8 @@ function UpNextCard({
           <Dumbbell className="h-5 w-5" />
         </div>
         <div>
-          <h4 className="text-base font-bold text-white">{exercise.name}</h4>
-          <p className="text-sm text-neutral-500">{setCount} Sets</p>
+          <Heading level={4} size="md" weight="bold" className="text-white">{exercise.name}</Heading>
+          <Text size="sm" className="text-neutral-500">{setCount} Sets</Text>
         </div>
       </div>
       <ChevronRight className="h-5 w-5 text-neutral-600 transition-transform group-hover:translate-x-1 group-hover:text-neutral-400" />
@@ -261,9 +260,9 @@ export function LiveFocusView({
             {/* Up Next Preview */}
             {nextExercise && !isCurrentExerciseComplete && (
               <div className="mt-auto pt-8">
-                <p className="mb-3 text-xs font-bold tracking-widest text-neutral-600 uppercase">
+                <Text size="xs" weight="bold" className="mb-3 tracking-widest text-neutral-600 uppercase">
                   COMING UP NEXT
-                </p>
+                </Text>
                 <UpNextCard exercise={nextExercise} onClick={handleNextExercise} />
               </div>
             )}
@@ -275,12 +274,12 @@ export function LiveFocusView({
       {showLeaveConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-3xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl">
-            <h3 className="mb-2 text-lg font-bold text-white">
+            <Heading level={3} size="lg" weight="bold" className="mb-2 text-white">
               {t('page.interrompere_l_allenamento')}
-            </h3>
-            <p className="mb-6 text-sm text-neutral-400">
+            </Heading>
+            <Text size="sm" className="mb-6 text-neutral-400">
               {t('page.i_progressi_verranno_salvati_ma_la_sessi')}
-            </p>
+            </Text>
             <div className="flex gap-3">
               <Button
                 variant="outline"

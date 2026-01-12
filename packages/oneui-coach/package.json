@@ -26,11 +26,11 @@
     "@onecoach/lib-api-client": "workspace:*",
     "@onecoach/ui-marketplace": "workspace:*",
     "@onecoach/ui-analytics": "workspace:*",
-    "lucide-react": "^0.562.0",
-    "next-intl": "^3.26.3"
+    "lucide-react": "^0.562.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   }
 }

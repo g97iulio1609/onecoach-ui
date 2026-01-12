@@ -226,3 +226,14 @@ export function useBodyMeasurements(): UseBodyMeasurementsReturn {
     refetch: fetchMeasurements,
   };
 }
+
+export function useBodyMeasurementsHistory(limit: number = 30) {
+  const { measurements, isLoading, error } = useBodyMeasurements();
+
+  // Sort by date ascending for charts
+  const data = [...measurements]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(-limit);
+
+  return { data, isLoading, error };
+}

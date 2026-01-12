@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { useState } from 'react';
-import { Card } from '@onecoach/ui';
+import { Card, Button, Input } from '@onecoach/ui';
 import { Trash2, ArrowUp, ArrowDown, Plus, X } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
 import type { Meal, Food } from "@onecoach/types-nutrition";
@@ -126,7 +126,7 @@ export function SimpleMealCard({
       <div className="flex items-center justify-between border-b border-neutral-200 bg-white/50 p-4 dark:border-neutral-700 dark:bg-neutral-900/30">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex flex-1 items-center gap-3 text-left"
+          className="flex flex-1 items-center gap-3 text-left focus:outline-none"
           type="button"
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
@@ -155,62 +155,47 @@ export function SimpleMealCard({
         </button>
 
         <div className="flex items-center gap-1">
-          <button
+          <Button
+            size="icon"
+            variant="ghost"
             onClick={onMoveUp}
             disabled={index === 0}
-            className={cn(
-              'rounded-lg p-2 transition-all duration-200',
-              'hover:bg-green-50 hover:shadow-sm',
-              'active:scale-95 active:bg-green-100',
-              'focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:outline-none',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-              'dark:hover:bg-green-900/20 dark:active:bg-green-900/30',
-              'dark:focus-visible:ring-green-400'
-            )}
-            type="button"
+            className="h-8 w-8 hover:bg-green-50 dark:hover:bg-green-900/20"
             aria-label="Sposta pasto in alto"
           >
             <ArrowUp
               size={16}
               className={cn(
                 'text-green-700 dark:text-green-300',
-                'transition-colors duration-200',
                 index === 0 && 'text-neutral-400 dark:text-neutral-600'
               )}
             />
-          </button>
-          <button
+          </Button>
+          <Button
+            size="icon"
+            variant="ghost"
             onClick={onMoveDown}
             disabled={index === totalMeals - 1}
-            className={cn(
-              'rounded-lg p-2 transition-all duration-200',
-              'hover:bg-green-50 hover:shadow-sm',
-              'active:scale-95 active:bg-green-100',
-              'focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:outline-none',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-              'dark:hover:bg-green-900/20 dark:active:bg-green-900/30',
-              'dark:focus-visible:ring-green-400'
-            )}
-            type="button"
+            className="h-8 w-8 hover:bg-green-50 dark:hover:bg-green-900/20"
             aria-label="Sposta pasto in basso"
           >
             <ArrowDown
               size={16}
               className={cn(
                 'text-green-700 dark:text-green-300',
-                'transition-colors duration-200',
                 index === totalMeals - 1 && 'text-neutral-400 dark:text-neutral-600'
               )}
             />
-          </button>
-          <button
+          </Button>
+          <Button
+            size="icon"
+            variant="ghost"
             onClick={onRemove}
-            className="rounded-lg p-2 transition-all duration-200 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95 active:bg-red-100 dark:hover:bg-red-900/20 dark:focus-visible:ring-red-400 dark:active:bg-red-900/30"
-            type="button"
+            className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20"
             aria-label="Rimuovi pasto"
           >
             <Trash2 size={16} className="text-red-600 dark:text-red-400" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -238,43 +223,45 @@ export function SimpleMealCard({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <input
+                  <Input
                     type="number"
                     value={food.quantity || 100}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleUpdateFoodQuantity(foodIndex, parseFloat(e.target.value) || 0)
                     }
-                    className="w-20 rounded border border-neutral-300 bg-white px-2 py-1 text-sm text-neutral-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100"
-                    min="0"
-                    step="1"
+                    className="h-8 w-20 px-2 py-1 text-sm bg-white dark:bg-neutral-800"
+                    min={0}
+                    step={1}
                   />
                   <span className="text-xs text-neutral-500 dark:text-neutral-400">
                     {food.unit || 'g'}
                   </span>
-                  <button
+                  <Button
+                    size="icon"
+                    variant="ghost"
                     onClick={() => handleRemoveFood(foodIndex)}
-                    className="rounded p-1 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
-                    type="button"
+                    className="h-7 w-7 hover:bg-red-50 dark:hover:bg-red-900/20"
                     aria-label="Rimuovi alimento"
                   >
                     <X size={14} className="text-red-600 dark:text-red-400" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Add Food Button */}
-          <button
+          {/* Add Food Button */}
+          <Button
+            variant="outline"
             onClick={onAddFood}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-300 py-3 transition-colors hover:bg-neutral-50 dark:border-neutral-600 dark:hover:bg-neutral-800"
-            type="button"
+            className="flex w-full items-center justify-center gap-2 border-dashed border-neutral-300 py-3 transition-colors hover:bg-neutral-50 dark:border-neutral-600 dark:hover:bg-neutral-800"
           >
             <Plus size={16} className="text-neutral-500 dark:text-neutral-400" />
             <span className="font-medium text-neutral-600 dark:text-neutral-400">
               {t('nutrition.meal_card.aggiungi_alimento')}
             </span>
-          </button>
+          </Button>
 
           {/* Notes */}
           {meal.notes && (

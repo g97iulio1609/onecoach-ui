@@ -21,12 +21,12 @@
     "@onecoach/features-workout": "workspace:*",
     "@onecoach/ui-coach": "workspace:*",
     "@onecoach/types-ai": "workspace:*",
-    "next-intl": "^4.7.0",
     "lucide-react": "^0.300.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "next-intl": "^4.7.0"
   },
   "scripts": {
     "type-check": "tsc --noEmit"

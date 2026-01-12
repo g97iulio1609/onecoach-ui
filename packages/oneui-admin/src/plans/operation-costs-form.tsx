@@ -8,8 +8,6 @@ import { Save, Coins } from 'lucide-react';
 
 import { OperationType } from '@prisma/client';
 import { toast } from 'sonner';
-import { updateOperationCostAction } from '@/features/admin/actions/cost-actions';
-
 interface CostConfig {
   operationType: OperationType;
   creditCost: number;
@@ -17,6 +15,10 @@ interface CostConfig {
 
 interface OperationCostsFormProps {
   configs: CostConfig[];
+  onUpdateCost?: (
+    operationType: OperationType,
+    creditCost: number
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
 const OPERATION_LABELS: Record<string, string> = {
@@ -28,7 +30,7 @@ const OPERATION_LABELS: Record<string, string> = {
   VISION_ANALYSIS: 'Analisi Vision',
 };
 
-export function OperationCostsForm({ configs }: OperationCostsFormProps) {
+export function OperationCostsForm({ configs, onUpdateCost }: OperationCostsFormProps) {
   const t = useTranslations('admin');
 
   const [localConfigs, setLocalConfigs] = useState(configs);
@@ -51,7 +53,10 @@ export function OperationCostsForm({ configs }: OperationCostsFormProps) {
 
     setIsSaving((prev) => ({ ...prev, [opType]: true }));
     try {
-      const res = await updateOperationCostAction(opType, config.creditCost);
+      if (!onUpdateCost) {
+        throw new Error('Action handler not provided');
+      }
+      const res = await onUpdateCost(opType, config.creditCost);
       if (res.success) {
         toast.success(`Costo aggiornato per ${OPERATION_LABELS[opType] || opType}`);
       } else {

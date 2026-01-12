@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from '../../navigation';
+import { usePathname, useRouter } from './navigation';
 import { locales, type Locale } from '@onecoach/translations';
 import { saveLanguagePreference } from '@onecoach/hooks';
 

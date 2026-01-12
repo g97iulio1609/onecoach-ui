@@ -8,10 +8,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Button, Checkbox } from '@onecoach/ui';
+import { Button, Checkbox, Text } from '@onecoach/ui';
 import { UtensilsCrossed, Eye, Edit, Trash2, MoreVertical } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
-import { AdminDropdownMenu } from '@/components/admin/shared/admin-dropdown-menu';
+import { AdminDropdownMenu } from '../shared/admin-dropdown-menu';
 
 export interface FoodCardProps {
   id: string;
@@ -70,12 +70,12 @@ export function FoodCard({
 
       {/* Info */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+        <Text weight="semibold" className="truncate text-neutral-900 dark:text-neutral-100" size="sm">
           {name}
-        </p>
-        <p className="mt-0.5 truncate text-xs text-neutral-600 dark:text-neutral-400">
+        </Text>
+        <Text className="mt-0.5 truncate text-neutral-600 dark:text-neutral-400" size="xs">
           {brand || 'Senza marca'}
-        </p>
+        </Text>
       </div>
 
       {/* Actions - Desktop */}
@@ -95,17 +95,17 @@ export function FoodCard({
       <div className="sm:hidden">
         <AdminDropdownMenu
           trigger={
-            <button
+            <Button
+              variant="outline"
               className={cn(
-                'min-h-[2.75rem] min-w-[2.75rem] rounded-lg border p-2',
-                'touch-manipulation transition-colors',
-                'border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50',
-                'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700'
+                'min-h-[2.75rem] min-w-[2.75rem] rounded-lg p-2 h-auto',
+                'touch-manipulation bg-white text-neutral-600 hover:bg-neutral-50',
+                'dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700'
               )}
               aria-label="Azioni"
             >
               <MoreVertical className="h-5 w-5" />
-            </button>
+            </Button>
           }
           items={[
             {

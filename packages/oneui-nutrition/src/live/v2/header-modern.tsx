@@ -4,6 +4,7 @@ import { useLocale } from 'next-intl';
 
 import { ChevronLeft, ChevronRight, Calendar, CheckCircle2 } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
+import { Heading, Text, Button } from '@onecoach/ui';
 
 export interface LiveNutritionHeaderModernProps {
   planName?: string;
@@ -37,30 +38,32 @@ export function LiveNutritionHeaderModern({
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         {/* Left: Back & Info */}
         <div className="flex items-center gap-4">
-          <button
+          <Button
+            variant="ghost"
             onClick={onBack}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 p-0 text-neutral-400 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           >
             <ChevronLeft className="h-5 w-5" />
-          </button>
+          </Button>
           <div>
-            <h1 className="text-sm font-bold text-white md:text-base truncate max-w-[150px] md:max-w-xs">
+            <Heading level={1} size="sm" weight="bold" className="truncate max-w-[150px] text-white md:max-w-xs md:text-base">
               {planName}
-            </h1>
-            <p className="text-xs font-medium text-neutral-500">
+            </Heading>
+            <Text size="xs" weight="medium" className="text-neutral-500">
               Nutrition Diary
-            </p>
+            </Text>
           </div>
         </div>
 
         {/* Center: Date Navigation (Visible on tablet+) */}
-        <div className="hidden items-center gap-2 rounded-xl border border-white/5 bg-white/5 backdrop-blur-xl p-1 md:flex">
-          <button
+        <div className="hidden items-center gap-2 rounded-xl border border-white/5 bg-white/5 p-1 backdrop-blur-xl md:flex">
+          <Button
+            variant="ghost"
             onClick={onPreviousDay}
-            className="rounded-lg p-2 text-neutral-400 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+            className="h-auto rounded-lg p-2 text-neutral-400 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           >
             <ChevronLeft className="h-4 w-4" />
-          </button>
+          </Button>
 
           <div className="flex items-center gap-2 px-3">
             <Calendar className="h-4 w-4 text-emerald-500" />
@@ -78,12 +81,13 @@ export function LiveNutritionHeaderModern({
             )}
           </div>
 
-          <button
+          <Button
+            variant="ghost"
             onClick={onNextDay}
-            className="rounded-lg p-2 text-neutral-400 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+            className="h-auto rounded-lg p-2 text-neutral-400 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           >
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
 
         {/* Right: Progress Pill */}

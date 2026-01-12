@@ -1,4 +1,3 @@
-import type { UserRole } from '@prisma/client';;
 /**
  * Types for AI Settings Admin Components
  *

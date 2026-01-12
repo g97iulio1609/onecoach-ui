@@ -1,4 +1,5 @@
 import { cn } from '@onecoach/lib-design-system';
+import { Heading, Text } from '@onecoach/ui';
 
 export interface KpiCardProps {
   label: string;
@@ -29,12 +30,12 @@ export function KpiCard({
     <div className="flex h-full flex-col justify-between rounded-xl border border-neutral-200/50 bg-white/80 p-5 shadow-sm backdrop-blur-sm dark:border-neutral-800/50 dark:bg-neutral-900/80">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-medium tracking-wide text-neutral-500 uppercase dark:text-neutral-400">
+          <Text size="xs" weight="medium" className="truncate tracking-wide text-neutral-500 uppercase dark:text-neutral-400">
             {label}
-          </p>
-          <h3 className="mt-1 truncate text-2xl font-bold text-neutral-900 dark:text-white">
+          </Text>
+          <Heading level={3} size="2xl" weight="bold" className="mt-1 truncate text-neutral-900 dark:text-white">
             {value}
-          </h3>
+          </Heading>
         </div>
         {Icon && (
           <div className={cn('shrink-0 rounded-xl p-2.5', colors[color])}>

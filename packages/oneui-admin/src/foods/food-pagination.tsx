@@ -48,14 +48,19 @@ export function FoodPagination({ page, pageSize, total, onPageChange }: FoodPagi
   return (
     <div className="flex items-center justify-between py-3 text-sm text-neutral-600 dark:text-neutral-400">
       <div>
-        Pagina {page} di {totalPages} ({total} {t('food_pagination.elementi')}
+        {t('pagination.info', {
+          page,
+          totalPages,
+          total,
+          unit: t('food_pagination.elementi'),
+        })}
       </div>
       <div className="flex gap-2">
         <Button variant="outline" size="sm" disabled={!canPrev} onClick={handlePrev} type="button">
-          Indietro
+          {t('pagination.prev')}
         </Button>
         <Button variant="outline" size="sm" disabled={!canNext} onClick={handleNext} type="button">
-          Avanti
+          {t('pagination.next')}
         </Button>
       </div>
     </div>

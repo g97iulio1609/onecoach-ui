@@ -7,6 +7,7 @@
 
 import { type ReactNode } from 'react';
 import { cn, darkModeClasses } from '@onecoach/lib-design-system';
+import { Heading, Text } from '@onecoach/ui';
 
 export interface AdminCardProps {
   title?: string;
@@ -51,10 +52,14 @@ export function AdminCard({
       {(title || description) && (
         <div className="mb-4 last:mb-0">
           {title && (
-            <h3 className={cn('text-lg font-semibold', darkModeClasses.text.primary)}>{title}</h3>
+            <Heading level={3} size="lg" weight="semibold" className={cn(darkModeClasses.text.primary)}>
+              {title}
+            </Heading>
           )}
           {description && (
-            <p className={cn('mt-1 text-sm', darkModeClasses.text.secondary)}>{description}</p>
+            <Text size="sm" className={cn('mt-1', darkModeClasses.text.secondary)}>
+              {description}
+            </Text>
           )}
         </div>
       )}

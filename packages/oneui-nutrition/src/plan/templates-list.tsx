@@ -23,7 +23,7 @@ import {
   Bookmark,
   Clock,
 } from 'lucide-react';
-import type { NutritionTemplate, NutritionTemplateType } from '@onecoach/types';
+import type { NutritionTemplate, NutritionTemplateType } from '@onecoach/types-nutrition';
 import { darkModeClasses, cn } from '@onecoach/lib-design-system';
 import { useDebounce } from '@onecoach/hooks';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { SelectionCard } from '@onecoach/ui';
+import { Heading, Label, SelectionCard, Text, Textarea } from '@onecoach/ui';
 import {
   Sparkles,
   Calendar,
@@ -84,9 +84,9 @@ const StepOne = ({ formData, setFormData }: MeshWizardStepProps<OneAgendaFormDat
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+        <Heading level={3} className="text-lg font-semibold text-neutral-900 dark:text-white">
           {t('focus.question')}
-        </h3>
+        </Heading>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {options.map((option) => (
             <SelectionCard
@@ -111,15 +111,15 @@ const StepOne = ({ formData, setFormData }: MeshWizardStepProps<OneAgendaFormDat
       </div>
       <div className="space-y-3">
         <div className="space-y-1">
-          <label className="text-sm font-bold tracking-tight text-neutral-900 dark:text-white">
+          <Label className="text-sm font-bold tracking-tight text-neutral-900 dark:text-white">
             {t('description.label')}
-          </label>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          </Label>
+          <Text className="text-sm text-neutral-500 dark:text-neutral-400">
             {t('description.helper')}
-          </p>
+          </Text>
         </div>
         <div className="relative">
-          <textarea
+          <Textarea
             rows={5}
             placeholder={t('description.placeholder')}
             className={cn(
@@ -171,9 +171,9 @@ const StepTwo = ({ formData, setFormData }: MeshWizardStepProps<OneAgendaFormDat
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+        <Heading level={3} className="text-lg font-semibold text-neutral-900 dark:text-white">
           {t('horizon.title')}
-        </h3>
+        </Heading>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {horizonOptions.map((option) => (
             <SelectionCard
@@ -197,9 +197,9 @@ const StepTwo = ({ formData, setFormData }: MeshWizardStepProps<OneAgendaFormDat
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+        <Heading level={3} className="text-lg font-semibold text-neutral-900 dark:text-white">
           {t('intensity.title')}
-        </h3>
+        </Heading>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {intensityOptions.map((option) => (
             <SelectionCard

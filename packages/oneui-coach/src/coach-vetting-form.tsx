@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
  */
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button, Card, Label, Textarea } from '@onecoach/ui';
+import { Button, Card, Label, Textarea, Heading, Text } from '@onecoach/ui';
 import { Send, FileText } from 'lucide-react';
 import { dialog } from '@onecoach/lib-stores';
 export interface CoachVettingFormProps {
@@ -77,10 +77,10 @@ export function CoachVettingForm({ hasPendingRequest, hasApprovedRequest }: Coac
         <div className="flex items-center gap-3 text-green-600 dark:text-green-400">
           <FileText className="h-5 w-5" />
           <div>
-            <h3 className="font-semibold">{t('coach_vetting_form.account_verificato')}</h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <Heading level={3} size="sm" weight="semibold">{t('coach_vetting_form.account_verificato')}</Heading>
+            <Text size="sm" className="text-neutral-600 dark:text-neutral-400">
               {t('coach_vetting_form.il_tuo_account_e_gia_stato_verificato')}
-            </p>
+            </Text>
           </div>
         </div>
       </Card>
@@ -92,10 +92,10 @@ export function CoachVettingForm({ hasPendingRequest, hasApprovedRequest }: Coac
         <div className="flex items-center gap-3 text-yellow-600 dark:text-yellow-400">
           <FileText className="h-5 w-5" />
           <div>
-            <h3 className="font-semibold">{t('coach_vetting_form.richiesta_in_attesa')}</h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <Heading level={3} size="sm" weight="semibold">{t('coach_vetting_form.richiesta_in_attesa')}</Heading>
+            <Text size="sm" className="text-neutral-600 dark:text-neutral-400">
               {t('coach_vetting_form.hai_gia_una_richiesta_di_verifica_in_att')}
-            </p>
+            </Text>
           </div>
         </div>
       </Card>
@@ -104,9 +104,9 @@ export function CoachVettingForm({ hasPendingRequest, hasApprovedRequest }: Coac
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card className="p-6">
-        <h2 className="mb-6 text-xl font-semibold">
+        <Heading level={2} size="xl" weight="semibold" className="mb-6">
           {t('coach_vetting_form.richiesta_di_verifica')}
-        </h2>
+        </Heading>
         <div className="mb-4 space-y-4">
           <div>
             <Label htmlFor="certifications">Certificazioni</Label>
@@ -160,10 +160,10 @@ export function CoachVettingForm({ hasPendingRequest, hasApprovedRequest }: Coac
           </div>
         </div>
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
-          <p className="text-sm text-blue-800 dark:text-blue-300">
+          <Text size="sm" className="text-blue-800 dark:text-blue-300">
             <strong>{t('coach_vetting_form.nota')}</strong>{' '}
             {t('coach_vetting_form.dopo_l_invio_la_tua_richiesta_verra_revi')}
-          </p>
+          </Text>
         </div>
       </Card>
       {/* Submit Button */}

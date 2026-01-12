@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
  *
  * Display vetting request status
  */
-import { Badge, Card } from '@onecoach/ui';
+import { Badge, Card, Heading, Text } from '@onecoach/ui';
 import { CheckCircle2, XCircle, Clock, AlertCircle } from 'lucide-react';
 import type { coach_vetting_requests } from '@prisma/client';
 import { formatDistanceToNow } from 'date-fns';
@@ -24,12 +24,12 @@ export function CoachVettingStatus({ vettingRequest }: CoachVettingStatusProps) 
         <div className="flex items-center gap-3">
           <AlertCircle className="h-5 w-5 text-neutral-400" />
           <div>
-            <h3 className="font-semibold">
+            <Heading level={3} size="sm" weight="semibold">
               {t('coach_vetting_status.nessuna_richiesta_di_verifica')}
-            </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            </Heading>
+            <Text size="sm" className="text-neutral-600 dark:text-neutral-400">
               {t('coach_vetting_status.invia_una_richiesta_per_verificare_il_tu')}
-            </p>
+            </Text>
           </div>
         </div>
       </Card>
@@ -77,8 +77,8 @@ export function CoachVettingStatus({ vettingRequest }: CoachVettingStatusProps) 
           <div className="flex items-center gap-3">
             <StatusIcon className={`h-6 w-6 ${config.color.split(' ')[1]}`} />
             <div>
-              <h3 className="font-semibold">{t('coach_vetting_status.stato_verifica')}</h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">{config.description}</p>
+              <Heading level={3} size="sm" weight="semibold">{t('coach_vetting_status.stato_verifica')}</Heading>
+              <Text size="sm" className="text-neutral-600 dark:text-neutral-400">{config.description}</Text>
             </div>
           </div>
           <Badge className={config.color}>{config.label}</Badge>
@@ -105,12 +105,12 @@ export function CoachVettingStatus({ vettingRequest }: CoachVettingStatusProps) 
         {/* Review Notes */}
         {vettingRequest.reviewNotes && (
           <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-800/50">
-            <h4 className="mb-2 text-sm font-medium">
+            <Heading level={4} size="sm" weight="medium" className="mb-2">
               {t('coach_vetting_status.note_di_revisione')}
-            </h4>
-            <p className="text-sm text-neutral-700 dark:text-neutral-300">
+            </Heading>
+            <Text size="sm" className="text-neutral-700 dark:text-neutral-300">
               {vettingRequest.reviewNotes}
-            </p>
+            </Text>
           </div>
         )}
       </div>

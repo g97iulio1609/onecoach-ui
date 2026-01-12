@@ -30,7 +30,7 @@ export function OperationsTab({ models }: OperationsTabProps) {
 
   // Format operation type to readable string
   const formatOpType = (op: string) => {
-    return tAdmin(`types.${op}` as Parameters<typeof tAdmin>[0]);
+    return t(`types.${op}` as Parameters<typeof t>[0]);
   };
 
   const getIconForOp = (op: string) => {
@@ -224,7 +224,7 @@ export function OperationsTab({ models }: OperationsTabProps) {
                   className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
                 >
                   {models.map((m) => (
-                    <option key={m.modelId} value={m.modelId}>
+                    <option key={m.id} value={m.modelId}>
                       {m.displayName}
                     </option>
                   ))}

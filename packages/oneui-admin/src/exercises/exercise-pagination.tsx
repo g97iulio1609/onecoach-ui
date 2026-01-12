@@ -66,7 +66,12 @@ export function ExercisePagination({
   return (
     <div className="flex items-center justify-between py-3 text-sm text-neutral-600 dark:text-neutral-400">
       <div>
-        Pagina {page} di {totalPages} ({total} {t('admin.exercise_pagination.esercizi')}
+        {t('pagination.info', {
+          page,
+          totalPages,
+          total,
+          unit: t('exercise_pagination.esercizi'),
+        })}
       </div>
       <div className="flex gap-2">
         <Button
@@ -76,7 +81,7 @@ export function ExercisePagination({
           onClick={handlePrev}
           type="button"
         >
-          Indietro
+          {t('pagination.prev')}
         </Button>
         <Button
           variant="outline"
@@ -85,7 +90,7 @@ export function ExercisePagination({
           onClick={handleNext}
           type="button"
         >
-          Avanti
+          {t('pagination.next')}
         </Button>
       </div>
     </div>

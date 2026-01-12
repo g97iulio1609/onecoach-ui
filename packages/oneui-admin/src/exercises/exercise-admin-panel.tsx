@@ -190,7 +190,7 @@ export function ExercisesAdminPanel({ initialData, locale }: ExercisesAdminPanel
 
         const label =
           status === 'APPROVED' || status === 'PENDING' || status === 'REJECTED'
-            ? tAdmin(`status.${status}`)
+            ? t(`status.${status}`)
             : status;
 
         return (

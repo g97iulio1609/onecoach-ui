@@ -5,3 +5,5 @@
 
 export { CopilotResizeHandle } from './copilot-resize-handle';
 export { CopilotSidebar } from './copilot-sidebar';
+export { CopilotWrapper } from './copilot-wrapper';
+

@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { logger } from '@onecoach/lib-shared';
-import { toast } from '@/lib/utils/toast';
+import { toast } from 'sonner';
 import { Checkbox } from '@onecoach/ui';
 
 
