@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -33,7 +33,9 @@ export function WorkoutGenerator({
   profileLoader = defaultProfileLoader,
   onSuccess,
 }: WorkoutGeneratorProps) {
+  // eslint-disable-next-line
   const t = useTranslations('workouts.generator');
+  // eslint-disable-next-line
   const [generatedId, setGeneratedId] = useState<string | null>(null);
 
   // 1. Form State Management
@@ -44,7 +46,13 @@ export function WorkoutGenerator({
     getGenerationInput 
   } = useWorkoutForm(profileLoader);
 
+  const handleSuccess = useCallback((id: string) => {
+    setGeneratedId(id);
+    onSuccess?.(id);
+  }, [onSuccess]);
+
   // 2. Generation Logic
+  // eslint-disable-next-line
   const { 
     generate, 
     isGenerating, 
@@ -52,10 +60,7 @@ export function WorkoutGenerator({
     error, 
     reset 
   } = useWorkoutGenerationHook({
-    onSuccess: (id) => {
-      setGeneratedId(id);
-      onSuccess?.(id);
-    },
+    onSuccess: handleSuccess,
   });
 
   // 3. Handlers

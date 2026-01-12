@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Card, Button, Input, Badge } from '@onecoach/ui';
 import { Plus, Trash2, Clock, RefreshCw, GripVertical } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
@@ -41,9 +41,9 @@ export function CircuitEditor({
   const [restBetweenRounds, setRestBetweenRounds] = useState(circuit?.restBetweenRounds ?? 60);
   const [name, setName] = useState(circuit?.name ?? 'Circuito Full Body');
 
-  const emitChange = (updates?: Partial<Circuit>) => {
+  const emitChange = useCallback((updates?: Partial<Circuit>) => {
     onChange({
-      id: circuit?.id ?? `circuit_${Date.now()}`,
+      id: circuit?.id ?? `circuit_${Math.random().toString(36).substr(2, 9)}`,
       type: 'circuit',
       name,
       exercises,
@@ -52,13 +52,13 @@ export function CircuitEditor({
       restBetweenRounds,
       ...updates,
     });
-  };
+  }, [circuit?.id, name, exercises, rounds, restBetweenExercises, restBetweenRounds, onChange]);
 
-  const handleAddExercise = () => {
-    const updated = [...exercises, { exerciseId: `ex_${Date.now()}`, name: '', reps: 10 }];
+  const handleAddExercise = useCallback(() => {
+    const updated = [...exercises, { exerciseId: `ex_${Math.random().toString(36).substr(2, 9)}`, name: '', reps: 10 }];
     setExercises(updated);
     emitChange({ exercises: updated });
-  };
+  }, [exercises, emitChange]);
 
   const handleRemoveExercise = (index: number) => {
     if (exercises.length <= 2) return;

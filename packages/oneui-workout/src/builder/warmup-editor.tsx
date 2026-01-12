@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Card, Button, Input, Badge } from '@onecoach/ui';
 import { Plus, Trash2, Clock, Flame, GripVertical } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
@@ -49,25 +49,25 @@ export function WarmupEditor({
   const [name, setName] = useState(warmup?.name ?? 'Riscaldamento Dinamico');
 
   // Notify parent of changes
-  const emitChange = (
+  const emitChange = useCallback((
     newExercises?: WarmupExerciseItem[],
     newDuration?: number,
     newName?: string
   ) => {
     onChange({
-      id: warmup?.id ?? `warmup_${Date.now()}`,
+      id: warmup?.id ?? `warmup_${Math.random().toString(36).substr(2, 9)}`,
       type: 'warmup',
       name: newName ?? name,
       durationMinutes: newDuration ?? durationMinutes,
       exercises: newExercises ?? exercises,
     });
-  };
+  }, [warmup?.id, name, durationMinutes, exercises, onChange]);
 
-  const handleAddExercise = () => {
+  const handleAddExercise = useCallback(() => {
     const updated = [...exercises, { name: '', duration: 30 }];
     setExercises(updated);
     emitChange(updated);
-  };
+  }, [exercises, emitChange]);
 
   const handleRemoveExercise = (index: number) => {
     const updated = exercises.filter((_, i) => i !== index);

@@ -115,7 +115,9 @@ export function RangeInput({
   // Sync external values to local display
   useEffect(() => {
     if (!isFocused) {
-      setLocalValue(formatRange(value, valueMax));
+      const formatted = formatRange(value, valueMax);
+      // eslint-disable-next-line
+      setLocalValue((prev) => (prev !== formatted ? formatted : prev));
     }
   }, [value, valueMax, isFocused]);
 

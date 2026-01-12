@@ -63,7 +63,7 @@ export function DayEditor({ day, onUpdate, referenceMaxes = {}, weightUnit = 'KG
         </View>
         <Button
           variant="primary"
-          // @ts-ignore - native button props mismatch
+          // @ts-expect-error - native button props mismatch
           label="Aggiungi Esercizio"
           onPress={() => setIsSelectorOpen(true)}
           className="h-8 px-3"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Card, Button, Input, Badge } from '@onecoach/ui';
 import { Plus, Trash2, Clock, Link2, GripVertical } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
@@ -76,7 +76,7 @@ const fromBuilder = (b: SupersetBuilderExercise): Exercise => {
       })
     : [{
         // Fallback: create new setGroup if none exist
-        id: `sg_${Date.now()}_${Math.random()}`,
+        id: `sg_${Math.random().toString(36).substr(2, 9)}`,
         count: b.sets,
         baseSet: {
           reps: b.reps,
@@ -90,7 +90,7 @@ const fromBuilder = (b: SupersetBuilderExercise): Exercise => {
       }];
   
   // Remove builder-specific fields that aren't in Exercise schema
-  const { sets, reps, ...rest } = b;
+  const { sets: _sets, reps: _reps, ...rest } = b;
   
   return {
     ...rest,
@@ -120,7 +120,7 @@ export function SupersetEditor({
   const [rounds, setRounds] = useState(superset?.rounds ?? 1);
   const [name, setName] = useState(superset?.name ?? 'Superset');
 
-  const emitChange = (updates?: { exercises?: SupersetBuilderExercise[], name?: string, restBetweenExercises?: number, restAfterSuperset?: number, rounds?: number }) => {
+  const emitChange = useCallback((updates?: { exercises?: SupersetBuilderExercise[], name?: string, restBetweenExercises?: number, restAfterSuperset?: number, rounds?: number }) => {
     // Current state values
     const currentName = updates?.name ?? name;
     const currentRestBetween = updates?.restBetweenExercises ?? restBetween;
@@ -129,7 +129,7 @@ export function SupersetEditor({
     const currentExercises = updates?.exercises ?? exercises;
 
     onChange({
-      id: superset?.id ?? `superset_${Date.now()}`,
+      id: superset?.id ?? `superset_${Math.random().toString(36).substr(2, 9)}`,
       type: 'superset',
       name: currentName,
       exercises: currentExercises.map(fromBuilder),
@@ -137,19 +137,19 @@ export function SupersetEditor({
       restAfterSuperset: currentRestAfter,
       rounds: currentRounds,
     });
-  };
+  }, [superset?.id, name, restBetween, restAfter, rounds, exercises, onChange]);
 
   // Update parent when scalar values change
   useEffect(() => {
     emitChange({});
   }, [restBetween, restAfter, rounds]);
 
-  const handleAddExercise = () => {
+  const handleAddExercise = useCallback(() => {
     if (exercises.length >= 4) return;
-    const updated = [...exercises, { exerciseId: `ex_${Date.now()}`, name: '', sets: 3, reps: 10, ...DEFAULT_EXERCISE_DATA }];
+    const updated = [...exercises, { exerciseId: `ex_${Math.random().toString(36).substr(2, 9)}`, name: '', sets: 3, reps: 10, ...DEFAULT_EXERCISE_DATA }];
     setExercises(updated);
     emitChange({ exercises: updated });
-  };
+  }, [exercises, emitChange]);
 
   const handleRemoveExercise = (index: number) => {
     if (exercises.length <= 2) return;
