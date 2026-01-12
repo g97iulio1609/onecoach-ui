@@ -7,3 +7,4 @@
 export * from './tokens';
 // export * from './theme-provider'; // File not found, commented out
 export * from './dark-mode-classes';
+export * from './tailwind.preset';
