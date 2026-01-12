@@ -20,7 +20,7 @@ import {
   MeshWizard,
   type MeshWizardStep,
   type MeshWizardStepProps,
-} from '@/components/agent/mesh-wizard';
+} from '@onecoach/ui-agent';
 import { useOneAgendaGeneration } from '@onecoach/hooks';
 
 // ----------------------------------------------------------------------------
@@ -284,8 +284,8 @@ export function OneAgendaGenerator({ variant = 'page', onComplete }: OneAgendaGe
               qaReport?: { overallScore?: number };
             };
             return [
-              { label: t('success.stats.goals'), value: result?.goals?.length || 0 },
-              { label: t('success.stats.tasks'), value: result?.tasks?.length || 0 },
+              { label: t('success.stats.goals'), value: String(result?.goals?.length || 0) },
+              { label: t('success.stats.tasks'), value: String(result?.tasks?.length || 0) },
               {
                 label: t('success.stats.score'),
                 value: `${result?.qaReport?.overallScore || 'N/A'}/100`,

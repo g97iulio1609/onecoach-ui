@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@onecoach/ui-core';
 import {
   useUpdateConversationSettings,
   useDeleteDirectConversation,

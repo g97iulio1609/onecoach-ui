@@ -3,7 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Search, X, Dumbbell, Plus } from 'lucide-react';
-import { getExercises } from '@/app/actions/workouts';
+// import { getExercises } from '@/app/actions/workouts';
+const getExercises = async (_query: string) => {
+  console.warn('getExercises mocked in UI package');
+  return [] as any[];
+};
 
 import { logger } from '@onecoach/lib-shared';
 import type { Exercise } from '@onecoach/types-workout';

@@ -13,6 +13,7 @@ export { WarmupEditor } from './warmup-editor';
 export { SupersetEditor } from './superset-editor';
 export { CircuitEditor } from './circuit-editor';
 export { CardioEditor } from './cardio-editor';
+export { DayEditor } from './day-editor';
 export { ElementTypeSelector } from './element-type-selector';
 
 // Re-export types from SSOT

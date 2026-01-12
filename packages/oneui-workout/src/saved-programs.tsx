@@ -10,14 +10,13 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
-import { darkModeClasses, cn } from '@onecoach/lib-design-system';
-import { useWorkouts, useDeleteWorkout, useDuplicateWorkout } from '@onecoach/features/workout';
+import { useWorkouts, useDeleteWorkout, useDuplicateWorkout } from '@onecoach/features-workout';
 import { ErrorState } from '@onecoach/ui/components';
+import { SelectionToolbar } from '@onecoach/ui-core';
+import { DeployToClientsModal } from '@onecoach/ui-coach';
 import { WorkoutCard } from './workout-card';
-import { useWorkoutsListRealtime } from '@/hooks/use-workouts-realtime';
-import { SelectionToolbar } from '@/components/ui/selection-toolbar';
-import { DeployToClientsModal } from '@/components/coach/deploy-to-clients-modal';
 import { useTranslations } from 'next-intl';
+import type { WorkoutProgram } from '@onecoach/types-workout';
 
 export interface SavedWorkoutProgramsRef {
   refresh: () => void;
@@ -43,9 +42,6 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
   // Assuming coach can deploy. In a real app check user role.
   const canDeploy = true;
 
-  // Enable realtime updates
-  useWorkoutsListRealtime();
-
   useImperativeHandle(ref, () => ({
     refresh: refetch,
   }));
@@ -64,7 +60,7 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
     if (selectedIds.size === programs.length) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(programs.map((p) => p.id)));
+      setSelectedIds(new Set(programs.map((p: WorkoutProgram) => p.id)));
     }
   };
 
@@ -127,14 +123,9 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
 
   if (isLoading) {
     return (
-      <div
-        className={cn(
-          'overflow-x-hidden rounded-xl border p-4 shadow-sm sm:p-6',
-          darkModeClasses.card.base
-        )}
-      >
+      <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className={cn('text-lg font-semibold sm:text-xl', darkModeClasses.text.primary)}>
+          <h2 className="text-lg font-semibold text-white sm:text-xl">
             {t('title')}
           </h2>
         </div>
@@ -142,7 +133,7 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-64 animate-pulse rounded-2xl bg-neutral-100 dark:bg-neutral-800"
+              className="h-64 animate-pulse rounded-2xl bg-neutral-800"
             />
           ))}
         </div>
@@ -152,13 +143,8 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
 
   if (error) {
     return (
-      <div
-        className={cn(
-          'overflow-x-hidden rounded-xl border p-4 shadow-sm sm:p-6',
-          darkModeClasses.card.base
-        )}
-      >
-        <h2 className={cn('mb-4 text-lg font-semibold sm:text-xl', darkModeClasses.text.primary)}>
+      <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
+        <h2 className="mb-4 text-lg font-semibold text-white sm:text-xl">
           {t('title')}
         </h2>
         <ErrorState
@@ -172,25 +158,20 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
 
   if (programs.length === 0) {
     return (
-      <div
-        className={cn(
-          'overflow-x-hidden rounded-xl border p-8 text-center shadow-sm',
-          darkModeClasses.card.base
-        )}
-      >
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+      <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-8 text-center shadow-lg backdrop-blur-sm">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800">
           <Plus className="h-6 w-6 text-neutral-400" />
         </div>
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+        <h3 className="text-lg font-semibold text-white">
           {t('empty.title')}
         </h3>
-        <p className="mx-auto mt-1 max-w-sm text-sm text-neutral-500 dark:text-neutral-400">
+        <p className="mx-auto mt-1 max-w-sm text-sm text-neutral-400">
           {t('empty.description')}
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <Link
             href="/workouts/create"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
           >
             <Plus className="h-4 w-4" />
             {t('createManually')}
@@ -203,7 +184,7 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
   return (
     <div className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {programs.map((program) => {
+        {programs.map((program: WorkoutProgram) => {
           const isSelected = selectedIds.has(program.id);
           return (
             <WorkoutCard
@@ -222,28 +203,12 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
         {/* Add New Card (Visual Placeholder) */}
         <Link
           href="/workouts/create"
-          className={cn(
-            'group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 transition-all duration-200',
-            'border-neutral-200 hover:border-blue-500 hover:bg-blue-50/50',
-            'dark:border-neutral-800 dark:hover:border-blue-500/50 dark:hover:bg-blue-900/10'
-          )}
+          className="group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 p-6 transition-all duration-300 hover:border-indigo-500/50 hover:bg-indigo-900/10"
         >
-          <div
-            className={cn(
-              'mb-3 flex h-12 w-12 items-center justify-center rounded-full transition-colors',
-              'bg-neutral-100 text-neutral-400 group-hover:bg-blue-100 group-hover:text-blue-600',
-              'dark:bg-neutral-800 dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-400'
-            )}
-          >
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 transition-colors group-hover:bg-indigo-900/30 group-hover:text-indigo-400">
             <Plus className="h-6 w-6" />
           </div>
-          <span
-            className={cn(
-              'font-semibold transition-colors',
-              'text-neutral-600 group-hover:text-blue-700',
-              'dark:text-neutral-400 dark:group-hover:text-blue-300'
-            )}
-          >
+          <span className="font-semibold text-neutral-400 transition-colors group-hover:text-indigo-300">
             {t('createNew')}
           </span>
         </Link>
@@ -257,7 +222,7 @@ export const SavedWorkoutPrograms = forwardRef<SavedWorkoutProgramsRef>((_props,
         onToggleSelectAll={toggleSelectAll}
         onDeleteSelected={handleBulkDelete}
         onCancel={clearSelection}
-        colorTheme="blue"
+        colorTheme="indigo"
       />
 
       {/* Deploy Modal */}

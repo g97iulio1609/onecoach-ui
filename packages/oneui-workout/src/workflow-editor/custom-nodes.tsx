@@ -48,6 +48,7 @@ export function WorkflowNode(props: NodeProps<Node<CustomNodeData>>) {
 
   const { data, selected } = props;
   const config = nodeTypeConfig[data.type];
+  if (!config) return null;
   const Icon = config.icon;
 
   return (

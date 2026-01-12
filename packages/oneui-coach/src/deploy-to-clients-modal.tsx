@@ -134,7 +134,7 @@ export function DeployToClientsModal({
         onSuccess(data.results);
       }
     } catch (err) {
-      logger.error(err);
+      logger.error(String(err));
       toast.error(err instanceof Error ? err.message : tCommon('error'));
     } finally {
       setIsDeploying(false);

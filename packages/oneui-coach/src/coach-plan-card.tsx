@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
  *
  * Display card for coach's plan in repository
  */
-import { Link } from 'app/navigation';
+import Link from 'next/link';
 import { Button, Card } from '@onecoach/ui';
 import { Star, Eye, Edit, Trash2, EyeOff, ExternalLink } from 'lucide-react';
 import type { MarketplacePlanType } from '@onecoach/types/client';

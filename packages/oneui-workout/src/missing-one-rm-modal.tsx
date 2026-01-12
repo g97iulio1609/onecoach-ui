@@ -12,14 +12,14 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { AlertCircle, Check, Calculator, Edit3, Info, Loader2 } from 'lucide-react';
 import { Button, Modal, ModalFooter, Tooltip } from '@onecoach/ui';
-import { ExerciseCombobox } from '@/components/exercise/exercise-combobox';
+import { ExerciseCombobox } from '@onecoach/ui-workout';
 import { useOneRepMax, type MissingOneRM } from '@onecoach/features/workout/hooks';
 import { useWeightUnit } from '@onecoach/lib-api/hooks';
 import { estimateOneRMFromReps } from '@onecoach/lib-workout/intensity-calculator';
 import { kgToLbs, lbsToKg } from '@onecoach/lib-shared';
 import { logger } from '@onecoach/lib-shared';
 import { useMagicAnimation } from '@onecoach/lib-stores';
-import { useMaxesListRealtime } from '@/hooks/use-maxes-realtime';
+import { useMaxesListRealtime } from '@onecoach/hooks';
 import { useTranslations } from 'next-intl';
 import type { LocalizedExercise } from '@onecoach/lib-exercise';
 

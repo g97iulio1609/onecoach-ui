@@ -14,7 +14,7 @@ import { useCoachDashboardPlans } from '@onecoach/features/coach/hooks';
 import type { MarketplacePlanCardProps } from '@onecoach/features/coach/hooks';
 import { LoadingState, ErrorState } from '@onecoach/ui/components';
 import { useTranslations } from 'next-intl';
-import type { MarketplacePlanType } from "@onecoach/types-database";
+import type { MarketplacePlanType } from "@onecoach/types/client";
 
 interface CoachRepositoryProps {
   onPlanPublish?: (id: string) => Promise<void>;

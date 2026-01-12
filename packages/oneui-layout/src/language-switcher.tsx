@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from '../../navigation';
 import { locales, type Locale } from '@onecoach/translations';
-import { saveLanguagePreference } from '@/hooks/use-language-sync';
+import { saveLanguagePreference } from '@onecoach/hooks';
 
 export function LanguageSwitcher() {
   const locale = useLocale();

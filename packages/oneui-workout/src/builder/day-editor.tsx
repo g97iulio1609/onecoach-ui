@@ -14,16 +14,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@onecoach/ui';
 import type { WorkoutDay, Exercise } from '@onecoach/types-workout';
 
 interface DayEditorProps {
   day: WorkoutDay;
   onUpdate: (day: WorkoutDay) => void;
   referenceMaxes?: Record<string, number>;
+  weightUnit?: 'KG' | 'LBS';
 }
 
-export function DayEditor({ day, onUpdate, referenceMaxes = {} }: DayEditorProps) {
+export function DayEditor({ day, onUpdate, referenceMaxes = {}, weightUnit = 'KG' }: DayEditorProps) {
   const t = useTranslations('workouts.builder.dayEditor');
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const exerciseClipboard = useExerciseClipboard();
@@ -134,6 +135,7 @@ export function DayEditor({ day, onUpdate, referenceMaxes = {} }: DayEditorProps
                     ? referenceMaxes[exercise.catalogExerciseId]
                     : undefined
                 }
+                weightUnit={weightUnit}
               />
             ))}
           </SortableContext>

@@ -114,7 +114,7 @@ export const QueueItemAttachment = ({ className, ...props }: QueueItemAttachment
 export type QueueItemImageProps = ComponentProps<typeof NextImage>;
 export const QueueItemImage = ({ className, ...props }: QueueItemImageProps) => (
   <NextImage
-    alt=""
+    // alt="" removed
     className={cn('h-8 w-8 rounded border object-cover', className)}
     height={32}
     width={32}

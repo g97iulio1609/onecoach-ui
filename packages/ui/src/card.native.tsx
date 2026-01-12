@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View, Platform } from 'react-native';
 import { cn } from '@onecoach/lib-design-system';
-import type { ViewProps, ViewStyle } from 'react-native';
+import type { ViewProps } from 'react-native';
 
 export interface CardProps extends ViewProps {
     className?: string;

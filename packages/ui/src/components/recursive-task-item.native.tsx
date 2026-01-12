@@ -1,3 +1,4 @@
+/// <reference path="../types/react-native-classname.d.ts" />
 'use client';
 
 import { useState } from 'react';

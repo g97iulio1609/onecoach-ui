@@ -13,7 +13,7 @@ import { Link } from 'app/navigation';
 import { darkModeClasses, cn } from '@onecoach/lib-design-system';
 import { useCredits, useCurrentUser } from '@onecoach/lib-api/hooks';
 import { creditsKeys } from '@onecoach/lib-api/queries/credits.queries';
-import { useRealtimeInvalidator } from '@/hooks/use-realtime-invalidator';
+import { useRealtimeInvalidator } from '@onecoach/hooks';
 
 export function CreditBalance() {
   const t = useTranslations('common');

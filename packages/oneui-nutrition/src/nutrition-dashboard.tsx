@@ -2,9 +2,9 @@
 
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { Link } from 'app/navigation';
+import Link from 'next/link';
 import { Plus, Sparkles, ChefHat, ArrowRight, Calendar, Utensils, Play } from 'lucide-react';
-import { useNutritionPlans } from '@onecoach/features/nutrition/hooks';
+import { useNutritionPlans } from '@onecoach/features-nutrition';
 import { getAllNutritionPlanDays } from '@onecoach/lib-shared';
 import { cn } from '@onecoach/lib-design-system';
 import { Card } from '@onecoach/ui';

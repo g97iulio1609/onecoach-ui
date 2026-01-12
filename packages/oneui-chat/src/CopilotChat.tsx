@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 
 import { useRef, useEffect, useCallback, useState, memo, useMemo, type ReactNode } from 'react';
 import { CheckIcon, RefreshCw, Sparkles, StopCircle, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@onecoach/lib-design-system';
 import { useCoachChat } from '@/lib/chat';
 import type { UIMessage, MessagePart } from '@/lib/chat';
 

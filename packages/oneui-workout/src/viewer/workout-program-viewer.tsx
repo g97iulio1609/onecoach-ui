@@ -3,8 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { Dumbbell, Calendar, Target, AlertCircle } from 'lucide-react';
 import { getExerciseSets } from '@onecoach/one-workout';
-import { DifficultyLevel } from '@onecoach/types/client';
+import { DifficultyLevel } from '@onecoach/types-workout';
 import { useTranslations } from 'next-intl';
+import { cn } from '@onecoach/lib-design-system';
 import {
   ProgramActionBar,
   ProgramInfoCard,
@@ -131,9 +132,9 @@ export function WorkoutProgramViewer({
   };
 
   const difficultyColors: Record<DifficultyLevel, string> = {
-    [DifficultyLevel.BEGINNER]: 'bg-green-100 text-green-700',
-    [DifficultyLevel.INTERMEDIATE]: 'bg-yellow-100 text-yellow-700',
-    [DifficultyLevel.ADVANCED]: 'bg-red-100 text-red-700',
+    [DifficultyLevel.BEGINNER]: 'bg-green-500/20 text-green-400',
+    [DifficultyLevel.INTERMEDIATE]: 'bg-yellow-500/20 text-yellow-400',
+    [DifficultyLevel.ADVANCED]: 'bg-red-500/20 text-red-400',
   };
 
   const handleTrack = () => {
@@ -186,25 +187,32 @@ export function WorkoutProgramViewer({
   ];
 
   return (
-    <div className={className}>
+    <div className={cn('min-h-screen w-full bg-neutral-950', className)}>
+      {/* Ambient Background Glows */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -top-[20%] -left-[10%] h-[60%] w-[60%] rounded-full bg-indigo-500/5 blur-[120px]" />
+        <div className="absolute top-[20%] -right-[10%] h-[50%] w-[50%] rounded-full bg-purple-500/5 blur-[100px]" />
+      </div>
+      
+      <div className="relative z-10 px-4 py-8 sm:px-6 lg:px-8">
       {/* Missing 1RM Alert */}
       {missingOneRM.length > 0 && (
-        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-900/20 p-4 backdrop-blur-sm">
           <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-600" />
+            <AlertCircle className="h-5 w-5 flex-shrink-0 text-amber-400" />
             <div className="flex-1">
-              <h3 className="font-medium text-amber-900">
+              <h3 className="font-medium text-amber-300">
                 {missingOneRM.length} esercizio{missingOneRM.length > 1 ? 'i' : ''} richiedono un
                 1RM
               </h3>
-              <p className="mt-1 text-sm text-amber-700">
+              <p className="mt-1 text-sm text-amber-400/80">
                 Inserisci i massimali per questi esercizi per calcolare automaticamente i pesi in
                 base all'intensità percentuale.
               </p>
               {onOpenMissingOneRM && (
                 <button
                   onClick={onOpenMissingOneRM}
-                  className="mt-3 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-700"
+                  className="mt-3 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-amber-950 transition hover:bg-amber-400"
                 >
                   {t('workout.oneRm.insertMissing')}
                 </button>
@@ -278,7 +286,7 @@ export function WorkoutProgramViewer({
 
                     {/* Warmup */}
                     {day.warmup && (
-                      <div className="mb-4 rounded-xl border border-amber-200/50 bg-amber-50/50 p-3 text-sm text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400">
+                      <div className="mb-4 rounded-xl border border-amber-500/20 bg-amber-900/20 p-3 text-sm text-amber-300 backdrop-blur-sm">
                         <span className="font-semibold">Warm-up:</span> {day.warmup}
                       </div>
                     )}
@@ -288,21 +296,20 @@ export function WorkoutProgramViewer({
                       {(day.exercises || []).map((exercise: any) => (
                         <div
                           key={exercise.id}
-                          className="rounded-2xl border border-neutral-200/60 bg-white/80 p-4 shadow-sm backdrop-blur-xl transition-all duration-200 hover:shadow-md dark:border-white/5 dark:bg-neutral-900/80 dark:shadow-lg dark:shadow-black/20 dark:hover:shadow-xl"
-                        >
+                          className="group rounded-2xl border border-white/5 bg-neutral-900/80 p-4 shadow-lg shadow-black/20 backdrop-blur-xl transition-all duration-300 hover:border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/5">
                           <div className="mb-2 flex items-start justify-between">
                             <div>
-                              <h4 className="font-semibold text-neutral-900 dark:text-neutral-100">
+                              <h4 className="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
                                 {exercise.name}
                               </h4>
                               <div className="mt-1 flex flex-wrap gap-2 text-xs">
-                                <span className="rounded bg-neutral-200 px-2 py-0.5 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <span className="rounded-md bg-neutral-800 px-2 py-0.5 text-neutral-400">
                                   {exercise.category}
                                 </span>
                                 {exercise.muscleGroups?.map((group: string) => (
                                   <span
                                     key={group}
-                                    className="rounded bg-blue-100 px-2 py-0.5 text-blue-700"
+                                    className="rounded-md bg-indigo-500/20 px-2 py-0.5 text-indigo-400"
                                   >
                                     {group}
                                   </span>
@@ -318,14 +325,14 @@ export function WorkoutProgramViewer({
                           )}
 
                           {(exercise.typeLabel || exercise.repRange) && (
-                            <div className="mt-2 flex flex-wrap gap-3 text-xs text-neutral-600 dark:text-neutral-400">
+                            <div className="mt-2 flex flex-wrap gap-3 text-xs">
                               {exercise.typeLabel && (
-                                <span className="rounded bg-neutral-100 px-2 py-1 font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                                <span className="rounded-md bg-neutral-800 px-2 py-1 font-medium text-neutral-300">
                                   {exercise.typeLabel}
                                 </span>
                               )}
                               {exercise.repRange && (
-                                <span className="rounded bg-blue-100 px-2 py-1 font-medium text-blue-700">
+                                <span className="rounded-md bg-indigo-500/20 px-2 py-1 font-medium text-indigo-400">
                                   Ripetizioni: {exercise.repRange}
                                 </span>
                               )}
@@ -333,7 +340,7 @@ export function WorkoutProgramViewer({
                           )}
 
                           {exercise.notes && (
-                            <div className="mt-2 text-sm text-neutral-600 italic dark:text-neutral-400">
+                            <div className="mt-2 text-sm text-neutral-400 italic">
                               💡 {exercise.notes}
                             </div>
                           )}
@@ -343,7 +350,7 @@ export function WorkoutProgramViewer({
                             const sets = getExerciseSets(exercise as Exercise);
                             return (
                               sets.length > 0 && (
-                                <ul className="mt-3 space-y-1 text-xs text-neutral-600 dark:text-neutral-400">
+                                <ul className="mt-3 space-y-1 text-xs text-neutral-400">
                                   {sets.map((set: ExerciseSet, setIdx: number) => (
                                     <li key={`${exercise.id}-set-${setIdx}`}>
                                       • {describeSet(set, setIdx, exercise.repRange, weightUnit)}
@@ -356,10 +363,10 @@ export function WorkoutProgramViewer({
 
                           {exercise.formCues && exercise.formCues.length > 0 && (
                             <div className="mt-3">
-                              <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+                              <p className="text-xs font-semibold text-neutral-300">
                                 Form cues:
                               </p>
-                              <ul className="mt-1 space-y-1 text-xs text-neutral-600 dark:text-neutral-400">
+                              <ul className="mt-1 space-y-1 text-xs text-neutral-400">
                                 {exercise.formCues.map((cue: string, cueIdx: number) => (
                                   <li key={`${exercise.id}-cue-${cueIdx}`}>• {cue}</li>
                                 ))}
@@ -368,8 +375,8 @@ export function WorkoutProgramViewer({
                           )}
 
                           {exercise.equipment && exercise.equipment.length > 0 && (
-                            <div className="mt-3 text-xs text-neutral-600 dark:text-neutral-400">
-                              <span className="font-semibold text-neutral-700 dark:text-neutral-300">
+                            <div className="mt-3 text-xs text-neutral-400">
+                              <span className="font-semibold text-neutral-300">
                                 Attrezzatura:
                               </span>{' '}
                               {exercise.equipment.join(', ')}
@@ -387,7 +394,7 @@ export function WorkoutProgramViewer({
 
                     {/* Cooldown */}
                     {day.cooldown && (
-                      <div className="mt-4 rounded-xl border border-blue-200/50 bg-blue-50/50 p-3 text-sm text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+                      <div className="mt-4 rounded-xl border border-blue-500/20 bg-blue-900/20 p-3 text-sm text-blue-300 backdrop-blur-sm">
                         <span className="font-semibold">Cooldown:</span> {day.cooldown}
                       </div>
                     )}
@@ -401,6 +408,7 @@ export function WorkoutProgramViewer({
 
       {/* Copilot Sidebar */}
       {copilotSidebar}
+      </div>
     </div>
   );
 }

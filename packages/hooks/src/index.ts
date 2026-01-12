@@ -17,6 +17,7 @@ export * from './use-nutrition-generation';
 export * from './use-exercise-generation';
 export * from './use-food-generation';
 export * from './use-flight-search';
+export * from './use-app-navigation';
 
 // Cross-feature utility hooks
 export * from './use-chat';
@@ -46,3 +47,6 @@ export * from './use-oneagenda-generation';
 export * from './use-visual-builder-state';
 export * from './use-versioned-state';
 export * from './use-persistent-versioned-state';
+
+export * from './use-import-measurements';
+export * from './use-maxes-list-realtime';

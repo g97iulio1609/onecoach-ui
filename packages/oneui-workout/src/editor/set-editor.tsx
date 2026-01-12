@@ -9,9 +9,8 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Clock, Calculator } from 'lucide-react';
-import { useSetWeightCalculation } from '@onecoach/features-workout';
-import { useWeightUnit } from '@onecoach/lib-api/hooks';
 import { kgToLbs, lbsToKg, getWeightValue } from '@onecoach/lib-shared';
+import { useBidirectionalWeightCalc } from '../hooks/use-bidirectional-weight-calc';
 import type { BuilderExerciseSet as ExerciseSet } from './builder-types';
 
 interface SetEditorProps {
@@ -23,6 +22,8 @@ interface SetEditorProps {
   onGroupAction?: (action: 'remove-from-group' | 'split-group') => void; // Azioni sul gruppo
   editMode?: 'individual' | 'block'; // Modalità modifica (blocco = disabilita modifica individuale)
   className?: string;
+  oneRepMax?: number | null;
+  weightUnit?: 'KG' | 'LBS';
 }
 
 export function SetEditor({
@@ -34,14 +35,13 @@ export function SetEditor({
   onGroupAction: _onGroupAction,
   editMode,
   className,
+  oneRepMax = null,
+  weightUnit = 'KG',
 }: SetEditorProps) {
-  const weightUnit = useWeightUnit();
   const [intensityPercentInputFocused, setIntensityInputFocused] = useState(false);
   const [weightInputFocused, setWeightInputFocused] = useState(false);
   const rpeString = (set.rpe ?? '').toString();
   const isInternalUpdate = useRef(false);
-
-  // ... (handlers remain the same)
 
   // Memoizzare i handler per evitare ricreazioni ad ogni render
   const handleWeightChange = useCallback(
@@ -74,16 +74,17 @@ export function SetEditor({
     [set, onSetChange]
   );
 
-  const { hasOneRM, oneRepMax } = useSetWeightCalculation({
-    exerciseId,
-    intensityPercent: set.intensityPercent ?? undefined,
-    weight: set.weight ?? undefined,
-    currentSet: set as any,
+  useBidirectionalWeightCalc({
+    intensityPercent: set.intensityPercent,
+    weight: set.weight,
+    oneRepMax,
     onWeightChange: handleWeightChange,
     onIntensityChange: handleIntensityChange,
     weightInputFocused,
     intensityInputFocused: intensityPercentInputFocused,
   });
+
+  const hasOneRM = oneRepMax !== null && oneRepMax > 0;
 
   const handleIntensityPercentChange = useCallback(
     (value: string) => {

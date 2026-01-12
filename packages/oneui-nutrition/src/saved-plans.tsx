@@ -14,16 +14,14 @@ import {
   useNutritionPlans,
   useDeleteNutritionPlan,
   useDuplicateNutritionPlan,
-} from '@onecoach/features/nutrition/hooks';
-import { useNutritionPlansRealtime } from '@/hooks/use-nutrition-realtime';
-import { SelectionToolbar } from '@/components/ui/selection-toolbar';
-import { DeployToClientsModal } from '@/components/coach/deploy-to-clients-modal';
+} from '@onecoach/features-nutrition';
+import { SelectionToolbar } from '@onecoach/ui-core';
+import { DeployToClientsModal } from '@onecoach/ui-coach';
 import { useSession } from 'next-auth/react';
-import { cn } from '@onecoach/lib-design-system';
 import { ErrorState } from '@onecoach/ui/components';
 import { useTranslations } from 'next-intl';
-
 import { NutritionPlanCard } from '@onecoach/ui-nutrition';
+import type { NutritionPlan } from '@onecoach/types-nutrition';
 
 export interface SavedNutritionPlansRef {
   refresh: () => void;
@@ -69,9 +67,6 @@ export const SavedNutritionPlans = forwardRef<SavedNutritionPlansRef>((_props, r
       await dialog.error(err instanceof Error ? err.message : t('duplicateError'));
     }
   };
-
-  // TRUE realtime sync - aggiornamenti istantanei senza refresh
-  useNutritionPlansRealtime();
 
   // Expose refresh method via ref
   useImperativeHandle(ref, () => ({
@@ -144,7 +139,7 @@ export const SavedNutritionPlans = forwardRef<SavedNutritionPlansRef>((_props, r
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-64 animate-pulse rounded-2xl bg-neutral-100 dark:bg-neutral-800"
+            className="h-64 animate-pulse rounded-2xl bg-neutral-800"
           />
         ))}
       </div>
@@ -168,28 +163,12 @@ export const SavedNutritionPlans = forwardRef<SavedNutritionPlansRef>((_props, r
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/nutrition/create"
-          className={cn(
-            'group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 transition-all duration-200',
-            'border-neutral-200 hover:border-emerald-500 hover:bg-emerald-50/50',
-            'dark:border-neutral-800 dark:hover:border-emerald-500/50 dark:hover:bg-emerald-900/10'
-          )}
+          className="group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 p-6 transition-all duration-300 hover:border-emerald-500/50 hover:bg-emerald-900/10"
         >
-          <div
-            className={cn(
-              'mb-3 flex h-12 w-12 items-center justify-center rounded-full transition-colors',
-              'bg-neutral-100 text-neutral-400 group-hover:bg-emerald-100 group-hover:text-emerald-600',
-              'dark:bg-neutral-800 dark:group-hover:bg-emerald-900/30 dark:group-hover:text-emerald-400'
-            )}
-          >
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 transition-colors group-hover:bg-emerald-900/30 group-hover:text-emerald-400">
             <Plus className="h-6 w-6" />
           </div>
-          <span
-            className={cn(
-              'font-semibold transition-colors',
-              'text-neutral-600 group-hover:text-emerald-700',
-              'dark:text-neutral-400 dark:group-hover:text-emerald-300'
-            )}
-          >
+          <span className="font-semibold text-neutral-400 transition-colors group-hover:text-emerald-300">
             {t('createNew')}
           </span>
         </Link>
@@ -200,7 +179,7 @@ export const SavedNutritionPlans = forwardRef<SavedNutritionPlansRef>((_props, r
   return (
     <div className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {plans.map((plan) => {
+        {plans.map((plan: NutritionPlan) => {
           const isSelected = selectedIds.has(plan.id);
           return (
             <NutritionPlanCard
@@ -219,28 +198,12 @@ export const SavedNutritionPlans = forwardRef<SavedNutritionPlansRef>((_props, r
         {/* Add New Card (Visual Placeholder) - matches workouts style */}
         <Link
           href="/nutrition/create"
-          className={cn(
-            'group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 transition-all duration-200',
-            'border-neutral-200 hover:border-emerald-500 hover:bg-emerald-50/50',
-            'dark:border-neutral-800 dark:hover:border-emerald-500/50 dark:hover:bg-emerald-900/10'
-          )}
+          className="group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 p-6 transition-all duration-300 hover:border-emerald-500/50 hover:bg-emerald-900/10"
         >
-          <div
-            className={cn(
-              'mb-3 flex h-12 w-12 items-center justify-center rounded-full transition-colors',
-              'bg-neutral-100 text-neutral-400 group-hover:bg-emerald-100 group-hover:text-emerald-600',
-              'dark:bg-neutral-800 dark:group-hover:bg-emerald-900/30 dark:group-hover:text-emerald-400'
-            )}
-          >
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 transition-colors group-hover:bg-emerald-900/30 group-hover:text-emerald-400">
             <Plus className="h-6 w-6" />
           </div>
-          <span
-            className={cn(
-              'font-semibold transition-colors',
-              'text-neutral-600 group-hover:text-emerald-700',
-              'dark:text-neutral-400 dark:group-hover:text-emerald-300'
-            )}
-          >
+          <span className="font-semibold text-neutral-400 transition-colors group-hover:text-emerald-300">
             {t('createNew')}
           </span>
         </Link>

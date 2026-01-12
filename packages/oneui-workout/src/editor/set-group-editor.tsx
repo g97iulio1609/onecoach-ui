@@ -27,6 +27,8 @@ interface SetGroupEditorProps {
   onToggleExpand?: () => void;
   editMode?: 'individual' | 'block'; // Modifica singola vs blocco
   onEditModeChange?: (mode: 'individual' | 'block') => void;
+  oneRepMax?: number | null;
+  weightUnit?: 'KG' | 'LBS';
 }
 
 export function SetGroupEditor({
@@ -40,6 +42,8 @@ export function SetGroupEditor({
   onToggleExpand,
   editMode: controlledEditMode,
   onEditModeChange,
+  oneRepMax,
+  weightUnit = 'KG',
 }: SetGroupEditorProps) {
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [internalEditMode, setInternalEditMode] = useState<'individual' | 'block'>('block');
@@ -309,6 +313,8 @@ export function SetGroupEditor({
                 set={group.baseSet}
                 exerciseId={exerciseId}
                 onSetChange={handleBaseSetChange}
+                oneRepMax={oneRepMax}
+                weightUnit={weightUnit}
               />
             </div>
           )}
@@ -405,6 +411,8 @@ export function SetGroupEditor({
                     exerciseId={exerciseId}
                     onSetChange={(updatedSet) => handleSetChange(idx, updatedSet)}
                     className="border-0 bg-transparent p-0 shadow-none"
+                    oneRepMax={oneRepMax}
+                    weightUnit={weightUnit}
                   />
                 </div>
               ))}

@@ -1,8 +1,8 @@
 export interface BuilderExerciseSet {
   id?: string;
   setNumber?: number;
-  reps?: number | null;
-  repsMax?: number | null;
+  reps?: number;
+  repsMax?: number;
   weight?: number | null; // Nullable for builder UI
   weightLbs?: number | null;
   weightMax?: number | null;
@@ -11,7 +11,7 @@ export interface BuilderExerciseSet {
   rpe?: number | null;
   rpeMax?: number | null;
   rest?: number | null; // seconds
-  duration?: number | null;
+  duration?: number;
   notes?: string | null;
   tempo?: string | null;
   // Additional fields for compatibility
@@ -28,11 +28,11 @@ export interface BuilderSetProgression {
 }
 
 export interface BuilderSetGroup {
-  id?: string;
+  id: string;
   exerciseId?: string;
   exerciseName?: string;
   count: number;
-  order: number;
+  order?: number;
   sets: BuilderExerciseSet[];
   baseSet: BuilderExerciseSet;
   progression?: BuilderSetProgression;

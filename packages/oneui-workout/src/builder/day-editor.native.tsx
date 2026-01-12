@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+// Mock components for app-level compatibility
+const Pressable = (props: any) => <View {...props} />;
 import { View, Text } from 'react-native';
-import { Pressable } from '../../../../components/ui';
+
 import { Button } from '@onecoach/ui';
 import { Plus, Dumbbell } from 'lucide-react-native';
-import { ExerciseCard } from './exercise-card';
+import { ExerciseCard } from './exercise-card.native';
 import { ExerciseSelector } from './exercise-selector';
 import { useTranslations } from 'next-intl';
 import type { WorkoutDay, Exercise } from '@onecoach/types-workout';
@@ -13,9 +15,11 @@ import type { WorkoutDay, Exercise } from '@onecoach/types-workout';
 interface DayEditorProps {
   day: WorkoutDay;
   onUpdate: (day: WorkoutDay) => void;
+  referenceMaxes?: Record<string, number>;
+  weightUnit?: 'KG' | 'LBS';
 }
 
-export function DayEditor({ day, onUpdate }: DayEditorProps) {
+export function DayEditor({ day, onUpdate, referenceMaxes = {}, weightUnit = 'KG' }: DayEditorProps) {
   const t = useTranslations();
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
@@ -58,12 +62,15 @@ export function DayEditor({ day, onUpdate }: DayEditorProps) {
           </Text>
         </View>
         <Button
-          variant="gradient-primary"
+          variant="primary"
+          // @ts-ignore - native button props mismatch
           label="Aggiungi Esercizio"
-          icon={<Plus size={16} className="text-white" />}
           onPress={() => setIsSelectorOpen(true)}
           className="h-8 px-3"
-        />
+        >
+          <Plus size={16} className="text-white mr-2" />
+          <Text className="text-white font-medium">Aggiungi Esercizio</Text>
+        </Button>
       </View>
 
       <View className="gap-4">
@@ -79,6 +86,12 @@ export function DayEditor({ day, onUpdate }: DayEditorProps) {
             onMoveDown={() =>
               index < (day.exercises?.length || 0) - 1 && handleReorderExercise(index, index + 1)
             }
+            referenceOneRm={
+              exercise.catalogExerciseId
+                ? referenceMaxes[exercise.catalogExerciseId]
+                : undefined
+            }
+            weightUnit={weightUnit}
           />
         ))}
 

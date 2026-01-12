@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { WizardStepper, WizardContainer, WizardActions } from '@onecoach/ui';
 import type { GenerationLogEvent } from '@/components/ai-elements/generation-log';
 import { MeshGenerationView } from './mesh-generation-view';
-import { cn } from '@/lib/utils';
+import { cn } from '@onecoach/lib-design-system';
 
 
 // ----------------------------------------------------------------------------

@@ -71,6 +71,21 @@ function cloneSetGroupWithNewId(setGroup: SetGroup): SetGroup {
   };
 }
 
+const toDomainSetGroup = (group: any): SetGroup => {
+  const sanitizeSet = (s: any) => ({
+    ...s,
+    weight: s.weight ?? null,
+    rest: s.rest ?? 90,
+    intensityPercent: s.intensityPercent ?? null,
+    rpe: s.rpe ?? null,
+  });
+  return {
+    ...group,
+    baseSet: sanitizeSet(group.baseSet),
+    sets: group.sets?.map(sanitizeSet) || [],
+  } as SetGroup;
+};
+
 interface ProgressionManagerProps {
   program: WorkoutProgram;
   onUpdate: (program: WorkoutProgram) => void;
@@ -137,7 +152,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
     setGroupedExercises(groups);
 
     if (groups.length > 0) {
-      if (!selectedGroup || !groups.find((g) => g.exerciseId === selectedGroup.exerciseId)) {
+      if (!selectedGroup || !groups.find((g: GroupedExercise) => g.exerciseId === selectedGroup.exerciseId)) {
         const firstGroup = groups[0];
         if (firstGroup) setSelectedGroup(firstGroup);
       }
@@ -147,7 +162,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
   // Handle selection change
   useEffect(() => {
     if (selectedGroup) {
-      setSelectedIndices(new Set(selectedGroup.occurrences.map((_, i) => i)));
+      setSelectedIndices(new Set(selectedGroup.occurrences.map((_: any, i: number) => i)));
       setOverrides(new Map()); // Reset overrides on exercise switch
 
       const firstSet = selectedGroup.occurrences[0]?.exercise.setGroups[0]?.baseSet;
@@ -157,7 +172,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
       else if (params.type === 'percentage') initialVal = firstSet?.intensityPercent || 0;
       else if (params.type === 'rpe') initialVal = firstSet?.rpe || 0;
 
-      setParams((p) => ({ ...p, startValue: initialVal }));
+      setParams((p: ProgressionParams) => ({ ...p, startValue: initialVal }));
       setOneRepMax(undefined);
       setUserOneRepMax(null);
       setUserOneRepMaxUpdatedAt(null);
@@ -234,7 +249,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
 
     // 2. Apply Manual Overrides
     // The override now stores the complete _setGroups array with all modifications
-    const blendedPreview = basePreview.map((occ, idx) => {
+    const blendedPreview = basePreview.map((occ: ExerciseOccurrence, idx: number) => {
       if (overrides.has(idx)) {
         const overrideData = overrides.get(idx)!;
         const newOcc = JSON.parse(JSON.stringify(occ));
@@ -717,7 +732,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
                   {progressionTypes.map((typeOption) => (
                     <button
                       key={typeOption.id}
-                      onClick={() => setParams((p) => ({ ...p, type: typeOption.id }))}
+                      onClick={() => setParams((p: ProgressionParams) => ({ ...p, type: typeOption.id }))}
                       className={cn(
                         'flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-all',
                         params.type === typeOption.id
@@ -740,7 +755,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
                     type="number"
                     value={params.startValue}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setParams((p) => ({ ...p, startValue: parseFloat(e.target.value) || 0 }))
+                      setParams((p: ProgressionParams) => ({ ...p, startValue: parseFloat(e.target.value) || 0 }))
                     }
                     className="w-full bg-transparent text-neutral-900 outline-none dark:text-white"
                   />
@@ -759,7 +774,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
                     type="number"
                     value={params.increment}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setParams((p) => ({ ...p, increment: parseFloat(e.target.value) || 0 }))
+                      setParams((p: ProgressionParams) => ({ ...p, increment: parseFloat(e.target.value) || 0 }))
                     }
                     className="w-full bg-transparent pl-4 text-neutral-900 outline-none dark:text-white"
                   />
@@ -774,7 +789,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
                   <select
                     value={params.frequency}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                      setParams((p) => ({ ...p, frequency: parseInt(e.target.value) }))
+                      setParams((p: ProgressionParams) => ({ ...p, frequency: parseInt(e.target.value) }))
                     }
                     className="w-full bg-transparent text-neutral-900 outline-none dark:text-white [&>option]:text-neutral-900 dark:[&>option]:bg-neutral-900 dark:[&>option]:text-white"
                   >
@@ -907,7 +922,7 @@ export function ProgressionManager({ program, onUpdate }: ProgressionManagerProp
 
                         <SetGroupEditor
                           group={currentSetGroup}
-                          onGroupChange={(updated) => handleGroupUpdate(idx, updated)}
+                          onGroupChange={(updated) => handleGroupUpdate(idx, toDomainSetGroup(updated))}
                           onGroupDelete={() => handleRemoveSetGroup(idx, editingSetGroupIndex)}
                           onGroupDuplicate={() =>
                             handleDuplicateSetGroup(idx, editingSetGroupIndex)

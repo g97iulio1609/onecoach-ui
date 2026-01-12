@@ -13,3 +13,4 @@ export * from './nutrition-day-detail';
 
 export * from './templates-list';
 export * from './week-card';
+export * from './nutrition-plan-editor';

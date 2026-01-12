@@ -9,8 +9,8 @@ import { useTranslations } from 'next-intl';
 
 import React from 'react';
 import Image from 'next/image';
-import { Link } from 'app/navigation';
-import { useRouter } from 'app/navigation';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Star, Users, CheckCircle2 } from 'lucide-react';
 import { Card } from '@onecoach/ui';
 

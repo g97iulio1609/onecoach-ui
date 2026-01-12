@@ -2,12 +2,33 @@
 
 import { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Pressable } from '../../../../components/ui';
+// Mock components for app-level compatibility
+const Pressable = (props: any) => <View {...props} />;
+
 import { Card } from '@onecoach/ui';
 import { Trash2, ArrowUp, ArrowDown } from 'lucide-react-native';
 import { cn } from '@onecoach/lib-design-system';
 import { SetGroupEditor } from '../editor/set-group-editor';
 import type { Exercise, SetGroup } from '@onecoach/types-workout';
+
+
+
+// Helper to sanitise BuilderSetGroup to Domain SetGroup
+const toDomainSetGroup = (group: any): SetGroup => {
+  const sanitizeSet = (s: any) => ({
+    ...s,
+    weight: s.weight ?? null,
+    rest: s.rest ?? 90,
+    intensityPercent: s.intensityPercent ?? null,
+    rpe: s.rpe ?? null,
+  });
+
+  return {
+    ...group,
+    baseSet: sanitizeSet(group.baseSet),
+    sets: group.sets?.map(sanitizeSet) || [],
+  } as SetGroup;
+};
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -17,6 +38,8 @@ interface ExerciseCardProps {
   onRemove: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
+  referenceOneRm?: number;
+  weightUnit?: 'KG' | 'LBS';
 }
 
 export function ExerciseCard({
@@ -27,6 +50,8 @@ export function ExerciseCard({
   onRemove,
   onMoveUp,
   onMoveDown,
+  referenceOneRm,
+  weightUnit = 'KG',
 }: ExerciseCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -115,7 +140,7 @@ export function ExerciseCard({
               group={group}
               onGroupChange={(updatedGroup) => {
                 const newGroups = [...(exercise.setGroups || [])];
-                newGroups[groupIndex] = updatedGroup;
+                newGroups[groupIndex] = toDomainSetGroup(updatedGroup);
                 handleSetGroupsChange(newGroups);
               }}
               onGroupDelete={() => {
@@ -129,6 +154,8 @@ export function ExerciseCard({
                 newGroups.splice(groupIndex + 1, 0, duplicate);
                 handleSetGroupsChange(newGroups);
               }}
+              oneRepMax={referenceOneRm}
+              weightUnit={weightUnit}
             />
           ))}
 

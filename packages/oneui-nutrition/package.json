@@ -12,10 +12,24 @@
   },
   "dependencies": {
     "@onecoach/ui-core": "workspace:*",
-    "@onecoach/lib-design-system": "workspace:*"
+    "@onecoach/lib-design-system": "workspace:*",
+    "@onecoach/types-nutrition": "workspace:*",
+    "@onecoach/ui": "workspace:*",
+    "@onecoach/features-nutrition": "workspace:*",
+    "@onecoach/ui-coach": "workspace:*",
+    "@onecoach/schemas": "workspace:*",
+    "@onecoach/lib-shared": "workspace:*",
+    "lucide-react": "^0.300.0",
+    "next-intl": "^4.7.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

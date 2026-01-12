@@ -16,7 +16,7 @@ import {
   MoreVertical,
   Check,
 } from 'lucide-react';
-import { DifficultyLevel } from '@onecoach/types/client';
+import { DifficultyLevel } from '@onecoach/types-workout';
 import { getWeekAndDayFromDate, getWorkoutProgramWeek } from '@onecoach/one-workout';
 import { Card, Spinner } from '@onecoach/ui';
 import { GlassContainer, ScaleTouch } from '@onecoach/ui-core';

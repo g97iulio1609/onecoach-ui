@@ -9,10 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+  Button
+} from '@onecoach/ui-core';
 import { Upload, FileText, Loader2, X } from 'lucide-react';
-import { useImportMeasurements } from '@/hooks/use-body-measurements';
+import { useImportMeasurements } from '@onecoach/hooks';
 import { toast } from 'sonner';
 
 import { logger } from '@onecoach/lib-shared';

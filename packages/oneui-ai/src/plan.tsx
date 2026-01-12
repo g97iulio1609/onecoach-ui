@@ -118,24 +118,29 @@ export const PlanContent = ({ className, ...props }: PlanContentProps) => (
   </CollapsibleContent>
 );
 
+import { useTranslations } from 'next-intl';
+
 export type PlanTriggerProps = ComponentProps<typeof CollapsibleTrigger>;
-export const PlanTrigger = ({ className, ...props }: PlanTriggerProps) => (
-  <CollapsibleTrigger asChild>
-    <Button
-      className={cn(
-        'h-8 w-8 text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300',
-        className
-      )}
-      data-slot="plan-trigger"
-      size="icon"
-      variant="ghost"
-      {...props}
-    >
-      <ChevronsUpDownIcon className="h-4 w-4" />
-      <span className="sr-only">{t('common.plan.toggle_plan')}</span>
-    </Button>
-  </CollapsibleTrigger>
-);
+export const PlanTrigger = ({ className, ...props }: PlanTriggerProps) => {
+  const t = useTranslations();
+  return (
+    <CollapsibleTrigger asChild>
+      <Button
+        className={cn(
+          'h-8 w-8 text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300',
+          className
+        )}
+        data-slot="plan-trigger"
+        size="icon"
+        variant="ghost"
+        {...props}
+      >
+        <ChevronsUpDownIcon className="h-4 w-4" />
+        <span className="sr-only">{t('common.plan.toggle_plan')}</span>
+      </Button>
+    </CollapsibleTrigger>
+  );
+};
 
 export type PlanFooterProps = ComponentProps<'div'>;
 export const PlanFooter = ({ className, ...props }: PlanFooterProps) => (

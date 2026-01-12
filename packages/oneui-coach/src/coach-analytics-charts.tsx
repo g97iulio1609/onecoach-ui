@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import {
   AnalyticsChart as ProgressChart,
   type AnalyticsChartDataPoint as ChartDataPoint,
-} from '@onecoach/features-analytics';
+} from '@onecoach/ui-analytics';
 import { LoadingIndicator } from '@onecoach/ui';
 import { logger } from '@onecoach/lib-shared';
 

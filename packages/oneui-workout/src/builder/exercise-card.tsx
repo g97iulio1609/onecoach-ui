@@ -22,7 +22,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@onecoach/ui';
 import type { Exercise, SetGroup } from '@onecoach/types-workout';
 
 interface ExerciseCardProps {
@@ -36,7 +36,24 @@ interface ExerciseCardProps {
   /** Drag handle event listeners */
   dragListeners?: DraggableSyntheticListeners;
   isDragging?: boolean;
+  weightUnit?: 'KG' | 'LBS';
 }
+
+const toDomainSetGroup = (group: any): SetGroup => {
+  const sanitizeSet = (s: any) => ({
+    ...s,
+    weight: s.weight ?? null,
+    rest: s.rest ?? 90, // Default to 90s if missing
+    intensityPercent: s.intensityPercent ?? null,
+    rpe: s.rpe ?? null,
+  });
+
+  return {
+    ...group,
+    baseSet: sanitizeSet(group.baseSet),
+    sets: group.sets?.map(sanitizeSet) || [],
+  } as SetGroup;
+};
 
 export function ExerciseCard({
   exercise,
@@ -47,6 +64,7 @@ export function ExerciseCard({
   dragAttributes,
   dragListeners,
   isDragging,
+  weightUnit = 'KG',
 }: ExerciseCardProps) {
   const t = useTranslations('workouts.builder.exerciseCard');
   const [isExpanded, setIsExpanded] = useState(true);
@@ -279,10 +297,9 @@ export function ExerciseCard({
                 <SetGroupEditor
                   group={group}
                   exerciseId={exercise.catalogExerciseId}
-                  referenceOneRm={referenceOneRm}
                   onGroupChange={(updatedGroup) => {
                     const newGroups = [...(exercise.setGroups || [])];
-                    newGroups[groupIndex] = updatedGroup;
+                    newGroups[groupIndex] = toDomainSetGroup(updatedGroup);
                     handleSetGroupsChange(newGroups);
                   }}
                   onGroupDelete={() => {
@@ -299,6 +316,8 @@ export function ExerciseCard({
                     newGroups.splice(groupIndex + 1, 0, duplicate);
                     handleSetGroupsChange(newGroups);
                   }}
+                  oneRepMax={referenceOneRm}
+                  weightUnit={weightUnit}
                 />
               </div>
             ))}

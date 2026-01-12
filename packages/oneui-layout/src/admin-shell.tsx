@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppNavigation } from '@/hooks/use-app-navigation';
+import { useAppNavigation } from '@onecoach/hooks';
 import { useTranslations } from 'next-intl';
 import { OneDashboardLayout } from '@onecoach/one-dashboard';
 import type { AuthenticatedUser } from "@onecoach/types-core";

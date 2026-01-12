@@ -36,7 +36,8 @@
     "@onecoach/types-ai": "workspace:*",
     "@onecoach/types-ui": "workspace:*",
     "@onecoach/types-domain": "workspace:*",
-    "@onecoach/types-database": "workspace:*"
+    "@onecoach/types-database": "workspace:*",
+    "@supabase/auth-helpers-nextjs": "^0.8.7"
   },
   "peerDependencies": {
     "react": ">=19.1.0 <20",

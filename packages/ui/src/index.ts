@@ -78,9 +78,10 @@ export * from './program-viewer/program-week-card';
 // Visual Builder Base Components
 export * from './visual-builder/components/base/EditorHeader';
 export * from './visual-builder/components/base/VersionHistory';
+export * from './visual-builder/contexts/clipboard-context';
 
-export * from './import-modal';
+// Exported from ui-core below
 
 // Re-export common UI Core components that are not wrapped
 export { GlassContainer } from '@onecoach/ui-core';
-export { ScaleTouch, PulseIndicator, AnimatedNumber } from '@onecoach/ui-core';
+export { ScaleTouch, PulseIndicator, AnimatedNumber, ImportModal } from '@onecoach/ui-core';

@@ -1,7 +1,7 @@
 'use client';
 
 import { AppShellSidebar } from '@onecoach/ui';
-import { useAppNavigation } from '@/hooks/use-app-navigation';
+import { useAppNavigation } from '@onecoach/hooks';
 import type { AuthenticatedUser } from "@onecoach/types-core";
 
 interface AppSidebarProps {

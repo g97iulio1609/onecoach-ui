@@ -29,7 +29,7 @@ const MEAL_TYPE_LABELS: Record<string, string> = {
   'post-workout': 'Post-workout',
 };
 
-export function MealCard({
+export function SimpleMealCard({
   meal,
   index,
   totalMeals,
@@ -219,7 +219,7 @@ export function MealCard({
         <div className="space-y-4 p-4">
           {/* Foods List */}
           <div className="space-y-2">
-            {meal.foods?.map((food, foodIndex) => (
+            {meal.foods?.map((food: Food, foodIndex: number) => (
               <div
                 key={food.id || foodIndex}
                 className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50/50 p-3 dark:border-neutral-700 dark:bg-neutral-800/30"

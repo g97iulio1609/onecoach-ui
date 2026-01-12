@@ -10,7 +10,7 @@
 // =============================================================================
 // Flight Search Components
 // =============================================================================
-export { FlightSearchCard } from './flight-search-card';
+export { FlightSearchCard, type FlightSearchCardProps } from './flight-search-card';
 export { FlightWizard, type FlightWizardProps } from './flight-wizard';
 
 // =============================================================================

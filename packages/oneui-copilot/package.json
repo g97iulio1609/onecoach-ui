@@ -12,7 +12,11 @@
   },
   "dependencies": {
     "@onecoach/ui-core": "workspace:*",
-    "@onecoach/lib-design-system": "workspace:*"
+    "@onecoach/lib-design-system": "workspace:*",
+    "@onecoach/types-domain": "workspace:*",
+    "@onecoach/ui": "workspace:*",
+    "lucide-react": "^0.562.0",
+    "next-intl": "^3.26.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

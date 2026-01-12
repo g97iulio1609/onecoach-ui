@@ -160,10 +160,10 @@ export function MarketplaceFiltersComponent({ filters, onChange }: MarketplaceFi
         <label className="text-sm font-medium">{t('common.marketplace_filters.sort_by')}</label>
         <select
           value={filters.sortBy || ''}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             onChange({
               ...filters,
-              sortBy: e.target.value as unknown,
+              sortBy: e.target.value as MarketplaceFilters['sortBy'],
             })
           }
           className="w-full rounded-lg border px-3 py-2"

@@ -85,9 +85,9 @@ export function computeSemanticDiff(
     let entityType: EntityReference['type'] = 'program';
     let subPath = '';
 
-    let exerciseIdx = parts.findIndex(p => p.startsWith('exercises'));
-    let dayIdx = parts.findIndex(p => p.startsWith('days'));
-    let weekIdx = parts.findIndex(p => p.startsWith('weeks'));
+    const exerciseIdx = parts.findIndex(p => p.startsWith('exercises'));
+    const dayIdx = parts.findIndex(p => p.startsWith('days'));
+    const weekIdx = parts.findIndex(p => p.startsWith('weeks'));
 
     if (exerciseIdx !== -1) {
       entityType = 'exercise';

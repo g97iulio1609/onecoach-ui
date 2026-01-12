@@ -36,7 +36,7 @@ import { FoodPagination } from './food-pagination';
 import { FoodBulkActions } from './food-bulk-actions';
 import { sanitizeImageUrl } from '@onecoach/lib-shared';
 import type { Food, FoodsResponse, FoodListParams } from '@onecoach/lib-api';
-import { useAllAdminFoodsRealtime } from '@/hooks/realtime';
+import { useAllAdminFoodsRealtime } from '@onecoach/hooks';
 
 interface FoodsAdminPanelProps {
   initialData?: FoodsResponse | null;

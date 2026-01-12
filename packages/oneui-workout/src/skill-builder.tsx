@@ -84,7 +84,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
 
     const fieldType = prompt('Field type (string, number, boolean):') || 'string';
 
-    setFormData((prev) => ({
+    setFormData((prev: SkillFormData) => ({
       ...prev,
       inputSchema: {
         ...prev.inputSchema,
@@ -94,7 +94,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
   };
 
   const removeInputField = (fieldName: string) => {
-    setFormData((prev) => {
+    setFormData((prev: SkillFormData) => {
       const newSchema = { ...prev.inputSchema };
       delete newSchema[fieldName];
       return { ...prev, inputSchema: newSchema };
@@ -159,7 +159,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
               type="text"
               value={formData.name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
+                setFormData((prev: SkillFormData) => ({ ...prev, name: e.target.value }))
               }
               className="w-full rounded-lg border border-gray-300 px-3 py-2"
               placeholder={t('common.skill_builder.e_g_email_validator')}
@@ -171,7 +171,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
               type="text"
               value={formData.version}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({ ...prev, version: e.target.value }))
+                setFormData((prev: SkillFormData) => ({ ...prev, version: e.target.value }))
               }
               className="w-full rounded-lg border border-gray-300 px-3 py-2"
               placeholder="1.0.0"
@@ -182,7 +182,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
             <textarea
               value={formData.description}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setFormData((prev) => ({ ...prev, description: e.target.value }))
+                setFormData((prev: SkillFormData) => ({ ...prev, description: e.target.value }))
               }
               className="w-full rounded-lg border border-gray-300 px-3 py-2"
               rows={3}
@@ -195,7 +195,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
               type="text"
               value={formData.category}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({ ...prev, category: e.target.value }))
+                setFormData((prev: SkillFormData) => ({ ...prev, category: e.target.value }))
               }
               className="w-full rounded-lg border border-gray-300 px-3 py-2"
               placeholder={t('common.skill_builder.e_g_validation_transformation')}
@@ -209,7 +209,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
               type="text"
               value={formData.tags?.join(', ')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({
+                setFormData((prev: SkillFormData) => ({
                   ...prev,
                   tags: e.target.value.split(',').map((t) => t.trim()),
                 }))
@@ -275,7 +275,7 @@ export function SkillBuilder({ skillId, onSave }: SkillBuilderProps) {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             try {
               const impl = JSON.parse(e.target.value);
-              setFormData((prev) => ({ ...prev, implementation: impl }));
+              setFormData((prev: SkillFormData) => ({ ...prev, implementation: impl }));
             } catch (_error: unknown) {
               // Invalid JSON, ignore
             }
