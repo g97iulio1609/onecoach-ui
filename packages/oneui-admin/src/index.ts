@@ -28,9 +28,11 @@ export * from './commerce';
 export * from './exercises';
 export * from './feature-flags';
 export * from './foods';
+export * from './generation'; // SDK v4.0 - Durable workflow monitoring
 export * from './invitations';
 export * from './plans';
 export * from './policies';
 export * from './prompts';
 export * from './shared';
 export * from './users';
+
