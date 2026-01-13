@@ -82,43 +82,41 @@ export function useWorkflowRuns(options: UseWorkflowRunsOptions) {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Fetch initial runs from database
+   * Fetch runs from server API
+   *
+   * Uses the /api/workflow-runs route which validates NextAuth session
+   * and queries the workflow schema via Prisma raw SQL.
    */
   const fetchRuns = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      let query = supabase
-        .from('workflow_runs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(limit);
-
-      // Apply status filter
+      // Build query params for the API
+      const params = new URLSearchParams();
       if (statusFilter) {
         const statuses = Array.isArray(statusFilter) ? statusFilter : [statusFilter];
-        query = query.in('status', statuses);
+        params.set('status', statuses.join(','));
+      }
+      params.set('limit', String(limit));
+
+      // Fetch from server API with proper auth
+      const response = await fetch(`/api/workflow-runs?${params.toString()}`);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) throw fetchError;
-
-      // Map id to run_id for backward compatibility
-      const mappedData = (data || []).map((run: Record<string, unknown>) => ({
-        ...run,
-        run_id: run.id as string, // Alias for backward compat
-      })) as WorkflowRun[];
-
-      setRuns(mappedData);
+      const data: WorkflowRun[] = await response.json();
+      setRuns(data);
     } catch (err) {
       console.error('[WorkflowRuns] Fetch error:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch runs');
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, limit, statusFilter]);
+  }, [limit, statusFilter]);
 
   /**
    * Handle realtime updates

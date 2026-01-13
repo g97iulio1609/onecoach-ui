@@ -157,9 +157,14 @@ export function useUserActiveGenerations(options: UseUserActiveGenerationsOption
   }, []);
 
   /**
-   * Fetch generations from database
+   * Fetch generations from server API
+   *
+   * Uses the /api/generations route which validates NextAuth session
+   * and queries the workflow schema via Prisma raw SQL.
+   * This architecture provides proper authentication and security.
    */
   const fetchGenerations = useCallback(async () => {
+    // Guard: no userId means no data
     if (!userId) {
       setGenerations([]);
       setIsLoading(false);
@@ -170,36 +175,41 @@ export function useUserActiveGenerations(options: UseUserActiveGenerationsOption
       setIsLoading(true);
       setError(null);
 
-      let query = supabase
-        .from('workflow_run_metadata')
-        .select('*')
-        .eq('user_id', userId)
-        .order('started_at', { ascending: false })
-        .limit(limit);
-
-      // Filter by workflow type
+      // Build query params for the API
+      const params = new URLSearchParams();
       if (workflowTypes) {
         const types = Array.isArray(workflowTypes) ? workflowTypes : [workflowTypes];
-        query = query.in('workflow_type', types);
+        params.set('workflowTypes', types.join(','));
+      }
+      if (includeCompleted) {
+        params.set('includeCompleted', 'true');
+      }
+      params.set('limit', String(limit));
+
+      // Fetch from server API with proper auth
+      const response = await fetch(`/api/generations?${params.toString()}`);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
-      // Filter to only active (not completed, no error)
-      if (!includeCompleted) {
-        query = query.is('completed_at', null).is('error_message', null);
-      }
-
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) throw fetchError;
-
-      setGenerations(data || []);
+      const data: UserGeneration[] = await response.json();
+      setGenerations(data);
     } catch (err) {
-      console.error('[UserActiveGenerations] Fetch error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch generations');
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to fetch generations';
+
+      console.error('[UserActiveGenerations] Fetch error:', errorMessage);
+      setError(errorMessage);
+
+      // Graceful degradation: don't block the UI
+      // Realtime subscription can still populate data
+      setGenerations([]);
     } finally {
       setIsLoading(false);
     }
-  }, [supabase, userId, workflowTypes, includeCompleted, limit]);
+  }, [userId, workflowTypes, includeCompleted, limit]);
 
   /**
    * Handle realtime updates
@@ -253,6 +263,12 @@ export function useUserActiveGenerations(options: UseUserActiveGenerationsOption
    * Subscribe to realtime updates
    */
   useEffect(() => {
+    // Guard: supabase client must be available
+    if (!supabase) {
+      setIsLoading(false);
+      return;
+    }
+
     // Initial fetch
     fetchGenerations();
 

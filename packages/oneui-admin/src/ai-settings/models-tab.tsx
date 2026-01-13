@@ -47,6 +47,7 @@ import {
 import type { UserRole, AIProvider } from '@prisma/client';
 import { toast } from 'sonner';
 import { Checkbox } from '@onecoach/ui';
+import { createPortal } from 'react-dom';
 
 import { logger } from '@onecoach/lib-shared';
 
@@ -600,262 +601,265 @@ export function ModelsTab({
         )}
       </AnimatePresence>
 
-      {/* Import Models Modal */}
-      <AnimatePresence>
-        {showSyncModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center"
-          >
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => setShowSyncModal(false)}
-            />
-
-            {/* Modal Content */}
+      {/* Import Models Modal - Portal to body to escape overflow clipping */}
+      {showSyncModal &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
             <motion.div
-              initial={{ opacity: 0, y: 100, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 100, scale: 0.95 }}
-              className={cn(
-                'relative flex w-full max-w-2xl flex-col',
-                'h-full max-h-[90vh] sm:h-[600px]',
-                'rounded-t-3xl sm:rounded-3xl',
-                'bg-white dark:bg-neutral-900',
-                'overflow-hidden shadow-2xl'
-              )}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-end justify-center p-4 sm:items-center"
             >
-              <div className="flex h-full flex-col">
-                {/* Header */}
-                <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-white p-4 sm:px-6 sm:py-5 dark:border-neutral-900">
-                  <div>
-                    <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
-                      {t('import.title')}
-                    </h2>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                      {t('import.subtitle', {
-                        provider:
-                          EXTERNAL_PROVIDER_LABELS[selectedSyncProvider] || selectedSyncProvider,
-                      })}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setShowSyncModal(false)}
-                    className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
+              {/* Backdrop */}
+              <div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={() => setShowSyncModal(false)}
+              />
 
-                {/* Filters & Actions */}
-                <div className="shrink-0 border-b border-neutral-200 bg-neutral-50/50 p-4 sm:px-6 dark:border-neutral-800 dark:bg-neutral-800/50">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <div className="flex-1">
-                      <select
-                        value={selectedSyncProvider}
-                        onChange={(e) => setSelectedSyncProvider(e.target.value)}
-                        className={cn(
-                          'w-full rounded-xl border px-3 py-2',
-                          'border-neutral-200 dark:border-neutral-700',
-                          'bg-white dark:bg-neutral-800',
-                          'text-sm text-neutral-900 dark:text-white',
-                          'focus:border-primary-500 focus:ring-primary-500/20 focus:ring-2'
-                        )}
-                      >
-                        {EXTERNAL_PROVIDERS.map((p) => (
-                          <option key={p} value={p}>
-                            {EXTERNAL_PROVIDER_LABELS[p]}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="relative flex-[2]">
-                      <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-                      <input
-                        type="text"
-                        value={syncSearch}
-                        onChange={(e) => setSyncSearch(e.target.value)}
-                        placeholder={t('import.searchPlaceholder')}
-                        className={cn(
-                          'w-full rounded-xl border py-2 pr-4 pl-9',
-                          'text-sm',
-                          'border-neutral-200 dark:border-neutral-700',
-                          'bg-white dark:bg-neutral-800',
-                          'text-neutral-900 dark:text-white',
-                          'placeholder:text-neutral-400',
-                          'focus:border-primary-500 focus:ring-primary-500/20 focus:ring-2'
-                        )}
-                      />
+              {/* Modal Content */}
+              <motion.div
+                initial={{ opacity: 0, y: 100, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 100, scale: 0.95 }}
+                className={cn(
+                  'relative flex w-full max-w-2xl flex-col',
+                  'h-full max-h-[90vh] sm:h-[600px]',
+                  'rounded-t-3xl sm:rounded-3xl',
+                  'bg-white dark:bg-neutral-900',
+                  'overflow-hidden shadow-2xl'
+                )}
+              >
+                <div className="flex h-full flex-col">
+                  {/* Header */}
+                  <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-white p-4 sm:px-6 sm:py-5 dark:border-neutral-800 dark:bg-neutral-900">
+                    <div>
+                      <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                        {t('import.title')}
+                      </h2>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                        {t('import.subtitle', {
+                          provider:
+                            EXTERNAL_PROVIDER_LABELS[selectedSyncProvider] || selectedSyncProvider,
+                        })}
+                      </p>
                     </div>
                     <button
-                      onClick={syncFromProvider}
-                      disabled={isLoadingExternal}
-                      className={cn(
-                        'flex shrink-0 items-center justify-center gap-2 rounded-xl px-4 py-2',
-                        'text-sm font-medium',
-                        'border border-neutral-200 bg-white text-neutral-600',
-                        'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400',
-                        'transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-700',
-                        'disabled:opacity-50'
-                      )}
+                      onClick={() => setShowSyncModal(false)}
+                      className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     >
-                      <RefreshCw className={cn('h-4 w-4', isLoadingExternal && 'animate-spin')} />
-                      {t('import.refreshList')}
+                      <X className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
                     </button>
                   </div>
 
-                  {availableExternalModels.length > 0 && (
-                    <div className="mt-4 flex items-center justify-between">
-                      <button
-                        onClick={() => {
-                          const allIds = availableExternalModels.map((m) => m.id);
-                          if (selectedExternalModels.size === allIds.length) {
-                            setSelectedExternalModels(new Set());
-                          } else {
-                            setSelectedExternalModels(new Set(allIds));
-                          }
-                        }}
-                        className="text-primary-600 dark:text-primary-400 text-xs font-medium hover:underline"
-                      >
-                        {selectedExternalModels.size === availableExternalModels.length
-                          ? t('common.deselectAll') || 'Deseleziona tutti'
-                          : t('import.selectAll', { count: availableExternalModels.length })}
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Models List */}
-                <div className="min-h-0 flex-1 overflow-y-auto px-4 py-2 sm:px-6">
-                  {isLoadingExternal && availableExternalModels.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-12">
-                      <Loader2 className="h-8 w-8 animate-spin text-neutral-400" />
-                      <p className="mt-4 text-sm text-neutral-500">{t('import.loadingModels')}</p>
-                    </div>
-                  ) : availableExternalModels.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-12 text-center">
-                      <Search className="h-8 w-8 text-neutral-300" />
-                      <h4 className="mt-4 font-medium text-neutral-900 dark:text-white">
-                        {t('import.noModelsFound')}
-                      </h4>
-                      <p className="mt-1 text-sm text-neutral-500">
-                        {t('import.noModelsFoundDesc')}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3 py-3">
-                      {availableExternalModels.map((model) => (
-                        <div
-                          key={model.id}
-                          onClick={() => {
-                            setSelectedExternalModels((prev) => {
-                              const next = new Set(prev);
-                              if (next.has(model.id)) next.delete(model.id);
-                              else next.add(model.id);
-                              return next;
-                            });
-                          }}
+                  {/* Filters & Actions */}
+                  <div className="shrink-0 border-b border-neutral-200 bg-neutral-50/50 p-4 sm:px-6 dark:border-neutral-800 dark:bg-neutral-800/50">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <div className="flex-1">
+                        <select
+                          value={selectedSyncProvider}
+                          onChange={(e) => setSelectedSyncProvider(e.target.value)}
                           className={cn(
-                            'group flex cursor-pointer items-start gap-4 rounded-xl border p-4 transition-all',
-                            selectedExternalModels.has(model.id)
-                              ? 'border-primary-500 bg-primary-50/50 dark:border-primary-500/50 dark:bg-primary-900/10'
-                              : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/50'
+                            'w-full rounded-xl border px-3 py-2',
+                            'border-neutral-200 dark:border-neutral-700',
+                            'bg-white dark:bg-neutral-800',
+                            'text-sm text-neutral-900 dark:text-white',
+                            'focus:border-primary-500 focus:ring-primary-500/20 focus:ring-2'
                           )}
                         >
-                          <div className="pointer-events-none pt-0.5">
-                            <Checkbox checked={selectedExternalModels.has(model.id)} readOnly />
-                          </div>
-
-                          <div className="min-w-0 flex-1 space-y-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <h4 className="truncate font-medium text-neutral-900 dark:text-white">
-                                {model.name}
-                              </h4>
-                              {(model.promptPrice > 0 || model.completionPrice > 0) && (
-                                <div className="shrink-0 rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                                  ${model.promptPrice.toFixed(2)}
-                                  {t('models_tab.m')}
-                                </div>
-                              )}
-                            </div>
-
-                            <p className="truncate font-mono text-xs text-neutral-500 dark:text-neutral-400">
-                              {model.modelId}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2 pt-1">
-                              {model.contextLength && model.contextLength > 0 && (
-                                <span className="inline-flex items-center rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                                  {Math.round(model.contextLength / 1000)}
-                                  {t('models_tab.k_ctx')}
-                                </span>
-                              )}
-                              {model.supportsImages && (
-                                <span className="inline-flex items-center gap-1 rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
-                                  <Eye className="h-3 w-3" /> Vision
-                                </span>
-                              )}
-                              {model.supportsReasoning && (
-                                <span className="inline-flex items-center gap-1 rounded bg-purple-50 px-1.5 py-0.5 text-[10px] font-medium text-purple-600 dark:bg-purple-900/20 dark:text-purple-400">
-                                  <Bot className="h-3 w-3" /> Reasoning
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer (Fixed) */}
-                <div className="shrink-0 border-t border-neutral-200 bg-white p-4 sm:px-6 sm:py-5 dark:border-neutral-800 dark:bg-neutral-900">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                      {t('import.selectedCount', { count: selectedExternalModels.size }) ||
-                        `${selectedExternalModels.size} selezionati`}
-                    </span>
-                    <div className="flex gap-3">
+                          {EXTERNAL_PROVIDERS.map((p) => (
+                            <option key={p} value={p}>
+                              {EXTERNAL_PROVIDER_LABELS[p]}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="relative flex-[2]">
+                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                        <input
+                          type="text"
+                          value={syncSearch}
+                          onChange={(e) => setSyncSearch(e.target.value)}
+                          placeholder={t('import.searchPlaceholder')}
+                          className={cn(
+                            'w-full rounded-xl border py-2 pr-4 pl-9',
+                            'text-sm',
+                            'border-neutral-200 dark:border-neutral-700',
+                            'bg-white dark:bg-neutral-800',
+                            'text-neutral-900 dark:text-white',
+                            'placeholder:text-neutral-400',
+                            'focus:border-primary-500 focus:ring-primary-500/20 focus:ring-2'
+                          )}
+                        />
+                      </div>
                       <button
-                        onClick={() => setShowSyncModal(false)}
+                        onClick={syncFromProvider}
+                        disabled={isLoadingExternal}
                         className={cn(
-                          'rounded-xl px-4 py-2.5',
+                          'flex shrink-0 items-center justify-center gap-2 rounded-xl px-4 py-2',
                           'text-sm font-medium',
-                          'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800',
-                          'transition-colors'
+                          'border border-neutral-200 bg-white text-neutral-600',
+                          'dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400',
+                          'transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-700',
+                          'disabled:opacity-50'
                         )}
                       >
-                        {commonT('cancel')}
+                        <RefreshCw className={cn('h-4 w-4', isLoadingExternal && 'animate-spin')} />
+                        {t('import.refreshList')}
                       </button>
-                      <button
-                        onClick={importSelectedModels}
-                        disabled={selectedExternalModels.size === 0 || isSyncing}
-                        className={cn(
-                          'flex items-center gap-2 rounded-xl px-5 py-2.5',
-                          'text-sm font-semibold text-white',
-                          'bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200',
-                          'disabled:cursor-not-allowed disabled:opacity-50',
-                          'shadow-sm transition-all'
-                        )}
-                      >
-                        {isSyncing ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Download className="h-4 w-4" />
-                        )}
-                        {t('import.importSelected', { count: selectedExternalModels.size })}
-                      </button>
+                    </div>
+
+                    {availableExternalModels.length > 0 && (
+                      <div className="mt-4 flex items-center justify-between">
+                        <button
+                          onClick={() => {
+                            const allIds = availableExternalModels.map((m) => m.id);
+                            if (selectedExternalModels.size === allIds.length) {
+                              setSelectedExternalModels(new Set());
+                            } else {
+                              setSelectedExternalModels(new Set(allIds));
+                            }
+                          }}
+                          className="text-primary-600 dark:text-primary-400 text-xs font-medium hover:underline"
+                        >
+                          {selectedExternalModels.size === availableExternalModels.length
+                            ? t('common.deselectAll') || 'Deseleziona tutti'
+                            : t('import.selectAll', { count: availableExternalModels.length })}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Models List */}
+                  <div className="min-h-0 flex-1 overflow-y-auto px-4 py-2 sm:px-6">
+                    {isLoadingExternal && availableExternalModels.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-12">
+                        <Loader2 className="h-8 w-8 animate-spin text-neutral-400" />
+                        <p className="mt-4 text-sm text-neutral-500">{t('import.loadingModels')}</p>
+                      </div>
+                    ) : availableExternalModels.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-12 text-center">
+                        <Search className="h-8 w-8 text-neutral-300" />
+                        <h4 className="mt-4 font-medium text-neutral-900 dark:text-white">
+                          {t('import.noModelsFound')}
+                        </h4>
+                        <p className="mt-1 text-sm text-neutral-500">
+                          {t('import.noModelsFoundDesc')}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3 py-3">
+                        {availableExternalModels.map((model) => (
+                          <div
+                            key={model.id}
+                            onClick={() => {
+                              setSelectedExternalModels((prev) => {
+                                const next = new Set(prev);
+                                if (next.has(model.id)) next.delete(model.id);
+                                else next.add(model.id);
+                                return next;
+                              });
+                            }}
+                            className={cn(
+                              'group flex cursor-pointer items-start gap-4 rounded-xl border p-4 transition-all',
+                              selectedExternalModels.has(model.id)
+                                ? 'border-primary-500 bg-primary-50/50 dark:border-primary-500/50 dark:bg-primary-900/10'
+                                : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/50'
+                            )}
+                          >
+                            <div className="pointer-events-none pt-0.5">
+                              <Checkbox checked={selectedExternalModels.has(model.id)} readOnly />
+                            </div>
+
+                            <div className="min-w-0 flex-1 space-y-1">
+                              <div className="flex items-center justify-between gap-2">
+                                <h4 className="truncate font-medium text-neutral-900 dark:text-white">
+                                  {model.name}
+                                </h4>
+                                {(model.promptPrice > 0 || model.completionPrice > 0) && (
+                                  <div className="shrink-0 rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                    ${model.promptPrice.toFixed(2)}
+                                    {t('models_tab.m')}
+                                  </div>
+                                )}
+                              </div>
+
+                              <p className="truncate font-mono text-xs text-neutral-500 dark:text-neutral-400">
+                                {model.modelId}
+                              </p>
+
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                {model.contextLength && model.contextLength > 0 && (
+                                  <span className="inline-flex items-center rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                                    {Math.round(model.contextLength / 1000)}
+                                    {t('models_tab.k_ctx')}
+                                  </span>
+                                )}
+                                {model.supportsImages && (
+                                  <span className="inline-flex items-center gap-1 rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                    <Eye className="h-3 w-3" /> Vision
+                                  </span>
+                                )}
+                                {model.supportsReasoning && (
+                                  <span className="inline-flex items-center gap-1 rounded bg-purple-50 px-1.5 py-0.5 text-[10px] font-medium text-purple-600 dark:bg-purple-900/20 dark:text-purple-400">
+                                    <Bot className="h-3 w-3" /> Reasoning
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer (Fixed) */}
+                  <div className="shrink-0 border-t border-neutral-200 bg-white p-4 sm:px-6 sm:py-5 dark:border-neutral-800 dark:bg-neutral-900">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                        {t('import.selectedCount', { count: selectedExternalModels.size }) ||
+                          `${selectedExternalModels.size} selezionati`}
+                      </span>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => setShowSyncModal(false)}
+                          className={cn(
+                            'rounded-xl px-4 py-2.5',
+                            'text-sm font-medium',
+                            'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800',
+                            'transition-colors'
+                          )}
+                        >
+                          {commonT('cancel')}
+                        </button>
+                        <button
+                          onClick={importSelectedModels}
+                          disabled={selectedExternalModels.size === 0 || isSyncing}
+                          className={cn(
+                            'flex items-center gap-2 rounded-xl px-5 py-2.5',
+                            'text-sm font-semibold text-white',
+                            'bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200',
+                            'disabled:cursor-not-allowed disabled:opacity-50',
+                            'shadow-sm transition-all'
+                          )}
+                        >
+                          {isSyncing ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Download className="h-4 w-4" />
+                          )}
+                          {t('import.importSelected', { count: selectedExternalModels.size })}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </div>
   );
 }
