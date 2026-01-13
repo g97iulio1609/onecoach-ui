@@ -48,6 +48,7 @@ export { ModelSelector as LegacyModelSelector } from './legacy-model-selector';
 export * from './theme-toggle';
 export * from './date-picker-with-presets';
 export * from './date-picker';
+export * from './date-range-picker';
 
 // Design System - Typography
 export * from './typography';
@@ -161,4 +162,3 @@ export * from './programs-page-layout';
 
 // Import Modal (generic file upload component)
 export { ImportModal } from '@onecoach/ui-core';
-

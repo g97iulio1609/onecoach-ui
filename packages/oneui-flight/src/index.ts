@@ -12,6 +12,11 @@
 // =============================================================================
 export { FlightSearchCard, type FlightSearchCardProps } from './flight-search-card';
 export { FlightWizard, type FlightWizardProps } from './flight-wizard';
+export {
+  AirportCombobox,
+  type AirportComboboxProps,
+  type AirportComboboxTranslations,
+} from './airport-combobox';
 
 // =============================================================================
 // Flight Results & Cards
@@ -19,6 +24,12 @@ export { FlightWizard, type FlightWizardProps } from './flight-wizard';
 export { FlightResults, type FlightResultsProps } from './flight-results';
 export { FlightCard, type Flight, type FlightDirection } from './flight-card';
 export { RouteGroup, type RouteGroupProps } from './route-group';
+export {
+  SmartAnalysisPanel,
+  type SmartAnalysisPanelProps,
+  type FlightAnalysis,
+  type FlightRecommendation,
+} from './smart-analysis-panel';
 
 // =============================================================================
 // Form Utilities & Types
@@ -28,4 +39,13 @@ export {
   type FlightSearchFormData,
   type CabinClass,
 } from './form';
+
+// =============================================================================
+// Types
+// =============================================================================
 export type { Airport } from './types';
+
+// =============================================================================
+// Saved Trips
+// =============================================================================
+export { SavedTripsDashboard } from './saved-trips-dashboard';

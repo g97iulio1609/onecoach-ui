@@ -1,9 +1,10 @@
 'use client';
 
-import { Heart, Trash2, MapPin, Calendar, Users, Plane } from 'lucide-react';
+import { Heart, Trash2, MapPin, Calendar, Users, Plane, ArrowRight } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
 import { Card } from '@onecoach/ui';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface FlightSearch {
   id: string;
@@ -28,6 +29,8 @@ interface FlightSearch {
 
 export interface FlightSearchCardProps {
   search: FlightSearch;
+  /** URL to navigate when clicking the card */
+  href?: string;
   onDelete?: (id: string) => void;
   onToggleFavorite?: (id: string, isFavorite: boolean) => void;
   className?: string;
@@ -35,6 +38,7 @@ export interface FlightSearchCardProps {
 
 export function FlightSearchCard({
   search,
+  href,
   onDelete,
   onToggleFavorite,
   className,
@@ -158,11 +162,22 @@ export function FlightSearchCard({
             </span>
           )}
         </div>
-        {search.hasDeal && search.dealSavings && (
-          <span className="rounded-full bg-green-500/10 px-2 py-1 text-xs font-bold text-green-500">
-            Save €{search.dealSavings}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {search.hasDeal && search.dealSavings && (
+            <span className="rounded-full bg-green-500/10 px-2 py-1 text-xs font-bold text-green-500">
+              Save €{search.dealSavings}
+            </span>
+          )}
+          {href && (
+            <Link
+              href={href}
+              className="flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-blue-600"
+            >
+              View
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          )}
+        </div>
       </div>
     </Card>
   );

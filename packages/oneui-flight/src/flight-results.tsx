@@ -2,23 +2,25 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { 
-  type Flight, 
-  type FlightSearchResponse, 
+import {
+  type Flight,
+  type FlightSearchResponse,
   type FlightDirection,
   groupFlightsByRoute,
 } from '@onecoach/lib-shared';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Plane, PlaneLanding, PlaneTakeoff, SearchX, ArrowRight } from 'lucide-react';
+import { Check, Plane, PlaneLanding, PlaneTakeoff, SearchX, ArrowRight, Heart } from 'lucide-react';
 import { cn } from '@onecoach/lib-design-system';
 import { Button, Card, EmptyState } from '@onecoach/ui';
 import { FlightCard } from './flight-card';
 import { RouteGroup } from './route-group';
-import { SmartAnalysisPanel, type FlightAnalysis, type FlightRecommendation } from './smart-analysis-panel';
+import {
+  SmartAnalysisPanel,
+  type FlightAnalysis,
+  type FlightRecommendation,
+} from './smart-analysis-panel';
 
 export type { FlightSearchResponse };
-
-
 
 export interface FlightResultsProps {
   results: FlightSearchResponse | null;
@@ -32,70 +34,55 @@ export interface FlightResultsProps {
   alternatives?: FlightRecommendation[];
 }
 
-// Hook per gestire i preferiti
-function useFavorites() {
-  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+// Hook to manage saved trips
+function useSavedTrips() {
+  const [savedTripIds, setSavedTripIds] = useState<Set<string>>(new Set());
 
-  // Carica preferiti all'avvio
+  // Load saved trips on mount
   useEffect(() => {
-    fetch('/api/flight/favorites')
+    fetch('/api/flight/trips')
       .then((res) => res.json())
       .then((data) => {
-        if (data.favorites) {
-          const ids = new Set<string>(data.favorites.map((f: { id: string }) => f.id));
-          setFavoriteIds(ids);
+        if (data.trips) {
+          // We track saved trips by ID, but for duplicate checking we might need more smarts.
+          // For now, just tracking IDs of newly saved trips in this session + loaded ones.
+          setSavedTripIds(new Set(data.trips.map((t: any) => t.id)));
         }
       })
       .catch(() => {});
   }, []);
 
-  const toggleFavorite = useCallback(async (flight: Flight, shouldBeFavorite: boolean) => {
-    const flightId = flight.id ?? `${flight.flyFrom}-${flight.flyTo}-${flight.departure.local}`;
-
-    // Optimistic update
-    setFavoriteIds((prev) => {
-      const next = new Set(prev);
-      shouldBeFavorite ? next.add(flightId) : next.delete(flightId);
-      return next;
-    });
-
+  const saveTrip = useCallback(async (tripData: any) => {
     try {
-      if (shouldBeFavorite) {
-        await fetch('/api/flight/favorites', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            flyFrom: flight.flyFrom,
-            flyTo: flight.flyTo,
-            cityFrom: flight.cityFrom,
-            cityTo: flight.cityTo,
-            departureDate: flight.departure.local,
-            arrivalDate: flight.arrival.local,
-            price: flight.price,
-            deepLink: flight.deepLink,
-            duration: flight.totalDurationInSeconds,
-            layovers: flight.layovers?.length ?? 0,
-          }),
-        });
-      } else {
-        await fetch(`/api/flight/favorites?id=${flightId}`, { method: 'DELETE' });
-      }
-    } catch {
-      // Rollback on error
-      setFavoriteIds((prev) => {
-        const next = new Set(prev);
-        shouldBeFavorite ? next.delete(flightId) : next.add(flightId);
-        return next;
+      const res = await fetch('/api/flight/trips', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tripData),
       });
+
+      if (!res.ok) throw new Error('Failed to save');
+
+      const data = await res.json();
+      if (data.trip?.id) {
+        setSavedTripIds((prev) => {
+          const next = new Set(prev);
+          next.add(data.trip.id);
+          return next;
+        });
+        return data.trip.id;
+      }
+    } catch (error) {
+      console.error('Failed to save trip', error);
+      // We could add toast notification here if UI library supports it
     }
   }, []);
 
-  return { favoriteIds, toggleFavorite };
+  return { savedTripIds, saveTrip };
 }
 
-export function FlightResults({ 
-  results, 
-  isSearching, 
+export function FlightResults({
+  results,
+  isSearching,
   onReset,
   analysis,
   recommendation,
@@ -105,7 +92,78 @@ export function FlightResults({
   const [activeTab, setActiveTab] = useState<FlightDirection>('outbound');
   const [selectedOutbound, setSelectedOutbound] = useState<Flight | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
-  const { favoriteIds, toggleFavorite } = useFavorites();
+  const { saveTrip } = useSavedTrips();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveSelectedTrip = async () => {
+    if (!selectedOutbound) return;
+
+    setIsSaving(true);
+    try {
+      // Construct payload
+      // If we have AI analysis, use it. If not, we might need a fallback or it's optional?
+      // The schema requires aiAnalysis and aiRecommendation.
+      // If saving a manual selection, we use the global analysis context,
+      // and construct a "User Selected" recommendation object.
+
+      const manualRecommendation = {
+        outboundFlightId: selectedOutbound.id!,
+        returnFlightId: selectedReturn?.id,
+        totalPrice: selectedOutbound.price + (selectedReturn?.price || 0),
+        strategy: 'most_convenient', // Fallback strategy label
+        confidence: 1.0, // User selected it manually
+        reasoning: 'User selected combination',
+        deepLink: undefined, // Will be generated from flights
+      };
+
+      await saveTrip({
+        name: `${selectedOutbound.cityTo} Trip`,
+        outboundFlight: selectedOutbound,
+        returnFlight: selectedReturn || undefined,
+        aiAnalysis: analysis || {
+          marketSummary: 'Manual selection',
+          priceAnalysis: { avgOutboundPrice: 0, isPriceGood: true, priceTrend: 'stable' },
+          routeAnalysis: {},
+          scheduleAnalysis: { hasGoodDirectOptions: true, bestTimeToFly: 'N/A' },
+          keyInsights: ['User selected trip'],
+        },
+        aiRecommendation: recommendation && !selectedReturn ? recommendation : manualRecommendation,
+        combinedDeepLink: undefined,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveRecommendation = async (rec: FlightRecommendation) => {
+    // Find the flights corresponding to the recommendation
+    // This assumes recommendation has IDs that match flights in the results
+    // If we can't find them, we can't save the full flight object.
+    // However, usually the recommendation object passed to API (SaveTrip) expects full objects.
+    // If the recommendation only has IDs, we need to look them up.
+
+    // Helper to find flight by ID
+    const findFlight = (id: string, list: any[]) => list.find((f) => f.id === id);
+
+    // Search in all results
+    const outboundList =
+      results?.tripType === 'round-trip' ? results.outbound : results?.flights || [];
+    const returnList = results?.tripType === 'round-trip' ? results.return : [];
+
+    const outboundF = findFlight(rec.outboundFlightId, outboundList as any[]);
+    const returnF = rec.returnFlightId
+      ? findFlight(rec.returnFlightId, returnList as any[])
+      : undefined;
+
+    if (outboundF) {
+      await saveTrip({
+        outboundFlight: outboundF,
+        returnFlight: returnF,
+        aiAnalysis: analysis!,
+        aiRecommendation: rec,
+      });
+    }
+  };
 
   if (isSearching) {
     return (
@@ -182,6 +240,7 @@ export function FlightResults({
             analysis={analysis}
             recommendation={recommendation}
             alternatives={alternatives}
+            onSave={handleSaveRecommendation}
           />
         )}
 
@@ -189,13 +248,7 @@ export function FlightResults({
           // Grouped by route
           <div className="flex flex-col gap-4">
             {routeGroups.map((group, index) => (
-              <RouteGroup
-                key={group.routeKey}
-                group={group}
-                defaultExpanded={index === 0}
-                onFavoriteToggle={toggleFavorite}
-                favoriteIds={favoriteIds}
-              />
+              <RouteGroup key={group.routeKey} group={group} defaultExpanded={index === 0} />
             ))}
           </div>
         ) : (
@@ -209,12 +262,7 @@ export function FlightResults({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ delay: index * 0.05, duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 >
-                  <FlightCard
-                    flight={flight}
-                    showFavoriteButton
-                    isFavorite={favoriteIds.has(flight.id ?? '')}
-                    onFavoriteToggle={toggleFavorite}
-                  />
+                  <FlightCard flight={flight} showFavoriteButton={false} />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -329,7 +377,7 @@ export function FlightResults({
           exit={{ opacity: 0, x: activeTab === 'outbound' ? 20 : -20 }}
           transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
         >
-          <p className="mb-4 text-center text-sm font-medium text-neutral-500">
+          <p className="mb-4 text-center text-sm font-medium text-neutral-500 dark:text-neutral-400">
             {activeTab === 'outbound' ? t('results.selectOutbound') : t('results.selectReturn')}
           </p>
 
@@ -342,8 +390,6 @@ export function FlightResults({
                   defaultExpanded={index === 0}
                   showDirectionBadge
                   direction={activeTab}
-                  onFavoriteToggle={toggleFavorite}
-                  favoriteIds={favoriteIds}
                 />
               ))}
             </div>
@@ -378,9 +424,7 @@ export function FlightResults({
                         className={cn(isSelected && 'border-blue-500')}
                         showDirectionBadge
                         direction={activeTab}
-                        showFavoriteButton
-                        isFavorite={favoriteIds.has(flight.id ?? '')}
-                        onFavoriteToggle={toggleFavorite}
+                        showFavoriteButton={false}
                       />
                     </div>
                     {isSelected && (
@@ -445,18 +489,29 @@ export function FlightResults({
                     €{totalPrice}
                   </p>
                 </div>
-                <Button
-                  disabled={!canBook}
-                  onClick={handleBookTrip}
-                  className={cn(
-                    'rounded-xl px-8 py-3 text-sm font-black tracking-widest uppercase transition-all',
-                    canBook
-                      ? 'bg-blue-600 text-white shadow-lg hover:-translate-y-0.5 hover:bg-blue-500'
-                      : 'cursor-not-allowed bg-neutral-300 text-neutral-500'
-                  )}
-                >
-                  {t('results.bookTrip')}
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    disabled={!canBook || isSaving}
+                    onClick={handleSaveSelectedTrip}
+                    className="h-auto rounded-xl border border-neutral-200 px-6 py-3 text-sm font-bold text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                  >
+                    <Heart className={cn('mr-2 h-4 w-4', isSaving && 'animate-pulse')} />
+                    {t('results.saveTrip') || 'Save'}
+                  </Button>
+                  <Button
+                    disabled={!canBook}
+                    onClick={handleBookTrip}
+                    className={cn(
+                      'rounded-xl px-8 py-3 text-sm font-black tracking-widest uppercase transition-all',
+                      canBook
+                        ? 'bg-blue-600 text-white shadow-lg hover:-translate-y-0.5 hover:bg-blue-500'
+                        : 'cursor-not-allowed bg-neutral-300 text-neutral-500'
+                    )}
+                  >
+                    {t('results.bookTrip')}
+                  </Button>
+                </div>
               </div>
             </Card>
           </motion.div>
@@ -521,12 +576,12 @@ interface SelectionCardProps {
 function SelectionCard({ label, flight, onClear }: SelectionCardProps) {
   if (!flight)
     return (
-      <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-neutral-300 p-4 dark:border-neutral-600">
+      <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-neutral-300 p-4 dark:border-neutral-700">
         <p className="text-sm text-neutral-400">{label}</p>
       </div>
     );
   return (
-    <div className="relative rounded-xl border border-white/20 bg-white/50 p-4 dark:bg-neutral-800/50">
+    <div className="relative rounded-xl border border-white/20 bg-white/50 p-4 dark:bg-neutral-800/80">
       <button
         onClick={onClear}
         className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs text-white hover:bg-red-600"

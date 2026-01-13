@@ -28,7 +28,9 @@
     "@onecoach/types-ai": "workspace:*",
     "@onecoach/types-ui": "workspace:*",
     "@onecoach/types-domain": "workspace:*",
-    "@onecoach/types-database": "workspace:*"
+    "@onecoach/types-database": "workspace:*",
+    "@tanstack/react-virtual": "^3.13.6",
+    "@phosphor-icons/react": "^2.1.7"
   },
   "peerDependencies": {
     "framer-motion": ">=11.0.0",

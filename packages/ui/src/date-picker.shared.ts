@@ -22,6 +22,10 @@ export interface DatePickerProps {
   className?: string;
   /** Translations object (optional, uses defaults if not provided) */
   translations?: DatePickerTranslations;
+  /** Default view date - controls which month is displayed initially */
+  defaultViewDate?: Date;
+  /** Show quick select buttons (Today, +1 week, etc.) */
+  showQuickSelect?: boolean;
 }
 
 export interface DatePickerTranslations {
@@ -33,6 +37,12 @@ export interface DatePickerTranslations {
     short: string[];
   };
   months: string[];
+  quickSelect?: {
+    today: string;
+    nextWeek: string;
+    nextTwoWeeks: string;
+    nextMonth: string;
+  };
 }
 
 /** Default English translations */
@@ -45,9 +55,25 @@ export const defaultTranslations: DatePickerTranslations = {
     short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
   },
   months: [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ],
+  quickSelect: {
+    today: 'Today',
+    nextWeek: '+1 week',
+    nextTwoWeeks: '+2 weeks',
+    nextMonth: '+1 month',
+  },
 };
 
 /**
@@ -138,4 +164,77 @@ export function isDateInRange(date: Date, minDate?: Date, maxDate?: Date): boole
     return false;
   }
   return true;
+}
+
+/**
+ * Get start of month for a given date
+ */
+export function startOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+/**
+ * Add days to a date
+ */
+export function addDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+/**
+ * Add months to a date
+ */
+export function addMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + months);
+  return result;
+}
+
+/**
+ * Quick select date options
+ */
+export interface QuickSelectOption {
+  id: string;
+  label: string;
+  getDate: (baseDate: Date) => Date;
+}
+
+/**
+ * Generate quick select options based on translations and min date
+ */
+export function getQuickSelectOptions(
+  translations: DatePickerTranslations,
+  minDate?: Date
+): QuickSelectOption[] {
+  const baseDate = minDate && minDate > new Date() ? minDate : new Date();
+  const qs = translations.quickSelect || defaultTranslations.quickSelect!;
+
+  return [
+    {
+      id: 'today',
+      label: qs.today,
+      getDate: () => new Date(),
+    },
+    {
+      id: 'nextWeek',
+      label: qs.nextWeek,
+      getDate: (base: Date) => addDays(base, 7),
+    },
+    {
+      id: 'nextTwoWeeks',
+      label: qs.nextTwoWeeks,
+      getDate: (base: Date) => addDays(base, 14),
+    },
+    {
+      id: 'nextMonth',
+      label: qs.nextMonth,
+      getDate: (base: Date) => addMonths(base, 1),
+    },
+  ].filter((option) => {
+    // Filter out options that would result in dates before minDate
+    if (!minDate) return true;
+    const resultDate = option.getDate(baseDate);
+    return resultDate >= minDate;
+  });
 }
